@@ -20,7 +20,7 @@ class opendaylight (
   $install_method = $::opendaylight::params::install_method,
   $tarball_url = $::opendaylight::params::tarball_url,
   $unitfile_url = $::opendaylight::params::unitfile_url,
-  $odl_rest_port = $::opendaylight::params::odl_rest_port
+  $odl_rest_port = $::opendaylight::params::odl_rest_port,
 ) inherits ::opendaylight::params {
 
   # NB: This is a work-around for a bug in gini/puppet-archive
@@ -50,6 +50,8 @@ class opendaylight (
       fail("Unsupported OS: ${::operatingsystem}")
     }
   }
+  # Build full list of features to install
+  $features = union($default_features, $extra_features)
 
   class { '::opendaylight::install': } ->
   class { '::opendaylight::config': odl_rest_port => $odl_rest_port} ~>
