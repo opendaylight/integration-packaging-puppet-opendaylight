@@ -25,10 +25,6 @@ class opendaylight (
   $odl_rest_port = $::opendaylight::params::odl_rest_port,
 ) inherits ::opendaylight::params {
 
-  # NB: This is a work-around for a bug in gini/puppet-archive
-  # See: https://github.com/bfraser/puppet-grafana/issues/5#issuecomment-59269431
-  include archive::prerequisites
-
   # Validate OS family
   if $::osfamily != 'RedHat' {
     fail("Unsupported OS family: ${::osfamily}")
