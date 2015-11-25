@@ -15,4 +15,5 @@ class opendaylight::params {
   $tarball_url = 'https://nexus.opendaylight.org/content/groups/public/org/opendaylight/integration/distribution-karaf/0.3.0-Lithium/distribution-karaf-0.3.0-Lithium.tar.gz'
   $unitfile_url = 'https://github.com/dfarrell07/opendaylight-systemd/archive/master/opendaylight-unitfile.tar.gz'
   $odl_rest_port = '8080'
+  $enable_l3 = 'no'
 }

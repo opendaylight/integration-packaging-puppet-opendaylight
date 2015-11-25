@@ -23,6 +23,7 @@ class opendaylight (
   $tarball_url = $::opendaylight::params::tarball_url,
   $unitfile_url = $::opendaylight::params::unitfile_url,
   $odl_rest_port = $::opendaylight::params::odl_rest_port,
+  $enable_l3 = $::opendaylight::params::enable_l3,
 ) inherits ::opendaylight::params {
 
   # Validate OS family
