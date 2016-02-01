@@ -16,4 +16,5 @@ class opendaylight::params {
   $unitfile_url = 'https://github.com/dfarrell07/opendaylight-systemd/archive/master/opendaylight-unitfile.tar.gz'
   $odl_rest_port = '8080'
   $enable_l3 = 'no'
+  $log_levels = {}
 }

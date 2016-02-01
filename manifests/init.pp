@@ -15,6 +15,8 @@
 #   If installing from a tarball, use this one. Defaults to latest ODL.
 # [*unitfile_url*]
 #   OpenDaylight .service file to use for tarball installs. Defaults to one used by ODL RPM.
+# [*log_levels*]
+#   Custom OpenDaylight logger verbosity configuration (TRACE, DEBUG, INFO, WARN, ERROR).
 #
 class opendaylight (
   $default_features = $::opendaylight::params::default_features,
@@ -24,6 +26,7 @@ class opendaylight (
   $unitfile_url = $::opendaylight::params::unitfile_url,
   $odl_rest_port = $::opendaylight::params::odl_rest_port,
   $enable_l3 = $::opendaylight::params::enable_l3,
+  $log_levels = $::opendaylight::params::log_levels,
 ) inherits ::opendaylight::params {
 
   # Validate OS family
