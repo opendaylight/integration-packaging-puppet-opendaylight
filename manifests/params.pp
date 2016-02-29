@@ -17,4 +17,7 @@ class opendaylight::params {
   $odl_rest_port = '8080'
   $enable_l3 = 'no'
   $log_levels = {}
+  $enable_ha = false
+  $ha_node_ips = []
+  $ha_node_index = ''
 }
