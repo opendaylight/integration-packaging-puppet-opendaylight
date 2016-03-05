@@ -9,6 +9,8 @@
 #   List of features to install in addition to the default ones.
 # [*odl_rest_port *]
 #   Port for ODL northbound REST interface to listen on.
+# [*odl_bind_ip *]
+#   IP for ODL northbound REST interface to bind to.
 # [*install_method *]
 #   How to install OpenDaylight. Current options are "rpm" and "tarball", default is RPM.
 # [*tarball_url*]
@@ -29,10 +31,11 @@
 class opendaylight (
   $default_features = $::opendaylight::params::default_features,
   $extra_features = $::opendaylight::params::extra_features,
+  $odl_rest_port = $::opendaylight::params::odl_rest_port,
+  $odl_bind_ip = $::opendaylight::params::odl_bind_ip,
   $install_method = $::opendaylight::params::install_method,
   $tarball_url = $::opendaylight::params::tarball_url,
   $unitfile_url = $::opendaylight::params::unitfile_url,
-  $odl_rest_port = $::opendaylight::params::odl_rest_port,
   $enable_l3 = $::opendaylight::params::enable_l3,
   $log_levels = $::opendaylight::params::log_levels,
   $enable_ha = $::opendaylight::params::enable_ha,
