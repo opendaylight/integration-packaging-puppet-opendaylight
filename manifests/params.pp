@@ -22,4 +22,5 @@ class opendaylight::params {
   $enable_ha = false
   $ha_node_ips = []
   $ha_node_index = ''
+  $security_group_mode = 'stateful'
 }
