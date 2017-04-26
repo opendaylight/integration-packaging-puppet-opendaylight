@@ -1,7 +1,7 @@
 [default]
 ignore = .tox/**, .git/**, .gitignore, .gitreview, **.log,
     node_modules/**, **.sw?, **.orig, **/.vagrant**, pkg/**,
-    .bundle/**
+    .bundle/**, junit/**, log/**, spec/fixtures/modules/**
 
 [git]
 bears = GitCommitBear
