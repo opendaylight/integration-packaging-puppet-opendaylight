@@ -113,19 +113,30 @@ task :sanity=> [
 ]
 
 desc "All tests, use VMs for Beaker tests"
-task :acceptance_vm => [
+task :acceptance5_vm => [
   :test,
   :cent_5rel_vm,
   :ubuntu_5rel_vm,
   :cent_5test_vm,
+]
+
+desc "All tests, use VMs for Beaker tests"
+task :acceptance6_vm => [
+  :test,
   :cent_6test_vm,
 ]
 
 desc "All tests, use containers for Beaker tests"
-task :acceptance_dock => [
+task :acceptance5_dock => [
   :test,
   :cent_5rel_dock,
   :ubuntu_5rel_dock,
   :cent_5test_dock,
+]
+
+# TODO: Update .deb to Carbon and add a ubuntu_6test_dock test
+desc "All tests, use containers for Beaker tests"
+task :acceptance6_dock => [
+  :test,
   :cent_6test_dock,
 ]
