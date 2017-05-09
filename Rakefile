@@ -62,11 +62,17 @@ end
 
 # Ubuntu VMs
 
-# TODO: Add ubuntu_6test_dock task
+desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
+task :ubuntu_6test_vm do
+  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/carbon' bundle exec rake beaker"
+end
 
 # Ubuntu Containers
 
-# TODO: Add ubuntu_6test_dock task
+desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
+task :ubuntu_6test_dock do
+  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/carbon' bundle exec rake beaker"
+end
 
 # Multi-test helpers
 
@@ -85,16 +91,16 @@ task :sanity=> [
   :cent_6test_dock,
 ]
 
-# TODO: Update .deb to Carbon and add a ubuntu_6test_vm test
 desc "All tests, use VMs for Beaker tests"
 task :acceptance_vm => [
   :test,
+  :ubuntu_6test_vm,
   :cent_6test_vm,
 ]
 
-# TODO: Update .deb to Carbon and add a ubuntu_6test_dock test
 desc "All tests, use containers for Beaker tests"
 task :acceptance_dock => [
   :test,
+  :ubuntu_6test_dock,
   :cent_6test_dock,
 ]
