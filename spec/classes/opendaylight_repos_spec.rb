@@ -5,7 +5,7 @@ describe 'opendaylight::repos' do
     context "with defaults" do
       it { should contain_class('opendaylight::repos') }
       it { should contain_class('apt') }
-      it { should contain_apt__ppa('ppa:odl-team/boron') }
+      it { should contain_apt__ppa('ppa:odl-team/carbon') }
     end
 
     context "with custom deb_repo" do
