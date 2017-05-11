@@ -53,6 +53,11 @@ task :cent_5test_vm do
   sh "RS_SET=centos-7 RPM_REPO='opendaylight-5-testing' bundle exec rake beaker"
 end
 
+desc "Beaker tests against CentOS 7 VM with latest Carbon testing RPM"
+task :cent_6test_vm do
+  sh "RS_SET=centos-7 RPM_REPO='opendaylight-6-testing' bundle exec rake beaker"
+end
+
 desc "Beaker tests against CentOS 7 VM with latest Boron release RPM"
 task :cent_5rel_vm do
   sh "RS_SET=centos-7 RPM_REPO='opendaylight-5-release' bundle exec rake beaker"
@@ -63,6 +68,11 @@ end
 desc "Beaker tests against CentOS 7 container with latest Boron testing RPM"
 task :cent_5test_dock do
   sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-5-testing' bundle exec rake beaker"
+end
+
+desc "Beaker tests against CentOS 7 container with latest Carbon testing RPM"
+task :cent_6test_dock do
+  sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-6-testing' bundle exec rake beaker"
 end
 
 desc "Beaker tests against CentOS 7 container with latest Boron release RPM"
@@ -99,21 +109,34 @@ task :test => [
 desc "Quick and important tests"
 task :sanity=> [
   :test,
-  :cent_5test_dock,
+  :cent_6test_dock,
 ]
 
 desc "All tests, use VMs for Beaker tests"
-task :acceptance_vm => [
+task :acceptance5_vm => [
   :test,
   :cent_5rel_vm,
   :ubuntu_5rel_vm,
   :cent_5test_vm,
 ]
 
+desc "All tests, use VMs for Beaker tests"
+task :acceptance6_vm => [
+  :test,
+  :cent_6test_vm,
+]
+
 desc "All tests, use containers for Beaker tests"
-task :acceptance_dock => [
+task :acceptance5_dock => [
   :test,
   :cent_5rel_dock,
   :ubuntu_5rel_dock,
   :cent_5test_dock,
+]
+
+# TODO: Update .deb to Carbon and add a ubuntu_6test_dock test
+desc "All tests, use containers for Beaker tests"
+task :acceptance6_dock => [
+  :test,
+  :cent_6test_dock,
 ]
