@@ -107,10 +107,4 @@ class opendaylight::config {
       match => '^routing-node=.*$',
     }
   }
-
-  # Configure username/password
-  odl_user { $::opendaylight::username:
-    password => $::opendaylight::password,
-    before   => Service['opendaylight'],
-  }
 }
