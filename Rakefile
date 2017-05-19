@@ -48,52 +48,25 @@ end
 
 # CentOS VMs
 
-desc "Beaker tests against CentOS 7 VM with latest Boron testing RPM"
-task :cent_5test_vm do
-  sh "RS_SET=centos-7 RPM_REPO='opendaylight-5-testing' bundle exec rake beaker"
-end
-
 desc "Beaker tests against CentOS 7 VM with latest Carbon testing RPM"
 task :cent_6test_vm do
   sh "RS_SET=centos-7 RPM_REPO='opendaylight-6-testing' bundle exec rake beaker"
 end
 
-desc "Beaker tests against CentOS 7 VM with latest Boron release RPM"
-task :cent_5rel_vm do
-  sh "RS_SET=centos-7 RPM_REPO='opendaylight-5-release' bundle exec rake beaker"
-end
-
 # CentOS Containers
-
-desc "Beaker tests against CentOS 7 container with latest Boron testing RPM"
-task :cent_5test_dock do
-  sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-5-testing' bundle exec rake beaker"
-end
 
 desc "Beaker tests against CentOS 7 container with latest Carbon testing RPM"
 task :cent_6test_dock do
   sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-6-testing' bundle exec rake beaker"
 end
 
-desc "Beaker tests against CentOS 7 container with latest Boron release RPM"
-task :cent_5rel_dock do
-  sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-5-release' bundle exec rake beaker"
-end
-
 # Ubuntu VMs
 
-desc "Beaker tests against Ubuntu 16.04 VM with Boron release Deb"
-task :ubuntu_5rel_vm do
-  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/boron' bundle exec rake beaker"
-end
+# TODO: Add ubuntu_6test_dock task
 
 # Ubuntu Containers
 
-desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
-task :ubuntu_5rel_dock do
-  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/boron' bundle exec rake beaker"
-end
-
+# TODO: Add ubuntu_6test_dock task
 
 # Multi-test helpers
 
@@ -112,31 +85,16 @@ task :sanity=> [
   :cent_6test_dock,
 ]
 
+# TODO: Update .deb to Carbon and add a ubuntu_6test_vm test
 desc "All tests, use VMs for Beaker tests"
-task :acceptance5_vm => [
-  :test,
-  :cent_5rel_vm,
-  :ubuntu_5rel_vm,
-  :cent_5test_vm,
-]
-
-desc "All tests, use VMs for Beaker tests"
-task :acceptance6_vm => [
+task :acceptance_vm => [
   :test,
   :cent_6test_vm,
 ]
 
-desc "All tests, use containers for Beaker tests"
-task :acceptance5_dock => [
-  :test,
-  :cent_5rel_dock,
-  :ubuntu_5rel_dock,
-  :cent_5test_dock,
-]
-
 # TODO: Update .deb to Carbon and add a ubuntu_6test_dock test
 desc "All tests, use containers for Beaker tests"
-task :acceptance6_dock => [
+task :acceptance_dock => [
   :test,
   :cent_6test_dock,
 ]
