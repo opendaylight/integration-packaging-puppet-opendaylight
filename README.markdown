@@ -1,6 +1,3 @@
-[![CI Status][4]][1]
-[![Dependency Status][5]][2]
-
 # OpenDaylight
 
 #### Table of Contents
@@ -379,14 +376,6 @@ OpenDaylight Puppet module.
 See the [CHANGELOG][15] or our [git tags][16] for information about releases.
 See our [git commit history][17] for contributor information.
 
-[1]: https://travis-ci.org/dfarrell07/puppet-opendaylight
-
-[2]: https://gemnasium.com/dfarrell07/puppet-opendaylight
-
-[4]: https://travis-ci.org/dfarrell07/puppet-opendaylight.svg?branch=master
-
-[5]: https://gemnasium.com/dfarrell07/puppet-opendaylight.svg?branch=master
-
 [7]: http://www.opendaylight.org/
 
 [8]: https://github.com/dfarrell07/puppet-opendaylight/blob/master/CONTRIBUTING.markdown#issues
@@ -409,6 +398,6 @@ See our [git commit history][17] for contributor information.
 
 [18]: http://cbs.centos.org/repos/nfv7-opendaylight-40-release/x86_64/os/Packages/ "OpenDaylight Beryllium CentOS CBS repo"
 
-[18]: https://wiki.opendaylight.org/view/Deployment#RPM "OpenDaylight RPMs and their repos"
+[19]: https://wiki.opendaylight.org/view/Deployment#RPM "OpenDaylight RPMs and their repos"
 
 [20]: https://launchpad.net/~odl-team/+archive/ubuntu/boron

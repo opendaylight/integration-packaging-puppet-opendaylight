@@ -6,8 +6,6 @@ group :test do
   gem "rspec-puppet"
   gem "puppetlabs_spec_helper"
   gem "metadata-json-lint"
-  gem "travis"
-  gem "travis-lint"
   gem "rspec-puppet-facts", :require => false
 end
 
