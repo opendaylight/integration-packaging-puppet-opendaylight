@@ -211,9 +211,10 @@ For more information about using Beaker, see [these docs][15].
 
 ### Tests in Continuous Integration
 
-We use [Travis CI][16] to run our unit, syntax and style tests against a
-matrix of supported Ruby and Puppet versions at every commit. This currently
-results in >8500 automated tests per commit.
+The OpenDaylight Puppet module uses OpenDaylight's Jenkins silo to run tests
+in CI. Some tests are triggered when changes are proposed, others are triggered
+periodically to validate things haven't broken underneath us. See the
+[`puppet-*` tests][21] on the Jenkins web UI for a list of all tests.
 
 [1]: https://github.com/dfarrell07/puppet-opendaylight/issues
 
@@ -245,8 +246,6 @@ results in >8500 automated tests per commit.
 
 [15]: https://github.com/puppetlabs/beaker/wiki/How-to-Write-a-Beaker-Test-for-a-Module#typical-workflow
 
-[16]: https://travis-ci.org/dfarrell07/puppet-opendaylight
-
 [17]: https://www.vagrantup.com/downloads.html
 
 [18]: www.virtualbox.org/wiki/Linux_Downloads
@@ -254,3 +253,5 @@ results in >8500 automated tests per commit.
 [19]: http://webchat.freenode.net/?channels=opendaylight-integration
 
 [20]: https://docs.docker.com/engine/installation/
+
+[21]: https://jenkins.opendaylight.org/releng/view/packaging/search/?q=puppet "Puppet CI jobs"
