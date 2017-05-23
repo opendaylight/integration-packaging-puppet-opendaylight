@@ -8,13 +8,6 @@ require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
 
-# These two gems aren't always present, for instance
-# on Travis with `--without local_only`
-begin
-  require 'puppet_blacksmith/rake_tasks'
-rescue LoadError
-end
-
 PuppetLint.configuration.relative = true
 PuppetLint.configuration.send("disable_80chars")
 PuppetLint.configuration.log_format = "%{path}:%{line}:%{check}:%{KIND}:%{message}"
@@ -39,11 +32,6 @@ PuppetSyntax.exclude_paths = exclude_paths
 
 task :metadata_lint do
   sh "metadata-json-lint metadata.json"
-end
-
-task :travis_lint do
-  # Using "echo y" to accept interactive "install shell completion?" prompt
-  sh 'echo "y" | travis lint .travis.yml --debug'
 end
 
 # CentOS VMs
@@ -81,7 +69,6 @@ task :test => [
   :syntax,
   :lint,
   :metadata_lint,
-  :travis_lint,
   :spec,
 ]
 
