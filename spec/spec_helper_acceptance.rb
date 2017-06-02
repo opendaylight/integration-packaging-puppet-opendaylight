@@ -344,7 +344,7 @@ def username_password_validations(options = {})
   odl_password = options.fetch(:password, 'admin')
   odl_check_url = 'http://127.0.0.1:8080/restconf'
 
-  describe file('/opt/opendaylight/idmlight.db.mv.db') do
+  describe file('/opt/opendaylight/data/idmlight.db.mv.db') do
     it { should be_file }
   end
 
