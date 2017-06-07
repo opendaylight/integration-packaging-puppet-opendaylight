@@ -7,7 +7,7 @@ Puppet::Type.type(:odl_user).provide(:idm) do
   end
 
   def idm_cmd(*args)
-    java('-jar', "#{odl_path}/bin/aaa-cli-jar.jar", '--dbd', "#{odl_path}/data", *args)
+    java('-jar', "#{odl_path}/bin/aaa-cli-jar.jar", '--dbd', odl_path, *args)
   end
 
   def create
