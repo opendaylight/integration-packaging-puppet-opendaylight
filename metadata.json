@@ -1,5 +1,5 @@
 {
-    "name": "puppet-opendaylight",
+    "name": "opendaylight-opendaylight",
     "version": "4.0.1",
     "author": "Daniel Farrell",
     "summary": "Puppet module that installs and configures the OpenDaylight SDN controller",
