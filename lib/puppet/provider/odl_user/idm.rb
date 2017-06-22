@@ -29,7 +29,7 @@ Puppet::Type.type(:odl_user).provide(:idm) do
   end
 
   def password
-    return false
+    return @resource[:password]
   end
 
   def password=(password)
