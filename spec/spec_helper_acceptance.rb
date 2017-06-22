@@ -250,13 +250,6 @@ def log_level_validations(options = {})
       it { should be_owned_by 'odl' }
       it { should be_grouped_into 'odl' }
     end
-    # Should not contain custom log level config
-    describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
-      it { should be_file }
-      it { should be_owned_by 'odl' }
-      it { should be_grouped_into 'odl' }
-      its(:content) { should_not match /# Log level config added by puppet-opendaylight/ }
-    end
   else
     # Should contain log level config file
     describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
@@ -264,20 +257,13 @@ def log_level_validations(options = {})
       it { should be_owned_by 'odl' }
       it { should be_grouped_into 'odl' }
     end
-    # Should not contain custom log level config
-    describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
-      it { should be_file }
-      it { should be_owned_by 'odl' }
-      it { should be_grouped_into 'odl' }
-      its(:content) { should match /# Log level config added by puppet-opendaylight/ }
-    end
     # Verify each custom log level config entry
     log_levels.each_pair do |logger, level|
       describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
         it { should be_file }
         it { should be_owned_by 'odl' }
         it { should be_grouped_into 'odl' }
-        its(:content) { should match /^log4j.logger.#{logger} = #{level}/ }
+        its(:content) { should match /^log4j.logger.#{logger}=#{level}/ }
       end
     end
   end
