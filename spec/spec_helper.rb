@@ -147,52 +147,16 @@ def log_level_tests(options = {})
   if log_levels.empty?
     # Should contain log level config file
     it {
-      should contain_file('org.ops4j.pax.logging.cfg').with(
-        'ensure'      => 'file',
-        'path'        => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-        'owner'   => 'odl',
-        'group'   => 'odl',
-      )
-    }
-    # Should not contain custom log level config
-    it {
-      should_not contain_file('org.ops4j.pax.logging.cfg').with(
-        'ensure'      => 'file',
-        'path'        => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-        'owner'   => 'odl',
-        'group'   => 'odl',
-        'content'     => /# Log level config added by puppet-opendaylight/
-      )
+      should_not contain_file_line('logger-org.opendaylight.ovsdb')
     }
   else
-    # Should contain log level config file
-    it {
-      should contain_file('org.ops4j.pax.logging.cfg').with(
-        'ensure'      => 'file',
-        'path'        => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-        'owner'   => 'odl',
-        'group'   => 'odl',
-      )
-    }
-    # Should contain custom log level config
-    it {
-      should contain_file('org.ops4j.pax.logging.cfg').with(
-        'ensure'      => 'file',
-        'path'        => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-        'owner'   => 'odl',
-        'group'   => 'odl',
-        'content'     => /# Log level config added by puppet-opendaylight/
-      )
-    }
     # Verify each custom log level config entry
     log_levels.each_pair do |logger, level|
       it {
-        should contain_file('org.ops4j.pax.logging.cfg').with(
-          'ensure'      => 'file',
-          'path'        => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-          'owner'   => 'odl',
-          'group'   => 'odl',
-          'content'     => /^log4j.logger.#{logger} = #{level}/
+        should contain_file_line("logger-#{logger}").with(
+          'ensure' => 'present',
+          'path' => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+          'line' => "log4j.logger.#{logger}=#{level}",
         )
       }
     end
