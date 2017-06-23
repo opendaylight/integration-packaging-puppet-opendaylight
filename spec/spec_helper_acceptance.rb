@@ -5,13 +5,7 @@ require 'beaker-rspec/helpers/serverspec'
 unless ENV['BEAKER_provision'] == 'no'
   hosts.each do |host|
     # Install Puppet
-    if host.is_pe?
-      install_pe
-    elsif host.name == "ubuntu-16-docker" || host.name == "ubuntu-16"
-      install_puppet_agent_on(host, puppet_collection: "pc1")
-    else
-      install_puppet
-    end
+    install_puppet_agent_on(host, puppet_collection: "pc1")
   end
 end
 
