@@ -1,0 +1,17 @@
+module-shards = [
+    <% scope.lookupvar('opendaylight::ha_db_modules').each do |mod, urn| -%>
+        {
+                name = "<%= mod %>"
+                shards = [
+                        {
+                                name = "<%= mod %>"
+                                replicas = [
+                                <% scope.lookupvar('opendaylight::ha_node_ips').each_with_index do |ip, idx| -%>
+                                "<%= "member-#{idx}" %>",
+                                <% end -%>
+                                ]
+                        }
+                ]
+        },
+    <% end -%>
+]

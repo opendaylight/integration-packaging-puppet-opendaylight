@@ -1,0 +1,11 @@
+modules = [
+        <% scope.lookupvar('opendaylight::ha_db_modules').each do |mod, urn| -%>
+        <% if mod != "default" -%>
+        {
+                name = "<%= mod %>"
+                namespace = "<%= urn %>"
+                shard-strategy = "module"
+        },
+        <% end -%>
+        <% end -%>
+]

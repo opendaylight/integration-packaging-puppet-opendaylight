@@ -1,0 +1,46 @@
+
+odl-cluster-data {
+  akka {
+    remote {
+      artery {
+        enabled = off
+        canonical.hostname = "<%= scope.lookupvar('opendaylight::odl_bind_ip') %>"
+        canonical.port = 2550
+      }
+      netty.tcp {
+        hostname = "<%= scope.lookupvar('opendaylight::odl_bind_ip') %>"
+        port = 2550
+      }
+    }
+
+    cluster {
+      # Remove ".tcp" when using artery.
+      seed-nodes = [
+        <% scope.lookupvar('opendaylight::ha_node_ips').each do |ha_ip| -%>
+        "akka.tcp://opendaylight-cluster-data@<%= ha_ip %>:2550",
+        <% end -%>
+        ]
+
+      roles = ["member-<%=scope.lookupvar('opendaylight::ha_node_ips').index(scope.lookupvar('opendaylight::odl_bind_ip'))%>"]
+
+    }
+
+    persistence {
+      # By default the snapshots/journal directories live in KARAF_HOME. You can choose to put it somewhere else by
+      # modifying the following two properties. The directory location specified may be a relative or absolute path.
+      # The relative path is always relative to KARAF_HOME.
+
+      # snapshot-store.local.dir = "target/snapshots"
+      # journal.leveldb.dir = "target/journal"
+
+      journal {
+        leveldb {
+          # Set native = off to use a Java-only implementation of leveldb.
+          # Note that the Java-only version is not currently considered by Akka to be production quality.
+
+          # native = off
+        }
+      }
+    }
+  }
+}

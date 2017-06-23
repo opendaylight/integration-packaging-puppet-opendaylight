@@ -16,7 +16,6 @@ custom_filters = [
   'Class[Java::Params]',
   'Class[Stdlib::Stages]',
   'Class[Stdlib]',
-  'Exec[Configure ODL OVSDB Clustering]',
   'Exec[download archive opendaylight.tar.gz and check sum]',
   'Exec[download archive opendaylight-systemd.tar.gz and check sum]',
   'Exec[opendaylight unpack]',
@@ -166,14 +165,60 @@ end
 def enable_ha_tests(options = {})
   # Extract params
   enable_ha = options.fetch(:enable_ha, false)
+  odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
   ha_node_ips = options.fetch(:ha_node_ips, [])
-  ha_node_index = options.fetch(:ha_node_index, 0)
+  ha_db_modules = options.fetch(:ha_db_modules, { 'default' => false })
   # HA_NODE_IPS size
   ha_node_count = ha_node_ips.size
 
   if (enable_ha) && (ha_node_count < 2)
     # Check for HA_NODE_COUNT < 2
     fail("Number of HA nodes less than 2: #{ha_node_count} and HA Enabled")
+  end
+
+  if enable_ha
+    ha_node_index = ha_node_ips.index(odl_bind_ip)
+    it {
+      should contain_file('akka.conf').with(
+        'path'    => '/opt/opendaylight/configuration/initial/akka.conf',
+        'ensure'  => 'file',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+        'content' => /roles\s*=\s*\["member-#{ha_node_index}"\]/
+      )
+    }
+
+    ha_db_modules.each do |mod, urn|
+      it { should contain_file('module-shards.conf').with(
+        'path'    => '/opt/opendaylight/configuration/initial/module-shards.conf',
+        'ensure'  => 'file',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+        'content' => /name = "#{mod}"/
+      )}
+      if mod == 'default'
+        it { should contain_file('modules.conf').with(
+          'path'    => '/opt/opendaylight/configuration/initial/modules.conf',
+          'ensure'  => 'file',
+          'owner'   => 'odl',
+          'group'   => 'odl'
+        )}
+      else
+        it { should contain_file('modules.conf').with(
+          'path'    => '/opt/opendaylight/configuration/initial/modules.conf',
+          'ensure'  => 'file',
+          'owner'   => 'odl',
+          'group'   => 'odl',
+          'content' => /name = "#{mod}"/,
+        )}
+      end
+    end
+  else
+    it {
+      should_not contain_file('akka.conf')
+      should_not contain_file('module-shards.conf')
+      should_not contain_file('modules.conf')
+      }
   end
 end
 

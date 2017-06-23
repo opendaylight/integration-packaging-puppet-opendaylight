@@ -18,6 +18,7 @@ class opendaylight::params {
   $enable_ha = false
   $ha_node_ips = []
   $ha_node_index = 0
+  $ha_db_modules = { 'default' => false }
   $security_group_mode = 'stateful'
   $vpp_routing_node = ''
   $java_opts = '-Djava.net.preferIPv4Stack=true'

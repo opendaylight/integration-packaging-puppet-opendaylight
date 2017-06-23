@@ -61,10 +61,12 @@ def install_odl(options = {})
   default_features = options.fetch(:default_features,
     ['config', 'standard', 'region', 'package', 'kar', 'ssh', 'management'])
   odl_rest_port = options.fetch(:odl_rest_port, 8080)
+  odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
   log_levels = options.fetch(:log_levels, {})
   enable_ha = options.fetch(:enable_ha, false)
   ha_node_ips = options.fetch(:ha_node_ips, [])
   ha_node_index = options.fetch(:ha_node_index, 0)
+  ha_db_modules = options.fetch(:ha_db_modules, { 'default' => false })
   username = options.fetch(:username, 'admin')
   password = options.fetch(:password, 'admin')
 
@@ -77,9 +79,11 @@ def install_odl(options = {})
       default_features => #{default_features},
       extra_features => #{extra_features},
       odl_rest_port=> #{odl_rest_port},
+      odl_bind_ip=> '#{odl_bind_ip}',
       enable_ha=> #{enable_ha},
       ha_node_ips=> #{ha_node_ips},
       ha_node_index=> #{ha_node_index},
+      ha_db_modules=> #{ha_db_modules},
       log_levels=> #{log_levels},
       username=> #{username},
       password=> #{password},
@@ -276,13 +280,49 @@ def enable_ha_validations(options = {})
   # TODO: Remove this possible source of bugs^^
   enable_ha = options.fetch(:enable_ha, false)
   ha_node_ips = options.fetch(:ha_node_ips, [])
-  ha_node_index = options.fetch(:ha_node_index, 0)
+  odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
+  ha_db_modules = options.fetch(:ha_db_modules, { 'default' => false })
   # HA_NODE_IPS size
   ha_node_count = ha_node_ips.size
 
   if (enable_ha) && (ha_node_count < 2)
     # Check for HA_NODE_COUNT < 2
     fail("Number of HA nodes less than 2: #{ha_node_count} and HA Enabled")
+  end
+
+  if enable_ha
+    ha_node_index = ha_node_ips.index(odl_bind_ip)
+    describe file('/opt/opendaylight/configuration/initial/akka.conf') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /roles\s*=\s*\["member-#{ha_node_index}"\]/ }
+    end
+
+    ha_db_modules.each do |mod, urn|
+      describe file('/opt/opendaylight/configuration/initial/module-shards.conf') do
+        it { should be_file }
+        it { should be_owned_by 'odl' }
+        it { should be_grouped_into 'odl' }
+        its(:content) { should match /name = "#{mod}"/ }
+      end
+
+      if mod == 'default'
+        describe file('/opt/opendaylight/configuration/initial/modules.conf') do
+          it { should be_file }
+          it { should be_owned_by 'odl' }
+          it { should be_grouped_into 'odl' }
+        end
+      else
+        describe file('/opt/opendaylight/configuration/initial/modules.conf') do
+          it { should be_file }
+          it { should be_owned_by 'odl' }
+          it { should be_grouped_into 'odl' }
+          its(:content) { should match /name = "#{mod}"/ }
+          its(:content) { should match /namespace = "#{urn}"/ }
+        end
+      end
+    end
   end
 end
 

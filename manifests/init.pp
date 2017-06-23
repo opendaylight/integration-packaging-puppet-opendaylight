@@ -25,8 +25,9 @@
 #   Default: false.
 # [*ha_node_ips*]
 #   Array of IPs for each node in the HA cluster.
-# [*ha_node_index*]
-#   Index of ha_node_ips for this node.
+# [*ha_db_modules*]
+#   Hash of modules and Yang namespaces to create database shards.  Defaults to
+#   { 'default' => false }.  "default" module does not need a namespace.
 # [*security_group_mode*]
 #   Sets the mode to use for security groups (stateful, learn, stateless, transparent)
 # [*vpp_routing_node*]
@@ -37,6 +38,11 @@
 #   (Boolean) Should this module manage the apt or yum repositories for the
 #   package installation.
 #   Defaults to true
+#
+# === Deprecated Parameters
+#
+# [*ha_node_index*]
+#   Index of ha_node_ips for this node.
 #
 class opendaylight (
   $default_features    = $::opendaylight::params::default_features,
@@ -49,6 +55,7 @@ class opendaylight (
   $enable_ha           = $::opendaylight::params::enable_ha,
   $ha_node_ips         = $::opendaylight::params::ha_node_ips,
   $ha_node_index       = $::opendaylight::params::ha_node_index,
+  $ha_db_modules       = $::opendaylight::params::ha_db_modules,
   $security_group_mode = $::opendaylight::params::security_group_mode,
   $vpp_routing_node    = $::opendaylight::params::vpp_routing_node,
   $java_opts           = $::opendaylight::params::java_opts,

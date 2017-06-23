@@ -496,6 +496,28 @@ describe 'opendaylight' do
         # Note that this function is defined in spec_helper
         enable_ha_tests(enable_ha: true, ha_node_ips: ['0.0.0.0', '127.0.0.1'])
       end
+
+      context 'using custom modules for sharding' do
+        let(:facts) {{
+          :osfamily => osfamily,
+          :operatingsystem => operatingsystem,
+          :operatingsystemmajrelease => operatingsystemmajrelease,
+        }}
+
+        let(:params) {{
+          :enable_ha => true,
+          :ha_node_ips => ['0.0.0.0', '127.0.0.1'],
+          :ha_db_modules => {'default' => false, 'topology' => 'urn:opendaylight:topology'}
+        }}
+
+        # Run shared tests applicable to all supported OSs
+        # Note that this function is defined in spec_helper
+        generic_tests
+
+        # Run test that specialize in checking ODL OVSDB HA config
+        # Note that this function is defined in spec_helper
+        enable_ha_tests(enable_ha: true, ha_node_ips: ['0.0.0.0', '127.0.0.1'])
+      end
     end
   end
 
