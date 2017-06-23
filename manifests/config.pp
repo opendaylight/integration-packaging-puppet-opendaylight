@@ -31,14 +31,12 @@ class opendaylight::config {
   }
 
   # Set any custom log levels
-  file { 'org.ops4j.pax.logging.cfg':
-    ensure  => file,
-    path    => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-    # Set user:group owners
-    owner   => 'odl',
-    group   => 'odl',
-    # Use a template to populate the content
-    content => template('opendaylight/org.ops4j.pax.logging.cfg.erb'),
+  $opendaylight::log_levels.each |$log_name, $logging_level| {
+    file_line {"logger-${log_name}":
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => "log4j.logger.${log_name}=${logging_level}"
+    }
   }
 
   # Configure ODL HA if enabled
