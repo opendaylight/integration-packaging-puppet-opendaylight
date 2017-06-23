@@ -177,15 +177,22 @@ To enable ODL HA, use the `enable_ha` flag. It's disabled by default.
 
 When `enable_ha` is set to true the `ha_node_ips` should be populated with the
 IP addresses that ODL will listen on for each node in the HA cluster and
-`ha_node_index` should be set with the index of the IP address from
-`ha_node_ips` for the particular node that puppet is configuring as part of the
+`odl_bind_ip` should be set with the IP address from `ha_node_ips` configured
+for the particular node that puppet is configuring as part of the
 HA cluster.
+
+By default a single ODL instance will become the leader for the entire
+datastore.  In order to distribute the datastore over multiple ODL instances,
+`ha_db_modules` parameter may be specified which will include the modules
+desired to separate out from the default shard, along with the Yang namespace
+for that module.
 
 ```puppet
 class { 'opendaylight':
   enable_ha     => true,
   ha_node_ips   => ['10.10.10.1', '10.10.10.1', '10.10.10.3'],
-  ha_node_index => 0,
+  odl_bind_ip   => 0,
+  ha_db_modules => {'default' => false, 'topology' => 'urn:opendaylight:topology'}
 }
 ```
 
@@ -294,7 +301,7 @@ Default: `false`
 
 Valid options: The boolean values `true` and `false`.
 
-Requires: `ha_node_ips`, `ha_node_index`
+Requires: `ha_node_ips`, `odl_bind_ip`
 
 The ODL Clustering XML for HA are configured and enabled.
 
@@ -308,6 +315,16 @@ Valid options: An array of IP addresses `['10.10.10.1', '10.10.10.1', '10.10.10.
 
 Required by: `enable_ha`
 
+##### `ha_db_modules`
+
+Specifies the modules to use for distributing and sharding the ODL datastore.
+
+Default: `{'default'=> false}`
+
+Valid options: A hash of module and Yang namespace for the module (default has no namespace).
+
+Requires: `enable_ha`
+
 ##### `ha_node_index`
 
 Specifies the index of the IP for the node being configured from the array `ha_node_ips`.
@@ -316,7 +333,7 @@ Default: ''
 
 Valid options: Index of a member of the array `ha_node_ips`: `0`.
 
-Required by: `enable_ha`, `ha_node_ips`
+This parameter is now deprecated and is no longer used.
 
 ##### `security_group_mode`
 

@@ -44,12 +44,42 @@ class opendaylight::config {
   if $::opendaylight::enable_ha {
     if $ha_node_count >= 2 {
       # Configure ODL OSVDB Clustering
-      $ha_node_ip_str = join($::opendaylight::ha_node_ips, ' ')
-      exec { 'Configure ODL OVSDB Clustering':
-        command => "configure_cluster.sh ${::opendaylight::ha_node_index} ${ha_node_ip_str}",
-        path    => '/opt/opendaylight/bin/:/usr/sbin:/usr/bin:/sbin:/bin',
-        creates => '/opt/opendaylight/configuration/initial/akka.conf'
+      $cluster_config_dir = '/opt/opendaylight/configuration/initial'
+
+      file { $cluster_config_dir:
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'odl',
+        group  => 'odl',
       }
+
+      file {'akka.conf':
+        ensure  => file,
+        path    => "${cluster_config_dir}/akka.conf",
+        owner   => 'odl',
+        group   => 'odl',
+        content => template('opendaylight/akka.conf.erb'),
+        require => File[$cluster_config_dir]
+      }
+
+      file {'modules.conf':
+        ensure  => file,
+        path    => "${cluster_config_dir}/modules.conf",
+        owner   => 'odl',
+        group   => 'odl',
+        content => template('opendaylight/modules.conf.erb'),
+        require => File[$cluster_config_dir]
+      }
+
+      file {'module-shards.conf':
+        ensure  => file,
+        path    => "${cluster_config_dir}/module-shards.conf",
+        owner   => 'odl',
+        group   => 'odl',
+        content => template('opendaylight/module-shards.conf.erb'),
+        require => File[$cluster_config_dir]
+      }
+
     } else {
       fail("Number of HA nodes less than 2: ${ha_node_count} and HA Enabled")
     }

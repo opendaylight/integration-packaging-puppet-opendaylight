@@ -134,4 +134,26 @@ describe 'opendaylight class' do
     end
     end
   end
+
+  describe 'testing odl HA configuration' do
+    bind_ip = '127.0.0.1'
+    odl_ips = ['127.0.0.1', '127.0.0.2', '127.0.0.3']
+    context 'using default modules' do
+      install_odl(odl_bind_ip: bind_ip, enable_ha: true, ha_node_ips: odl_ips)
+
+      enable_ha_validations(odl_bind_ip: bind_ip, enable_ha: true,
+                            ha_node_ips: odl_ips)
+    end
+
+    context 'specifying datastore modules' do
+      db_modules = {
+        'default' => false,
+        'topology' => 'urn:opendaylight:topology'
+      }
+      install_odl(odl_bind_ip: bind_ip, enable_ha: true, ha_node_ips: odl_ips,
+                  ha_db_modules: db_modules)
+      enable_ha_validations(odl_bind_ip: bind_ip, enable_ha: true,
+                            ha_node_ips: odl_ips, ha_db_modules: db_modules)
+    end
+  end
 end
