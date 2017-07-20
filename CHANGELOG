@@ -42,3 +42,5 @@
 - New params, ODL version bump, deb support, more tests
 2017-05-23 Release 4.0.1
 - Move to ODL-managed repo
+2017-07-20 Release 4.1.0
+- Add log size/rotate config params
