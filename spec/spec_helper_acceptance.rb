@@ -69,6 +69,8 @@ def install_odl(options = {})
   ha_db_modules = options.fetch(:ha_db_modules, { 'default' => false })
   username = options.fetch(:username, 'admin')
   password = options.fetch(:password, 'admin')
+  log_max_size = options.fetch(:log_max_size, '10GB')
+  log_max_rollover = options.fetch(:log_max_rollover, 2)
 
   # Build script for consumption by Puppet apply
   it 'should work idempotently with no errors' do
@@ -78,15 +80,17 @@ def install_odl(options = {})
       deb_repo => '#{deb_repo}',
       default_features => #{default_features},
       extra_features => #{extra_features},
-      odl_rest_port=> #{odl_rest_port},
-      odl_bind_ip=> '#{odl_bind_ip}',
-      enable_ha=> #{enable_ha},
-      ha_node_ips=> #{ha_node_ips},
-      ha_node_index=> #{ha_node_index},
-      ha_db_modules=> #{ha_db_modules},
-      log_levels=> #{log_levels},
-      username=> #{username},
-      password=> #{password},
+      odl_rest_port => #{odl_rest_port},
+      odl_bind_ip => '#{odl_bind_ip}',
+      enable_ha => #{enable_ha},
+      ha_node_ips => #{ha_node_ips},
+      ha_node_index => #{ha_node_index},
+      ha_db_modules => #{ha_db_modules},
+      log_levels => #{log_levels},
+      username => #{username},
+      password => #{password},
+      log_max_size => '#{log_max_size}',
+      log_max_rollover => #{log_max_rollover},
     }
     EOS
 
@@ -202,6 +206,21 @@ def generic_validations()
 
   else
     fail("Unexpected RS_SET (host OS): #{ENV['RS_SET']}")
+  end
+end
+
+# Shared function for validations related to log file settings
+def log_file_settings_validations(options = {})
+  # Should contain log level config file with correct file size and rollover values
+  log_max_size = options.fetch(:log_max_size, '10GB')
+  log_max_rollover = options.fetch(:log_max_rollover, 2)
+
+  describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /^log4j.appender.out.maxFileSize=#{log_max_size}/ }
+    its(:content) { should match /^log4j.appender.out.maxBackupIndex=#{log_max_rollover}/ }
   end
 end
 

@@ -293,6 +293,29 @@ org.opendaylight.ovsdb.lib | INFO
 
 The main log output file is `/opt/opendaylight/data/log/karaf.log`.
 
+##### `log_max_size`
+
+Maximum size of OpenDaylight's log file, `/opt/opendaylight/data/log/karaf.log`.
+
+Once this size is reached, the log will be rolled over, with up to
+`log_max_rollover` log rollovers preserved in total.
+
+Default: `10GB`
+
+Valid options: A valid size as a string with unit specified.
+
+##### `log_max_rollover`
+
+Maximum number of OpenDaylight karaf.log rollovers to keep.
+
+Note that if this is set to 1, log rollovers will result in loosing newly
+logged data. It's recommended to use values greater than one to prune from
+the end of the log.
+
+Default: `2`
+
+Valid options: An integer greater than 0.
+
 ##### `enable_ha`
 
 Enable or disable ODL High Availablity.

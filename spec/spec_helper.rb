@@ -84,6 +84,28 @@ def generic_tests()
   }
 end
 
+# Shared tests that specialize in testing log file size and rollover
+def log_file_settings(options = {})
+  # Extraxt params. The dafault value should be same as in opendaylight::params
+  log_max_size = options.fetch(:log_max_size, '10GB')
+  log_max_rollover = options.fetch(:log_max_rollover, 2)
+
+  it {
+    should contain_file_line('logmaxsize').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j.appender.out.maxFileSize=#{log_max_size}",
+      'match'  => '^log4j.appender.out.maxFileSize.*$',
+    )
+  }
+  it {
+    should contain_file_line('logmaxrollover').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j.appender.out.maxBackupIndex=#{log_max_rollover}",
+      'match'  => '^log4j.appender.out.maxBackupIndex.*$',
+    )
+  }
+end
+
 # Shared tests that specialize in testing Karaf feature installs
 def karaf_feature_tests(options = {})
   # Extract params
