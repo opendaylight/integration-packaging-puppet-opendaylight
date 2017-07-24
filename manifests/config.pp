@@ -39,6 +39,22 @@ class opendaylight::config {
     }
   }
 
+  # Set maximum ODL log file size
+  file_line { 'logmaxsize':
+    ensure => present,
+    path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+    line   => "log4j.appender.out.maxFileSize=${::opendaylight::log_max_size}",
+    match  => '^log4j.appender.out.maxFileSize.*$'
+  }
+
+  # Set maximum number of ODL log file rollovers to preserve
+  file_line { 'logmaxrollover':
+    ensure => present,
+    path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+    line   => "log4j.appender.out.maxBackupIndex=${::opendaylight::log_max_rollover}",
+    match  => '^log4j.appender.out.maxBackupIndex.*$'
+  }
+
   # Configure ODL HA if enabled
   $ha_node_count = count($::opendaylight::ha_node_ips)
   if $::opendaylight::enable_ha {

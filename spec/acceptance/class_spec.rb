@@ -74,6 +74,42 @@ describe 'opendaylight class' do
     end
   end
 
+  describe 'log file size and rollover' do
+    context 'using default size and rollover' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl
+
+      # Call specialized helper fn for log file settings validations
+      log_file_settings_validations
+    end
+
+    context 'customising size' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(log_max_size: '1GB')
+
+      # Call specialized helper fn for log file settings validations
+      log_file_settings_validations(log_max_size: '1GB')
+    end
+
+    context 'customising rollover' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(log_max_rollover: 3)
+
+      # Call specialized helper fn for log file settings validations
+      log_file_settings_validations(log_max_rollover: 3)
+    end
+
+    context 'customising size and rollover' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(log_max_size: '1GB',
+                  log_max_rollover: 3)
+
+      # Call specialized helper fn for log file settings validations
+      log_file_settings_validations(log_max_size: '1GB',
+                                    log_max_rollover: 3)
+    end
+  end
+
   describe 'testing REST port config file' do
     context 'using default port' do
       # Call specialized helper fn to install OpenDaylight

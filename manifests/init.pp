@@ -38,6 +38,10 @@
 #   (Boolean) Should this module manage the apt or yum repositories for the
 #   package installation.
 #   Defaults to true
+# [*log_max_size*]
+#   Maxium size of OpenDaylight's log file.
+# [*log_max_rollover*]
+#   Maxium number of OpenDaylight log rollovers to keep.
 #
 # === Deprecated Parameters
 #
@@ -62,6 +66,8 @@ class opendaylight (
   $manage_repositories = $::opendaylight::params::manage_repositories,
   $username            = $::opendaylight::params::username,
   $password            = $::opendaylight::params::password,
+  $log_max_size        = $::opendaylight::params::log_max_size,
+  $log_max_rollover    = $::opendaylight::params::log_max_rollover
 ) inherits ::opendaylight::params {
 
   # Validate OS family

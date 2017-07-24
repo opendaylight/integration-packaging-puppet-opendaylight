@@ -25,4 +25,6 @@ class opendaylight::params {
   $manage_repositories = true
   $username = 'admin'
   $password = 'admin'
+  $log_max_size = '10GB'
+  $log_max_rollover = 2
 }
