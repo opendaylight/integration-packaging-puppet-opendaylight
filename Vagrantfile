@@ -21,7 +21,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "fedora" do |fedora|
-    fedora.vm.box = "fedora/25-cloud-base"
+    fedora.vm.box = "fedora/26-cloud-base"
 
     fedora.vm.provision "shell", inline: "dnf update -y"
 
