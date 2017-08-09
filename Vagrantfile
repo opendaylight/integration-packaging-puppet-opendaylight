@@ -30,7 +30,6 @@ Vagrant.configure(2) do |config|
     fedora.vm.provision "shell", inline: "gem install bundler"
     fedora.vm.provision "shell", inline: "echo export PATH=\\$PATH:/usr/local/bin >> /home/vagrant/.bashrc"
     fedora.vm.provision "shell", inline: "echo export PATH=\\$PATH:/usr/local/bin >> /root/.bashrc"
-    fedora.vm.provision "shell", inline: 'su -c "cd /home/vagrant/puppet-opendaylight; bundle install" vagrant'
     fedora.vm.provision "shell", inline: 'su -c "cd /home/vagrant/puppet-opendaylight; bundle update" vagrant'
 
     # Install tox, used for managing tests
@@ -52,6 +51,7 @@ gpgkey=https://yum.dockerproject.org/gpg
 EOF
 "
     fedora.vm.provision "shell", inline: "dnf install -y docker-engine xfsprogs"
+    fedora.vm.provision "shell", inline: "groupadd docker"
     fedora.vm.provision "shell", inline: "usermod -a -G docker vagrant"
     fedora.vm.provision "shell", inline: "systemctl start docker"
     fedora.vm.provision "shell", inline: "systemctl enable docker"
@@ -74,12 +74,13 @@ EOF
     # http://superuser.com/questions/306530/run-remote-ssh-command-with-full-login-shell
     cent.vm.provision "shell", inline: 'bash -lc "rvm use 2.4.0 --default"'
     cent.vm.provision "shell", inline: "ruby --version"
+    # The docs claim this requires a login/logout, but it doesn't actually seem to be necessary
+    cent.vm.provision "shell", inline: "usermod -a -G rvm vagrant"
 
     # Install required gems via Bundler
     cent.vm.provision "shell", inline: "yum install -y rubygems"
     cent.vm.provision "shell", inline: "gem install bundler"
     cent.vm.provision "shell", inline: "echo export PATH=\\$PATH:/usr/local/bin >> /home/vagrant/.bashrc"
-    cent.vm.provision "shell", inline: 'su -c "cd /home/vagrant/puppet-opendaylight; bundle install" vagrant'
     cent.vm.provision "shell", inline: 'su -c "cd /home/vagrant/puppet-opendaylight; bundle update" vagrant'
 
     # Git is required for cloning Puppet module deps in `rake test`
