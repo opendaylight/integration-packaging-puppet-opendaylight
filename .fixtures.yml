@@ -5,7 +5,6 @@ fixtures:
     apt:
       repo: "https://github.com/puppetlabs/puppetlabs-apt.git"
       ref: "2.4.0"
-    archive: "https://github.com/dfarrell07/puppet-archive"
     java: "https://github.com/puppetlabs/puppetlabs-java"
   symlinks:
     opendaylight: "#{source_dir}"

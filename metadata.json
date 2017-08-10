@@ -20,10 +20,6 @@
             "version_requirement": "4.x"
         },
         {
-            "name": "camptocamp-archive",
-            "version_requirement": "0.x"
-        },
-        {
             "name": "puppetlabs-java",
             "version_requirement": "1.x"
         }
