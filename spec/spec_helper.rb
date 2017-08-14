@@ -355,6 +355,25 @@ def enable_sg_tests(sg_mode='stateful', os_release)
   end
 end
 
+# Shared tests that specialize in testing SNAT mechanism
+def snat_mechanism_tests(snat_mechanism='controller')
+  it { should contain_file('/opt/opendaylight/etc/opendaylight') }
+  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore')}
+  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore/initial')}
+  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore/initial/config')}
+
+  # Confirm snat_mechanism
+  it {
+    should contain_file('netvirt-natservice-config.xml').with(
+      'ensure'      => 'file',
+      'path'        => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-natservice-config.xml',
+      'owner'   => 'odl',
+      'group'   => 'odl',
+      'content'     =>  /<nat-mode>#{snat_mechanism}<\/nat-mode>/
+      )
+    }
+end
+
 # Shared tests that specialize in testing VPP routing node config
 def vpp_routing_node_tests(options = {})
   # Extract params

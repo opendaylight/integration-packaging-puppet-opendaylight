@@ -44,3 +44,5 @@
 - Move to ODL-managed repo
 2017-07-20 Release 4.1.0
 - Add log size/rotate config params
+2017-08-14 Release 4.2.0
+- Add param to config SNAT mechanism

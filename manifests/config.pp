@@ -137,6 +137,18 @@ class opendaylight::config {
     }
   }
 
+  # Configure SNAT
+  if ('odl-netvirt-openstack' in $opendaylight::features) {
+    file { 'netvirt-natservice-config.xml':
+      ensure  => file,
+      path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-natservice-config.xml',
+      owner   => 'odl',
+      group   => 'odl',
+      content => template('opendaylight/netvirt-natservice-config.xml.erb'),
+      require => File['/opt/opendaylight/etc/opendaylight/datastore/initial/config'],
+    }
+  }
+
   #configure VPP routing node
   if ! empty($::opendaylight::vpp_routing_node) {
     file { 'org.opendaylight.groupbasedpolicy.neutron.vpp.mapper.startup.cfg':
