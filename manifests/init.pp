@@ -42,6 +42,8 @@
 #   Maxium size of OpenDaylight's log file.
 # [*log_max_rollover*]
 #   Maxium number of OpenDaylight log rollovers to keep.
+# [*snat_mechanism*]
+#   Sets the mechanism to be used for SNAT (conntrack, controller)
 #
 # === Deprecated Parameters
 #
@@ -67,7 +69,8 @@ class opendaylight (
   $username            = $::opendaylight::params::username,
   $password            = $::opendaylight::params::password,
   $log_max_size        = $::opendaylight::params::log_max_size,
-  $log_max_rollover    = $::opendaylight::params::log_max_rollover
+  $log_max_rollover    = $::opendaylight::params::log_max_rollover,
+  $snat_mechanism      = $::opendaylight::params::snat_mechanism
 ) inherits ::opendaylight::params {
 
   # Validate OS family

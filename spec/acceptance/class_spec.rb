@@ -192,4 +192,22 @@ describe 'opendaylight class' do
                             ha_node_ips: odl_ips, ha_db_modules: db_modules)
     end
   end
+
+  describe 'testing configuring SNAT' do
+    context 'using default SNAT mechanism' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(extra_features: ['odl-netvirt-openstack'])
+
+      # Call specialized helper fn for SNAT config validations
+      snat_mechanism_validations
+    end
+
+    context 'using conntrack SNAT' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(extra_features: ['odl-netvirt-openstack'], snat_mechanism: 'conntrack')
+
+      # Call specialized helper fn for SNAT mechanism validations
+      snat_mechanism_validations(snat_mechanism: 'conntrack')
+    end
+  end
 end

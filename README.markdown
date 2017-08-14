@@ -366,6 +366,14 @@ Default: `stateful`
 
 Valid options: `transparent`, `learn`, `stateless`
 
+##### `snat_mechanism`
+
+Specifies the mechanism to be used for SNAT.
+
+Default: `controller`
+
+Valid options: `conntrack`, `controller`
+
 ##### `vpp_routing_node`
 
 Specifies the routing node for VPP deployment. A non-empty string will create config file

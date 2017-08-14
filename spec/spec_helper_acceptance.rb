@@ -71,6 +71,7 @@ def install_odl(options = {})
   password = options.fetch(:password, 'admin')
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
+  snat_mechanism = options.fetch(:snat_mechanism, 'controller')
 
   # Build script for consumption by Puppet apply
   it 'should work idempotently with no errors' do
@@ -91,6 +92,7 @@ def install_odl(options = {})
       password => #{password},
       log_max_size => '#{log_max_size}',
       log_max_rollover => #{log_max_rollover},
+      snat_mechanism => #{snat_mechanism},
     }
     EOS
 
@@ -389,5 +391,20 @@ def username_password_validations(options = {})
 
   describe command("sleep 60 && curl -o /dev/null --fail --silent --head -u #{odl_username}:#{odl_password} #{odl_check_url}") do
     its(:exit_status) { should eq 0 }
+  end
+end
+
+# Shared function for validations related to the SNAT config file
+def snat_mechanism_validations(options = {})
+  # NB: This param default should match the one used by the opendaylight
+  #   class, which is defined in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+  snat_mechanism = options.fetch(:snat_mechanism, 'controller')
+
+  describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-natservice-config.xml') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /<nat-mode>#{snat_mechanism}<\/nat-mode>/ }
   end
 end

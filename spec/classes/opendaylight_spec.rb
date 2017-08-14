@@ -808,6 +808,56 @@ describe 'opendaylight' do
     end
   end
 
+  # SNAT Mechanism tests
+  describe 'SNAT mechanism tests' do
+    # Non-OS-type tests assume CentO
+    #   See issue #43 for reasoning:
+    #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
+    osfamily = 'RedHat'
+    operatingsystem = 'CentOS'
+    operatingsystemmajrelease = '7'
+    context 'using controller' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :extra_features => ['odl-netvirt-openstack'],
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test that specialize in checking security groups
+      # Note that this function is defined in spec_helper
+      snat_mechanism_tests
+    end
+
+    context 'using conntrack' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :snat_mechanism => 'conntrack',
+        :extra_features => ['odl-netvirt-openstack'],
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test that specialize in checking security groups
+      # Note that this function is defined in spec_helper
+      snat_mechanism_tests('conntrack')
+    end
+  end
+
   # VPP routing node config tests
   describe 'VPP routing node tests' do
     # Non-OS-type tests assume CentOS 7
@@ -902,5 +952,4 @@ describe 'opendaylight' do
       username_password_tests('test', 'test')
     end
   end
-
 end
