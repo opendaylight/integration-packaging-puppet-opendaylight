@@ -1,9 +1,3 @@
-# Temporary fix for error caused by third party gems. See:
-# https://github.com/maestrodev/puppet-blacksmith/issues/14
-# https://github.com/dfarrell07/puppet-opendaylight/issues/6
-require 'puppet/version'
-require 'puppet/vendor/semantic/lib/semantic' unless Puppet.version.to_f <3.6
-
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
