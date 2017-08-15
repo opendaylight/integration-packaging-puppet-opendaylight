@@ -47,12 +47,6 @@ def install_odl(options = {})
   rpm_repo = ENV['RPM_REPO']
   deb_repo = ENV['DEB_REPO']
 
-  if rpm_repo == ''
-    rpm_repo = 'none'
-  elsif deb_repo == ''
-    deb_repo = 'none'
-  end
-
   # NB: These param defaults should match the ones used by the opendaylight
   #   class, which are defined in opendaylight::params
   # TODO: Remove this possible source of bugs^^
