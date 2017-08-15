@@ -26,19 +26,18 @@
 ## Overview
 
 Puppet module that installs and configures the [OpenDaylight Software Defined
-Networking (SDN) controller][7].
+Networking (SDN) controller][1].
 
 ## Module Description
 
 Deploys OpenDaylight to various OSs either via an RPM or a Deb.
 
 All OpenDaylight configuration should be handled through the ODL Puppet
-module's [params](#parameters). If you need a new knob, [please raise an
-Issue][8].
+module's [params](#parameters).
 
-By default, the master branch installs OpenDaylight from the latest testing RPM repository
-or from the latest stable Deb repository depending on the OS. There are stable/<release>
-branches that install OpenDaylight releases and service releases, like Beryllium or Beryllium SR3.
+By default, the master branch installs OpenDaylight from the latest testing
+RPM repository or from the latest stable Deb repository depending on the OS.
+The stable/<release> branches install corresponding older ODL versions.
 
 ## Setup
 
@@ -46,8 +45,7 @@ branches that install OpenDaylight releases and service releases, like Beryllium
 
 - Installs Java, which is required by ODL.
 - Creates `odl:odl` user:group if they don't already exist.
-- Installs [OpenDaylight][7].
-- Installs a [systemd unitfile][9] for OpenDaylight.
+- Installs [OpenDaylight][1], including a systemd unit file.
 - Manipulates OpenDaylight's configuration files according to the params
   passed to the `::opendaylight` class.
 - Starts the `opendaylight` systemd service.
@@ -56,17 +54,6 @@ branches that install OpenDaylight releases and service releases, like Beryllium
 
 Getting started with the OpenDaylight Puppet module is as simple as declaring
 the `::opendaylight` class.
-
-The [vagrant-opendaylight][11] project provides an easy way to experiment with
-[applying the ODL Puppet module][12] to VMs.
-
-```
-# Provision a CentOS VM using puppet-opendaylight
-$ vagrant up cent7_pup_rpm
-$ vagrant ssh cent7_pup_rpm
-$ sudo systemctl is-active opendaylight
-active
-```
 
 ## Usage
 
@@ -102,52 +89,50 @@ class { 'opendaylight':
 }
 ```
 
-### RPM Repo
+### RPM Repository
 
 The `rpm_repo` param can be used to configure which RPM repository
 OpenDaylight is installed from.
 
 ```puppet
 class { 'opendaylight':
-  rpm_repo => 'opendaylight-40-release',
+  rpm_repo => 'opendaylight-61-release',
 }
 ```
 
 The naming convention follows the naming convention of the CentOS Community
 Build System, which is where upstream ODL hosts its RPMs. The
-`opendaylight-40-release` example above would install OpenDaylight Beryllium
-4.0.0 from the [nfv7-opendaylight-40-release][18] repo. Repo names ending in
+`opendaylight-61-release` example above would install OpenDaylight Carbon SR1
+6.1.0 from the [nfv7-opendaylight-61-release][2] repo. Repo names ending in
 `-release` will always contain well-tested, officially released versions of
 OpenDaylight. Repos ending in `-testing` contain frequent, but unstable and
 unofficial, releases. The ODL version given in repo names shows which major
-and minor version it is pinned to. The `opendaylight-40-release` repo will
-always provide OpenDaylight Beryllium 4.0, whereas `opendaylight-4-release`
-will provide the latest release with major version 4 (which could include
-Service Releases, like SR2 4.2).
+and minor version it is pinned to. The `opendaylight-61-release` repo will
+always provide OpenDaylight Carbon SR1 6.1, whereas `opendaylight-4-release`
+will provide the latest release with major version 6 (which could include
+Service Releases, like SR2 6.2).
 
-For a full list of OpenDaylight releases and their CBS repos, see the
-[OpenDaylight Deployment wiki][19].
+For additional information about ODL RPM repos, see the [Integration/Packaging
+RPM repositories documentation][3].
 
-This is only read for RedHat based operating systems. For Debian based OSs,
-this values is `none`.
+This is only read for Red Hat-family operating systems.
 
-### Deb Repo
+### Deb Repository
 
 The `deb_repo` param can be used to configure which Deb repository
 OpenDaylight is installed from.
 
 ```puppet
 class { 'opendaylight':
-  deb_repo => 'ppa:odl-team/boron',
+  deb_repo => 'ppa:odl-team/carbon',
 }
 ```
 
 The naming convention is same as the naming convention of Launchpad PPA's,
-which is where ODL .debs are hosted. The `ppa:odl-team/boron` example above
-would install OpenDaylight Boron realease from the [odl-team's boron][20] repo.
+which is where ODL .debs are hosted. The `ppa:odl-team/carbon` example above
+would install OpenDaylight Carbon from the [boron launchpad repo][4].
 
-This is only read for Debian based operating systems. For RedHat based OSs,
-this values is `none`.
+This is only read for Debian-family operating systems.
 
 ### Ports
 
@@ -247,8 +232,8 @@ Valid options: A valid port number as a string or integer.
 
 ##### `rpm_repo`
 
-OpenDaylight CentOS CBS repo to install RPM from (opendaylight-4-testing,
-opendaylight-40-release, ...).
+OpenDaylight CentOS CBS repo to install RPM from (opendaylight-6-testing,
+opendaylight-6-release, ...).
 
 ##### `deb_repo`
 
@@ -416,36 +401,21 @@ Valid options: A password string.
 
 We welcome contributions and work to make them easy!
 
-See [CONTRIBUTING.markdown][14] for details about how to contribute to the
+See [CONTRIBUTING.markdown][5] for details about how to contribute to the
 OpenDaylight Puppet module.
 
-## Release Notes/Contributors
+## Release Notes
 
-See the [CHANGELOG][15] or our [git tags][16] for information about releases.
-See our [git commit history][17] for contributor information.
+See the [CHANGELOG][6] for information about releases.
 
-[7]: http://www.opendaylight.org/
+[1]: http://www.opendaylight.org/ "OpenDaylight homepage"
 
-[8]: https://github.com/dfarrell07/puppet-opendaylight/blob/master/CONTRIBUTING.markdown#issues
+[2]: http://cbs.centos.org/repos/nfv7-opendaylight-61-release/x86_64/os/Packages/ "OpenDaylight Carbon SR1 CentOS CBS repo"
 
-[9]: https://github.com/dfarrell07/opendaylight-systemd/
+[3]: http://docs.opendaylight.org/en/latest/submodules/integration/packaging/docs/rpms.html#repositories "ODL RPM repo docs"
 
-[11]: https://github.com/dfarrell07/vagrant-opendaylight/
+[4]: https://launchpad.net/~odl-team/+archive/ubuntu/carbon "ODL Carbon Deb repo"
 
-[12]: https://github.com/dfarrell07/vagrant-opendaylight/tree/master/manifests
+[5]: https://git.opendaylight.org/gerrit/gitweb?p=integration/packaging/puppet-opendaylight.git;a=blob;f=CONTRIBUTING.markdown "Contributing docs"
 
-[13]: https://github.com/dfarrell07/puppet-opendaylight/issues/63
-
-[14]: https://github.com/dfarrell07/puppet-opendaylight/blob/master/CONTRIBUTING.markdown
-
-[15]: https://github.com/dfarrell07/puppet-opendaylight/blob/master/CHANGELOG
-
-[16]: https://github.com/dfarrell07/puppet-opendaylight/releases
-
-[17]: https://github.com/dfarrell07/puppet-opendaylight/commits/master
-
-[18]: http://cbs.centos.org/repos/nfv7-opendaylight-40-release/x86_64/os/Packages/ "OpenDaylight Beryllium CentOS CBS repo"
-
-[19]: https://wiki.opendaylight.org/view/Deployment#RPM "OpenDaylight RPMs and their repos"
-
-[20]: https://launchpad.net/~odl-team/+archive/ubuntu/boron
+[6]: https://git.opendaylight.org/gerrit/gitweb?p=integration/packaging/puppet-opendaylight.git;a=blob;f=CHANGELOG "Chagelog"
