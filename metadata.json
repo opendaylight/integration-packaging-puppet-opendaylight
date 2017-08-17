@@ -18,10 +18,6 @@
         {
             "name": "puppetlabs-stdlib",
             "version_requirement": "4.x"
-        },
-        {
-            "name": "puppetlabs-java",
-            "version_requirement": "1.x"
         }
     ],
     "operatingsystem_support": [
