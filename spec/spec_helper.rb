@@ -3,28 +3,8 @@ require 'rspec-puppet-facts'
 include RspecPuppetFacts
 
 # Customize filters to ignore 3rd-party code
-# If the coverage report shows not-our-code results, add it here
+# If the rspec coverage report shows not-our-code results, add it here
 custom_filters = [
-  'Anchor[java::end]',
-  'Stage[setup]',
-  'Anchor[java::begin:]',
-  'Class[Java::Config]',
-  'Class[Java::Params]',
-  'Class[Stdlib::Stages]',
-  'Class[Stdlib]',
-  'Exec[opendaylight unpack]',
-  'Exec[opendaylight-systemd unpack]',
-  'Exec[rm-on-error-opendaylight.tar.gz]',
-  'Exec[rm-on-error-opendaylight-systemd.tar.gz]',
-  'Exec[reload_systemd_units]',
-  'Exec[update-java-alternatives]',
-  'Package[curl]',
-  'Stage[deploy]',
-  'Stage[deploy_app]',
-  'Stage[deploy_infra]',
-  'Stage[runtime]',
-  'Stage[setup_app]',
-  'Stage[setup_infra]',
 ]
 RSpec::Puppet::Coverage.filters.push(*custom_filters)
 
