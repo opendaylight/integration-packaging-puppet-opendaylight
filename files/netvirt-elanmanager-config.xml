@@ -1,0 +1,3 @@
+<elanmanager-config xmlns="urn:opendaylight:netvirt:elan:config">
+    <use-of-tunnels>true</use-of-tunnels>
+</elanmanager-config>

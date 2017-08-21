@@ -101,9 +101,9 @@ class opendaylight::config {
     }
   }
 
-  # Configure ACL security group
-  # Requires at least CentOS 7.3 for RHEL/CentOS systems
-  if ('odl-netvirt-openstack' in $opendaylight::features) {
+  if ('odl-netvirt-openstack' in $opendaylight::features or 'odl-netvirt-sfc' in $opendaylight::features) {
+    # Configure ACL security group
+    # Requires at least CentOS 7.3 for RHEL/CentOS systems
     if $opendaylight::security_group_mode == 'stateful' {
       if defined('$opendaylight::stateful_unsupported') and $opendaylight::stateful_unsupported {
           warning("Stateful is unsupported in ${::operatingsystemrelease} setting to 'learn'")
@@ -135,16 +135,35 @@ class opendaylight::config {
       group   => 'odl',
       content => template('opendaylight/netvirt-aclservice-config.xml.erb'),
     }
-  }
 
-  # Configure SNAT
-  if ('odl-netvirt-openstack' in $opendaylight::features) {
+    # Configure SNAT
     file { 'netvirt-natservice-config.xml':
       ensure  => file,
       path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-natservice-config.xml',
       owner   => 'odl',
       group   => 'odl',
       content => template('opendaylight/netvirt-natservice-config.xml.erb'),
+      require => File['/opt/opendaylight/etc/opendaylight/datastore/initial/config'],
+    }
+  }
+
+  # SFC Config
+  if ('odl-netvirt-sfc' in $opendaylight::features) {
+    file { 'netvirt-elanmanager-config.xml':
+      ensure  => file,
+      path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-elanmanager-config.xml',
+      owner   => 'odl',
+      group   => 'odl',
+      source  => 'puppet:///modules/opendaylight/netvirt-elanmanager-config.xml',
+      require => File['/opt/opendaylight/etc/opendaylight/datastore/initial/config'],
+    }
+
+    file { 'genius-itm-config.xml':
+      ensure  => file,
+      path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml',
+      owner   => 'odl',
+      group   => 'odl',
+      source  => 'puppet:///modules/opendaylight/genius-itm-config.xml',
       require => File['/opt/opendaylight/etc/opendaylight/datastore/initial/config'],
     }
   }

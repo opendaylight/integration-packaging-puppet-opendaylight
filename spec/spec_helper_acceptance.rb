@@ -402,3 +402,24 @@ def snat_mechanism_validations(options = {})
     its(:content) { should match /<nat-mode>#{snat_mechanism}<\/nat-mode>/ }
   end
 end
+
+# Shared function for validations related to SFC
+def sfc_validations()
+  # NB: This param default should match the one used by the opendaylight
+  #   class, which is defined in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+
+  describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-elanmanager-config.xml') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /<use-of-tunnels>true<\/use-of-tunnels>/ }
+  end
+
+  describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /<gpe-extension-enabled>true<\/gpe-extension-enabled>/ }
+  end
+end

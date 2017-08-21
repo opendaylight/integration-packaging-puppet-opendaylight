@@ -210,4 +210,14 @@ describe 'opendaylight class' do
       snat_mechanism_validations(snat_mechanism: 'conntrack')
     end
   end
+
+  describe 'testing configuring SFC' do
+    context 'using SFC feature' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(extra_features: ['odl-netvirt-sfc'])
+
+      # Call specialized helper fn for SFC config validations
+      sfc_validations
+    end
+  end
 end

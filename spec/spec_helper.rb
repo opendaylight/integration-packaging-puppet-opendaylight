@@ -354,6 +354,31 @@ def snat_mechanism_tests(snat_mechanism='controller')
     }
 end
 
+# Shared tests that specialize in testing SFC Config
+def sfc_tests()
+  it { should contain_file('/opt/opendaylight/etc/opendaylight') }
+  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore')}
+  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore/initial')}
+  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore/initial/config')}
+
+  it {
+    should contain_file('netvirt-elanmanager-config.xml').with(
+      'ensure'  => 'file',
+      'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-elanmanager-config.xml',
+      'owner'   => 'odl',
+      'group'   => 'odl',
+      'source'  => 'puppet:///modules/opendaylight/netvirt-elanmanager-config.xml'
+      )
+    should contain_file('genius-itm-config.xml').with(
+      'ensure'  => 'file',
+      'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml',
+      'owner'   => 'odl',
+      'group'   => 'odl',
+      'source'  => 'puppet:///modules/opendaylight/genius-itm-config.xml'
+      )
+    }
+end
+
 # Shared tests that specialize in testing VPP routing node config
 def vpp_routing_node_tests(options = {})
   # Extract params
