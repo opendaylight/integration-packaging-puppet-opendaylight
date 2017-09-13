@@ -26,14 +26,14 @@ end
 
 desc "Beaker tests against CentOS 7 VM with latest Carbon testing RPM"
 task :cent_6test_vm do
-  sh "RS_SET=centos-7 RPM_REPO='opendaylight-6-testing' bundle exec rake beaker"
+  sh "RS_SET=centos-7 RPM_REPO='opendaylight-7-testing' bundle exec rake beaker"
 end
 
 # CentOS Containers
 
 desc "Beaker tests against CentOS 7 container with latest Carbon testing RPM"
 task :cent_6test_dock do
-  sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-6-testing' bundle exec rake beaker"
+  sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-7-testing' bundle exec rake beaker"
 end
 
 # Ubuntu VMs

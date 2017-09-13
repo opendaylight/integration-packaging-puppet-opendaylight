@@ -19,15 +19,17 @@ class opendaylight::config {
     match => '^featuresBoot=.*$',
   }
 
-  # Configuration of ODL NB REST port to listen on
-  file { 'jetty.xml':
-    ensure  => file,
-    path    => '/opt/opendaylight/etc/jetty.xml',
-    # Set user:group owners
-    owner   => 'odl',
-    group   => 'odl',
-    # Use a template to populate the content
-    content => template('opendaylight/jetty.xml.erb'),
+  # Configuration of ODL NB REST port and IP to listen on
+  augeas {'jetty.xml':
+    incl    => '/opt/opendaylight/etc/jetty.xml',
+    context => '/files/opt/opendaylight/etc/jetty.xml/Configure',
+    lens    => 'Xml.lns',
+    changes => [
+      "set Call[2]/Arg/New/Set[#attribute[name='port']]/Property/#attribute/default ${opendaylight::odl_rest_port}",
+      "set Call[1]/Arg/New/Set[#attribute[name='host']]/#text[1] ${opendaylight::odl_bind_ip}",
+      "rm Call[1]/Arg/New/Set[#attribute[name='host']]/Property",
+      "set Call[2]/Arg/New/Set[#attribute[name='host']]/#text[1] ${opendaylight::odl_bind_ip}",
+      "rm Call[2]/Arg/New/Set[#attribute[name='host']]/Property"]
   }
 
   # Set any custom log levels

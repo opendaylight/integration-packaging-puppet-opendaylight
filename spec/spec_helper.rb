@@ -123,13 +123,7 @@ def odl_rest_port_tests(options = {})
   # NB: These hashes don't work with Ruby 1.8.7, but we
   #   don't support 1.8.7 so that's okay. See issue #36.
   it {
-    should contain_file('jetty.xml').with(
-      'ensure'      => 'file',
-      'path'        => '/opt/opendaylight/etc/jetty.xml',
-      'owner'   => 'odl',
-      'group'   => 'odl',
-      'content'     => /Property name="jetty.port" default="#{odl_rest_port}"/
-    )
+    should contain_augeas('jetty.xml')
   }
 end
 
