@@ -22,29 +22,37 @@ task :metadata_lint do
   sh "metadata-json-lint metadata.json"
 end
 
-# CentOS VMs
-
-desc "Beaker tests against CentOS 7 VM with latest Carbon testing RPM"
-task :cent_6test_vm do
-  sh "RS_SET=centos-7 RPM_REPO='opendaylight-7-testing' bundle exec rake beaker"
+# CentOS CBS VM
+desc "Beaker tests against CentOS 7 VM with latest Oxygen testing RPM from CentOS CBS repo"
+task :cent_8test_cbs_vm do
+  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/' bundle exec rake beaker"
 end
 
-# CentOS Containers
+# CentOS CBS Container
+desc "Beaker tests against CentOS 7 container with latest Oxygen testing RPM from CentOS CBS repo"
+task :cent_8test_cbs_dock do
+  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/' bundle exec rake beaker"
+end
 
-desc "Beaker tests against CentOS 7 container with latest Carbon testing RPM"
-task :cent_6test_dock do
-  sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-7-testing' bundle exec rake beaker"
+# CentOS Nexus VM
+desc "Beaker tests against CentOS 7 VM with latest Oxygen testing RPM from ODL Nexus repo"
+task :cent_8test_nexus_vm do
+  sh "RS_SET=centos-7 RPM_REPO='https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel' bundle exec rake beaker"
+end
+
+# CentOS Nexus Container
+desc "Beaker tests against CentOS 7 container with latest Oxygen testing RPM from ODL Nexus repo"
+task :cent_8test_nexus_dock do
+  sh "RS_SET=centos-7-docker RPM_REPO='https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel' bundle exec rake beaker"
 end
 
 # Ubuntu VMs
-
 desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
 task :ubuntu_6test_vm do
   sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/carbon' bundle exec rake beaker"
 end
 
 # Ubuntu Containers
-
 desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
 task :ubuntu_6test_dock do
   sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/carbon' bundle exec rake beaker"
@@ -63,19 +71,21 @@ task :test => [
 desc "Quick and important tests"
 task :sanity=> [
   :test,
-  :cent_6test_dock,
+  :cent_8test_cbs_dock,
 ]
 
+# TODO: Add cent_8test_nexus_vm when INTPAK-10 is fixed
 desc "All tests, use VMs for Beaker tests"
 task :acceptance_vm => [
   :test,
   :ubuntu_6test_vm,
-  :cent_6test_vm,
+  :cent_8test_cbs_vm,
 ]
 
+# TODO: Add cent_8test_nexus_dock when INTPAK-10 is fixed
 desc "All tests, use containers for Beaker tests"
 task :acceptance_dock => [
   :test,
   :ubuntu_6test_dock,
-  :cent_6test_dock,
+  :cent_8test_cbs_dock,
 ]

@@ -12,7 +12,7 @@ class opendaylight::params {
   $extra_features = []
   $odl_rest_port = '8080'
   $odl_bind_ip = '0.0.0.0'
-  $rpm_repo = 'opendaylight-6-testing'
+  $rpm_repo = 'http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/'
   $deb_repo = 'ppa:odl-team/carbon'
   $log_levels = {}
   $enable_ha = false

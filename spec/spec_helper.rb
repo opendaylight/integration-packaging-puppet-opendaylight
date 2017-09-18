@@ -228,28 +228,28 @@ end
 
 def rpm_install_tests(options = {})
   # Extract params
-  rpm_repo = options.fetch(:rpm_repo, 'opendaylight-6-testing')
+  rpm_repo = options.fetch(:rpm_repo, 'http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/')
   java_opts = options.fetch(:java_opts, '-Djava.net.preferIPv4Stack=true')
 
   # Default to CentOS 7 Yum repo URL
 
   # Confirm presence of RPM-related resources
-  it { should contain_yumrepo(rpm_repo) }
+  it { should contain_yumrepo('opendaylight') }
   it { should contain_package('opendaylight') }
 
   # Confirm relationships between RPM-related resources
-  it { should contain_package('opendaylight').that_requires("Yumrepo[#{rpm_repo}]") }
-  it { should contain_yumrepo(rpm_repo).that_comes_before('Package[opendaylight]') }
+  it { should contain_package('opendaylight').that_requires('Yumrepo[opendaylight]') }
+  it { should contain_yumrepo('opendaylight').that_comes_before('Package[opendaylight]') }
 
   # Confirm properties of RPM-related resources
   # NB: These hashes don't work with Ruby 1.8.7, but we
   #   don't support 1.8.7 so that's okay. See issue #36.
   it {
-    should contain_yumrepo(rpm_repo).with(
+    should contain_yumrepo('opendaylight').with(
       'enabled'     => '1',
       'gpgcheck'    => '0',
       'descr'       => 'OpenDaylight SDN Controller',
-      'baseurl'     => "http://cbs.centos.org/repos/nfv7-#{rpm_repo}/$basearch/os/",
+      'baseurl'     => "#{rpm_repo}",
     )
   }
   it {
@@ -292,7 +292,7 @@ end
 def unsupported_os_tests(options = {})
   # Extract params
   expected_msg = options.fetch(:expected_msg)
-  rpm_repo = options.fetch(:rpm_repo, 'opendaylight-6-testing')
+  rpm_repo = options.fetch(:rpm_repo, 'http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/')
 
   # Confirm that classes fail on unsupported OSs
   it { expect { should contain_class('opendaylight') }.to raise_error(Puppet::Error, /#{expected_msg}/) }
@@ -301,7 +301,7 @@ def unsupported_os_tests(options = {})
   it { expect { should contain_class('opendaylight::service') }.to raise_error(Puppet::Error, /#{expected_msg}/) }
 
   # Confirm that other resources fail on unsupported OSs
-  it { expect { should contain_yumrepo(rpm_repo) }.to raise_error(Puppet::Error, /#{expected_msg}/) }
+  it { expect { should contain_yumrepo('opendaylight') }.to raise_error(Puppet::Error, /#{expected_msg}/) }
   it { expect { should contain_package('opendaylight') }.to raise_error(Puppet::Error, /#{expected_msg}/) }
   it { expect { should contain_service('opendaylight') }.to raise_error(Puppet::Error, /#{expected_msg}/) }
   it { expect { should contain_file('org.apache.karaf.features.cfg') }.to raise_error(Puppet::Error, /#{expected_msg}/) }

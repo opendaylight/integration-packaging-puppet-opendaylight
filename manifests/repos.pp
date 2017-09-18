@@ -1,24 +1,24 @@
 # == Class: opendaylight::repos
 #
-# Manages the installation of the OpenDaylight repositories for RedHat and
-# Debian
+# Manages installation of OpenDaylight repositories for RPMs and Debs.
 #
 # === Parameters
 #
 # [*deb_repo*]
-#  The name of the debppa repo to configure. Ignored if on a RHEL based system.
+#  Deb PPA repo to install ODL from. Ignored if on a RPM-based system.
 #  Defaults to $::opendaylight::deb_repo
 #
 # [*rpm_repo*]
-#  The name of the rpm repo to configure. Ignored if on a Debian based system
+#  Repo URL to install ODL RPM from, in .repo baseurl format. Ignored if on a
+#  Debian-based system.
 #  Defaults to $::opendaylight::rpm_repo
 #
 # [*rpm_repo_enabled*]
-#  Flag to indicate if the the rpm repo should be enabled or disabled.
+#  Flag to indicate if the the RPM repo should be enabled or disabled.
 #  Defualts to 1.
 #
 # [*rpm_repo_gpgcheck*]
-#  Flag to indicate if the rpm repo should be configured with gpgcheck.
+#  Flag to indicate if the RPM repo should be configured with gpgcheck.
 #  Defaults to 0.
 #
 class opendaylight::repos (
@@ -29,12 +29,9 @@ class opendaylight::repos (
 ) inherits ::opendaylight {
   if $::osfamily == 'RedHat' {
     # Add OpenDaylight's Yum repository
-    yumrepo { $rpm_repo:
-      # 'ensure' isn't supported with Puppet <3.5
-      # Seems to default to present, but docs don't say
-      # https://docs.puppetlabs.com/references/3.4.0/type.html#yumrepo
-      # https://docs.puppetlabs.com/references/3.5.0/type.html#yumrepo
-      baseurl  => "http://cbs.centos.org/repos/nfv7-${rpm_repo}/\$basearch/os/",
+    yumrepo { 'opendaylight':
+      ensure   => present,
+      baseurl  => $rpm_repo,
       descr    => 'OpenDaylight SDN Controller',
       enabled  => $rpm_repo_enabled,
       # NB: RPM signing is an active TODO, but is not done. We will enable

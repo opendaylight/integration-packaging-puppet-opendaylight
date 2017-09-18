@@ -51,7 +51,7 @@ def install_odl(options = {})
   #   class, which are defined in opendaylight::params
   # TODO: Remove this possible source of bugs^^
   # Extract params if given, defaulting to odl class defaults if not
-  extra_features = options.fetch(:extra_features, [])
+  extra_features = options.fetch(:extra_features, ['odl-restconf'])
   default_features = options.fetch(:default_features, ['standard', 'wrap', 'ssh'])
   odl_rest_port = options.fetch(:odl_rest_port, 8080)
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
@@ -343,7 +343,7 @@ end
 def rpm_validations()
   rpm_repo = ENV['RPM_REPO']
 
-  describe yumrepo(rpm_repo) do
+  describe yumrepo('opendaylight') do
     it { should exist }
     it { should be_enabled }
   end

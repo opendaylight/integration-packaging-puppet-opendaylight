@@ -636,7 +636,7 @@ describe 'opendaylight' do
       operatingsystemrelease = '7.0'
       operatingsystemmajrelease = '7'
 
-      context 'installing default RPM' do
+      context 'installing from default repo' do
         let(:facts) {{
           :osfamily => osfamily,
           :operatingsystem => operatingsystem,
@@ -652,8 +652,8 @@ describe 'opendaylight' do
         rpm_install_tests
       end
 
-      context 'installing Beryllium RPM' do
-        rpm_repo = 'opendaylight-40-release'
+      context 'installing from Nexus repo' do
+        rpm_repo = 'https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel'
         let(:facts) {{
           :osfamily => osfamily,
           :operatingsystem => operatingsystem,

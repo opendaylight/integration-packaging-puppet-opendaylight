@@ -20,8 +20,8 @@ describe 'opendaylight::repos' do
     context "with defaults" do
       it { should contain_class('opendaylight::repos') }
       it {
-        should contain_yumrepo('opendaylight-6-testing').with(
-          :baseurl  => 'http://cbs.centos.org/repos/nfv7-opendaylight-6-testing/$basearch/os/',
+        should contain_yumrepo('opendaylight').with(
+          :baseurl  => 'http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/',
           :enabled  => 1,
           :gpgcheck => 0,
         )
@@ -31,14 +31,14 @@ describe 'opendaylight::repos' do
     context "with custom rpm repo options" do
       let(:params) do
         {
-          :rpm_repo => 'testing',
+          :rpm_repo => 'foo_fake_repo',
           :rpm_repo_enabled => 0,
           :rpm_repo_gpgcheck => 1,
         }
       end
       it {
-        should contain_yumrepo('testing').with(
-          :baseurl  => 'http://cbs.centos.org/repos/nfv7-testing/$basearch/os/',
+        should contain_yumrepo('opendaylight').with(
+          :baseurl  => 'foo_fake_repo',
           :enabled  => 0,
           :gpgcheck => 1,
         )

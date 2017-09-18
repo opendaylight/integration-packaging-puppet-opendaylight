@@ -96,21 +96,13 @@ OpenDaylight is installed from.
 
 ```puppet
 class { 'opendaylight':
-  rpm_repo => 'opendaylight-61-release',
+  rpm_repo => 'https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel',
 }
 ```
 
-The naming convention follows the naming convention of the CentOS Community
-Build System, which is where upstream ODL hosts its RPMs. The
-`opendaylight-61-release` example above would install OpenDaylight Carbon SR1
-6.1.0 from the [nfv7-opendaylight-61-release][2] repo. Repo names ending in
-`-release` will always contain well-tested, officially released versions of
-OpenDaylight. Repos ending in `-testing` contain frequent, but unstable and
-unofficial, releases. The ODL version given in repo names shows which major
-and minor version it is pinned to. The `opendaylight-61-release` repo will
-always provide OpenDaylight Carbon SR1 6.1, whereas `opendaylight-4-release`
-will provide the latest release with major version 6 (which could include
-Service Releases, like SR2 6.2).
+The URL should be formatted like a baseurl in RPM .repo config files. In
+particular, note the $basearch variable, which should be left form the
+package manager (yum, dnf) to populate.
 
 For additional information about ODL RPM repos, see the [Integration/Packaging
 RPM repositories documentation][3].
@@ -232,8 +224,7 @@ Valid options: A valid port number as a string or integer.
 
 ##### `rpm_repo`
 
-OpenDaylight CentOS CBS repo to install RPM from (opendaylight-6-testing,
-opendaylight-6-release, ...).
+Repo URL to install ODL RPM from, in .repo baseurl format.
 
 ##### `deb_repo`
 

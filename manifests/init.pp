@@ -13,8 +13,7 @@
 # [*odl_bind_ip *]
 #   IP for ODL northbound REST interface to bind to.
 # [*rpm_repo*]
-#   OpenDaylight CentOS CBS repo to install RPM from (opendaylight-4-testing,
-#   opendaylight-40-release, ...).
+#   Repo URL to install ODL RPM from, in .repo baseurl format.
 # [*deb_repo*]
 #   OpenDaylight Launchpad PPA repo to install .deb from (ppa:odl-team/boron,
 #   ppa:odl-team/carbon, ...).
