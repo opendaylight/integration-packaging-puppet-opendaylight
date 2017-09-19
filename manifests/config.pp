@@ -19,17 +19,38 @@ class opendaylight::config {
     match => '^featuresBoot=.*$',
   }
 
-  # Configuration of ODL NB REST port and IP to listen on
-  augeas {'jetty.xml':
+  # Configuration of ODL NB REST port to listen on
+  augeas {'ODL REST Port':
     incl    => '/opt/opendaylight/etc/jetty.xml',
     context => '/files/opt/opendaylight/etc/jetty.xml/Configure',
     lens    => 'Xml.lns',
     changes => [
-      "set Call[2]/Arg/New/Set[#attribute[name='port']]/Property/#attribute/default ${opendaylight::odl_rest_port}",
-      "set Call[1]/Arg/New/Set[#attribute[name='host']]/#text[1] ${opendaylight::odl_bind_ip}",
-      "rm Call[1]/Arg/New/Set[#attribute[name='host']]/Property",
-      "set Call[2]/Arg/New/Set[#attribute[name='host']]/#text[1] ${opendaylight::odl_bind_ip}",
-      "rm Call[2]/Arg/New/Set[#attribute[name='host']]/Property"]
+      "set Call[2]/Arg/New/Set[#attribute[name='port']]/Property/#attribute/default ${opendaylight::odl_rest_port}"]
+  }
+
+  if $opendaylight::odl_bind_ip != '0.0.0.0' {
+    # Configuration of ODL NB REST IP to listen on
+    augeas { 'ODL REST IP':
+      incl    => '/opt/opendaylight/etc/jetty.xml',
+      context => '/files/opt/opendaylight/etc/jetty.xml/Configure',
+      lens    => 'Xml.lns',
+      changes => [
+        "set Call[1]/Arg/New/Set[#attribute[name='host']]/Property/#attribute/default ${opendaylight::odl_bind_ip}",
+        "set Call[2]/Arg/New/Set[#attribute[name='host']]/Property/#attribute/default ${opendaylight::odl_bind_ip}"]
+    }
+
+    file { 'org.ops4j.pax.web.cfg':
+      ensure => file,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+      # Set user:group owners
+      owner  => 'odl',
+      group  => 'odl',
+    }
+    -> file_line { 'org.ops4j.pax.web.cfg':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+      line   => "org.ops4j.pax.web.listening.addresses = ${opendaylight::odl_bind_ip}"
+    }
   }
 
   # Set any custom log levels

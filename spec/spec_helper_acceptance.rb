@@ -383,7 +383,7 @@ def username_password_validations(options = {})
     it { should be_file }
   end
 
-  describe command("sleep 60 && curl -o /dev/null --fail --silent --head -u #{odl_username}:#{odl_password} #{odl_check_url}") do
+  describe command("sleep 180 && curl -o /dev/null --fail --silent --head -u #{odl_username}:#{odl_password} #{odl_check_url}") do
     its(:exit_status) { should eq 0 }
   end
 end
