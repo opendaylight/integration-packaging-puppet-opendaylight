@@ -351,7 +351,7 @@ describe 'opendaylight' do
       odl_rest_port_tests
     end
 
-    context 'overriding default REST port' do
+    context 'overriding default REST and IP port' do
       let(:facts) {{
         :osfamily => osfamily,
         :operatingsystem => operatingsystem,
@@ -360,6 +360,7 @@ describe 'opendaylight' do
 
       let(:params) {{
         :odl_rest_port => 7777,
+        :odl_bind_ip => '127.0.0.1'
       }}
 
       # Run shared tests applicable to all supported OSs
@@ -368,7 +369,7 @@ describe 'opendaylight' do
 
       # Run test that specialize in checking ODL REST port config
       # Note that this function is defined in spec_helper
-      odl_rest_port_tests(odl_rest_port: 7777)
+      odl_rest_port_tests(odl_rest_port: 7777, odl_bind_ip: '127.0.0.1')
     end
   end
 

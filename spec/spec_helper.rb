@@ -118,13 +118,27 @@ def odl_rest_port_tests(options = {})
   # NB: This default value should be the same as one in opendaylight::params
   # TODO: Remove this possible source of bugs^^
   odl_rest_port = options.fetch(:odl_rest_port, 8080)
-
+  odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
   # Confirm properties of ODL REST port config file
   # NB: These hashes don't work with Ruby 1.8.7, but we
   #   don't support 1.8.7 so that's okay. See issue #36.
   it {
-    should contain_augeas('jetty.xml')
+    should contain_augeas('ODL REST Port')
   }
+
+  if not odl_bind_ip.eql? '0.0.0.0'
+    it {
+      should contain_augeas('ODL REST IP')
+      should contain_file_line('org.ops4j.pax.web.cfg').with(
+        'path'  => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'  => "org.ops4j.pax.web.listening.addresses = #{odl_bind_ip}",
+      )
+    }
+  else
+    it {
+      should_not contain_augeas('ODL REST IP')
+    }
+  end
 end
 
 def log_level_tests(options = {})

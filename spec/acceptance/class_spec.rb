@@ -160,10 +160,11 @@ describe 'opendaylight class' do
   end
 
   describe 'testing odl username/password' do
+    bind_ip = '127.0.0.1'
     context 'using default username/password' do
-    context 'using default log levels' do
+    context 'using non-default bind ip' do
       # Call specialized helper fn to install OpenDaylight
-      install_odl({:extra_features => ['odl-restconf']})
+      install_odl({:odl_bind_ip => bind_ip, :extra_features => ['odl-restconf']})
 
       # Call specialized helper fn for username/password validations
       username_password_validations
