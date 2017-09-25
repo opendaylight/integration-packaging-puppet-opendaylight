@@ -52,8 +52,7 @@ def install_odl(options = {})
   # TODO: Remove this possible source of bugs^^
   # Extract params if given, defaulting to odl class defaults if not
   extra_features = options.fetch(:extra_features, [])
-  default_features = options.fetch(:default_features,
-    ['config', 'standard', 'region', 'package', 'kar', 'ssh', 'management'])
+  default_features = options.fetch(:default_features, ['standard', 'wrap', 'ssh'])
   odl_rest_port = options.fetch(:odl_rest_port, 8080)
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
   log_levels = options.fetch(:log_levels, {})
@@ -226,8 +225,7 @@ def karaf_config_validations(options = {})
   #   class, which are defined in opendaylight::params
   # TODO: Remove this possible source of bugs^^
   extra_features = options.fetch(:extra_features, [])
-  default_features = options.fetch(:default_features, ['config', 'standard', 'region',
-                                  'package', 'kar', 'ssh', 'management'])
+  default_features = options.fetch(:default_features, ['standard', 'wrap', 'ssh'])
 
   # Create one list of all of the features
   features = default_features + extra_features

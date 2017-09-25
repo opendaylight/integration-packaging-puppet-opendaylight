@@ -85,7 +85,7 @@ def karaf_feature_tests(options = {})
   # Extract params
   # NB: This default list should be the same as the one in opendaylight::params
   # TODO: Remove this possible source of bugs^^
-  default_features = options.fetch(:default_features, ['config', 'standard', 'region', 'package', 'kar', 'ssh', 'management'])
+  default_features = options.fetch(:default_features, ['standard', 'wrap', 'ssh'])
   extra_features = options.fetch(:extra_features, [])
 
   # The order of this list concat matters
