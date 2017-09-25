@@ -8,7 +8,7 @@ class opendaylight::params {
   #   spec/classes/opendaylight_spec.rb tests that use default Karaf features
   # Else, both the Beaker and RSpec tests will fail
   # TODO: Remove this possible source of bugs^^
-  $default_features = ['config', 'standard', 'region', 'package', 'kar', 'ssh', 'management']
+  $default_features = ['standard', 'wrap', 'ssh']
   $extra_features = []
   $odl_rest_port = '8080'
   $odl_bind_ip = '0.0.0.0'
