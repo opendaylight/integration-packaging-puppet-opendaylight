@@ -28,8 +28,6 @@
 # [*ha_db_modules*]
 #   Hash of modules and Yang namespaces to create database shards.  Defaults to
 #   { 'default' => false }.  "default" module does not need a namespace.
-# [*security_group_mode*]
-#   Sets the mode to use for security groups (stateful, learn, stateless, transparent)
 # [*vpp_routing_node*]
 #   Sets routing node for VPP deployments. Defaults to ''.
 # [*java_opts*]
@@ -62,7 +60,6 @@ class opendaylight (
   $ha_node_ips         = $::opendaylight::params::ha_node_ips,
   $ha_node_index       = $::opendaylight::params::ha_node_index,
   $ha_db_modules       = $::opendaylight::params::ha_db_modules,
-  $security_group_mode = $::opendaylight::params::security_group_mode,
   $vpp_routing_node    = $::opendaylight::params::vpp_routing_node,
   $java_opts           = $::opendaylight::params::java_opts,
   $manage_repositories = $::opendaylight::params::manage_repositories,
@@ -90,12 +87,7 @@ class opendaylight (
       if $::operatingsystemmajrelease != '7' {
         # RHEL/CentOS versions < 7 not supported as they lack systemd
         fail("Unsupported OS: ${::operatingsystem} ${::operatingsystemmajrelease}")
-      } elsif defined('$::operatingsystemrelease') {
-          if (versioncmp($::operatingsystemrelease, '7.3') < 0) {
-            # Versions < 7.3 do not support stateful security groups
-            $stateful_unsupported = true
-          }
-        }
+      }
     }
     fedora: {
       # Fedora distros < 24 are EOL as of 2016-12-20
