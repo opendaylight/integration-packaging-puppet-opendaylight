@@ -358,14 +358,6 @@ Valid options: Index of a member of the array `ha_node_ips`: `0`.
 
 This parameter is now deprecated and is no longer used.
 
-##### `security_group_mode`
-
-Specifies the mode to use for security groups.
-
-Default: `stateful`
-
-Valid options: `transparent`, `learn`, `stateless`
-
 ##### `snat_mechanism`
 
 Specifies the mechanism to be used for SNAT.

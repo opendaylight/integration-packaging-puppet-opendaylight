@@ -325,42 +325,6 @@ def unsupported_os_tests(options = {})
   it { expect { should contain_file('org.apache.karaf.features.cfg') }.to raise_error(Puppet::Error, /#{expected_msg}/) }
 end
 
-# Shared tests that specialize in testing security group mode
-def enable_sg_tests(sg_mode='stateful', os_release)
-  # Extract params
-  # NB: This default value should be the same as one in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
-
-  it { should contain_file('/opt/opendaylight/etc/opendaylight') }
-  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore')}
-  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore/initial')}
-  it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore/initial/config')}
-
-  if os_release != '7.3' and sg_mode == 'stateful'
-    # Confirm sg_mode becomes learn
-    it {
-      should contain_file('netvirt-aclservice-config.xml').with(
-        'ensure'      => 'file',
-        'path'        => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-aclservice-config.xml',
-        'owner'   => 'odl',
-        'group'   => 'odl',
-        'content'     => /learn/
-      )
-    }
-  else
-    # Confirm other sg_mode is passed correctly
-    it {
-      should contain_file('netvirt-aclservice-config.xml').with(
-        'ensure'      => 'file',
-        'path'        => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-aclservice-config.xml',
-        'owner'   => 'odl',
-        'group'   => 'odl',
-        'content'     => /#{sg_mode}/
-      )
-    }
-  end
-end
-
 # Shared tests that specialize in testing SNAT mechanism
 def snat_mechanism_tests(snat_mechanism='controller')
   it { should contain_file('/opt/opendaylight/etc/opendaylight') }

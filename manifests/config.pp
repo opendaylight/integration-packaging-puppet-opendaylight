@@ -101,20 +101,8 @@ class opendaylight::config {
     }
   }
 
-  # Configure ACL security group
-  # Requires at least CentOS 7.3 for RHEL/CentOS systems
-  if ('odl-netvirt-openstack' in $opendaylight::features) {
-    if $opendaylight::security_group_mode == 'stateful' {
-      if defined('$opendaylight::stateful_unsupported') and $opendaylight::stateful_unsupported {
-          warning("Stateful is unsupported in ${::operatingsystemrelease} setting to 'learn'")
-          $sg_mode = 'learn'
-      } else {
-        $sg_mode = 'stateful'
-      }
-    } else {
-      $sg_mode = $opendaylight::security_group_mode
-    }
-
+  if ('odl-netvirt-openstack' in $opendaylight::features or 'odl-netvirt-sfc' in $opendaylight::features) {
+    # Configure SNAT
     $odl_datastore = [
       '/opt/opendaylight/etc/opendaylight',
       '/opt/opendaylight/etc/opendaylight/datastore',
@@ -128,18 +116,7 @@ class opendaylight::config {
       owner  => 'odl',
       group  => 'odl',
     }
-    -> file { 'netvirt-aclservice-config.xml':
-      ensure  => file,
-      path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-aclservice-config.xml',
-      owner   => 'odl',
-      group   => 'odl',
-      content => template('opendaylight/netvirt-aclservice-config.xml.erb'),
-    }
-  }
-
-  # Configure SNAT
-  if ('odl-netvirt-openstack' in $opendaylight::features) {
-    file { 'netvirt-natservice-config.xml':
+    -> file { 'netvirt-natservice-config.xml':
       ensure  => file,
       path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-natservice-config.xml',
       owner   => 'odl',

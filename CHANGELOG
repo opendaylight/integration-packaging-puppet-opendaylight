@@ -46,3 +46,5 @@
 - Add log size/rotate config params
 2017-08-14 Release 4.2.0
 - Add param to config SNAT mechanism
+2017-10-11 Release 5.0.0
+- Only support stateful security mode. Remove all related configs
