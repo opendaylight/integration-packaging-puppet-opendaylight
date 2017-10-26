@@ -408,3 +408,17 @@ def snat_mechanism_validations(options = {})
     its(:content) { should match /<nat-mode>#{snat_mechanism}<\/nat-mode>/ }
   end
 end
+
+def websocket_address_validations(options = {})
+  # NB: This param default should match the one used by the opendaylight
+  #   class, which is defined in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+  odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
+
+  describe file('/opt/opendaylight/etc/opendaylight/karaf/10-rest-connector.xml') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /<websocket-address>#{odl_bind_ip}<\/websocket-address>/ }
+  end
+end

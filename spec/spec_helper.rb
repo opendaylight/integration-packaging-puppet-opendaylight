@@ -385,3 +385,23 @@ def username_password_tests(username, password)
     )
   }
 end
+
+# ODL websocket address tests
+def odl_websocket_address_tests(options = {})
+  # Extract params
+  # NB: This default value should be the same as one in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+  odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
+  # Confirm properties of ODL REST port config file
+  # NB: These hashes don't work with Ruby 1.8.7, but we
+  #   don't support 1.8.7 so that's okay. See issue #36.
+  it {
+    should contain_file('10-rest-connector.xml').with(
+      'ensure'      => 'file',
+      'path'        => '/opt/opendaylight/etc/opendaylight/karaf/10-rest-connector.xml',
+      'owner'   => 'odl',
+      'group'   => 'odl',
+      'content'     =>  /<websocket-address>#{odl_bind_ip}<\/websocket-address>/
+    )
+  }
+end

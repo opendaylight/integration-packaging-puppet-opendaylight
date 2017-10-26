@@ -48,3 +48,5 @@
 - Add param to config SNAT mechanism
 2017-10-11 Release 5.0.0
 - Only support stateful security mode. Remove all related configs
+2017-11-17 Release 5.1.0
+- Configure websocket address

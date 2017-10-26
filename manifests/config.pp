@@ -101,22 +101,25 @@ class opendaylight::config {
     }
   }
 
+  $odl_dirs = [
+    '/opt/opendaylight/etc/opendaylight',
+    '/opt/opendaylight/etc/opendaylight/karaf',
+    '/opt/opendaylight/etc/opendaylight/datastore',
+    '/opt/opendaylight/etc/opendaylight/datastore/initial',
+    '/opt/opendaylight/etc/opendaylight/datastore/initial/config',
+  ]
+
+  file { $odl_dirs:
+    ensure => directory,
+    mode   => '0755',
+    owner  => 'odl',
+    group  => 'odl',
+  }
+
   if ('odl-netvirt-openstack' in $opendaylight::features or 'odl-netvirt-sfc' in $opendaylight::features) {
     # Configure SNAT
-    $odl_datastore = [
-      '/opt/opendaylight/etc/opendaylight',
-      '/opt/opendaylight/etc/opendaylight/datastore',
-      '/opt/opendaylight/etc/opendaylight/datastore/initial',
-      '/opt/opendaylight/etc/opendaylight/datastore/initial/config',
-    ]
 
-    file { $odl_datastore:
-      ensure => directory,
-      mode   => '0755',
-      owner  => 'odl',
-      group  => 'odl',
-    }
-    -> file { 'netvirt-natservice-config.xml':
+    file { 'netvirt-natservice-config.xml':
       ensure  => file,
       path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-natservice-config.xml',
       owner   => 'odl',
@@ -145,5 +148,15 @@ class opendaylight::config {
   odl_user { $::opendaylight::username:
     password => $::opendaylight::password,
     before   => Service['opendaylight'],
+  }
+
+  # Configure websocket address
+  file { '10-rest-connector.xml':
+    ensure  => file,
+    path    => '/opt/opendaylight/etc/opendaylight/karaf/10-rest-connector.xml',
+    owner   => 'odl',
+    group   => 'odl',
+    content => template('opendaylight/10-rest-connector.xml.erb'),
+    require => File['/opt/opendaylight/etc/opendaylight/karaf'],
   }
 }

@@ -876,4 +876,51 @@ describe 'opendaylight' do
       username_password_tests('test', 'test')
     end
   end
+
+  # websocket address tests
+  describe 'ODL websocket address tests' do
+    # Non-OS-type tests assume CentO
+    #   See issue #43 for reasoning:
+    #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
+    osfamily = 'RedHat'
+    operatingsystem = 'CentOS'
+    operatingsystemmajrelease = '7'
+    context 'using default websocket address' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{ }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test that specialize in checking websocket address
+      # Note that this function is defined in spec_helper
+      odl_websocket_address_tests
+    end
+
+    context 'overriding websocket address' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+       :odl_bind_ip => '127.0.0.1'
+       }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test that specialize in checking websocket address
+      # Note that this function is defined in spec_helper
+      odl_websocket_address_tests(odl_bind_ip: '127.0.0.1')
+    end
+  end
 end
