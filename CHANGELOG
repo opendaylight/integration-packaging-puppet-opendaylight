@@ -50,3 +50,5 @@
 - Only support stateful security mode. Remove all related configs
 2017-11-15 Release 6.0.0
 - Allow full customization of ODL RPM repo
+2017-11-17 Release 6.1.0
+- Configure websocket address

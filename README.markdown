@@ -173,6 +173,11 @@ class { 'opendaylight':
 }
 ```
 
+### Configuring websocket address
+
+Websocket address can be configured to the IP of ODL rather than default 0.0.0.0. This IP will
+be defined by `odl_bind_ip`.
+
 ## Reference
 
 ### Classes

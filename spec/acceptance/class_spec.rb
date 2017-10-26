@@ -221,4 +221,22 @@ describe 'opendaylight class' do
       sfc_validations
     end
   end
+
+  describe 'testing websocket address config' do
+    context 'using default ip' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl
+
+      # Call specialized helper fn for websocket address config validations
+      websocket_address_validations
+    end
+
+    context 'overriding default ip' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(odl_bind_ip: '127.0.0.1')
+
+      # Call specialized helper fn for websocket address config validations
+      websocket_address_validations(odl_bind_ip: '127.0.0.1')
+    end
+  end
 end

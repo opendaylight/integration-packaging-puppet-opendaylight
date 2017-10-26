@@ -27,6 +27,14 @@ class opendaylight::config {
     changes => [
       "set Call[2]/Arg/New/Set[#attribute[name='port']]/Property/#attribute/default ${opendaylight::odl_rest_port}"]
   }
+  $initial_config_dir = '/opt/opendaylight/configuration/initial'
+
+  file { $initial_config_dir:
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'odl',
+        group  => 'odl',
+  }
 
   if $opendaylight::odl_bind_ip != '0.0.0.0' {
     # Configuration of ODL NB REST IP to listen on
@@ -83,40 +91,32 @@ class opendaylight::config {
   if $::opendaylight::enable_ha {
     if $ha_node_count >= 2 {
       # Configure ODL OSVDB Clustering
-      $cluster_config_dir = '/opt/opendaylight/configuration/initial'
-
-      file { $cluster_config_dir:
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'odl',
-        group  => 'odl',
-      }
 
       file {'akka.conf':
         ensure  => file,
-        path    => "${cluster_config_dir}/akka.conf",
+        path    => "${initial_config_dir}/akka.conf",
         owner   => 'odl',
         group   => 'odl',
         content => template('opendaylight/akka.conf.erb'),
-        require => File[$cluster_config_dir]
+        require => File[$initial_config_dir]
       }
 
       file {'modules.conf':
         ensure  => file,
-        path    => "${cluster_config_dir}/modules.conf",
+        path    => "${initial_config_dir}/modules.conf",
         owner   => 'odl',
         group   => 'odl',
         content => template('opendaylight/modules.conf.erb'),
-        require => File[$cluster_config_dir]
+        require => File[$initial_config_dir]
       }
 
       file {'module-shards.conf':
         ensure  => file,
-        path    => "${cluster_config_dir}/module-shards.conf",
+        path    => "${initial_config_dir}/module-shards.conf",
         owner   => 'odl',
         group   => 'odl',
         content => template('opendaylight/module-shards.conf.erb'),
-        require => File[$cluster_config_dir]
+        require => File[$initial_config_dir]
       }
 
     } else {
@@ -124,22 +124,25 @@ class opendaylight::config {
     }
   }
 
+  $odl_dirs = [
+    '/opt/opendaylight/etc/opendaylight',
+    '/opt/opendaylight/etc/opendaylight/karaf',
+    '/opt/opendaylight/etc/opendaylight/datastore',
+    '/opt/opendaylight/etc/opendaylight/datastore/initial',
+    '/opt/opendaylight/etc/opendaylight/datastore/initial/config',
+  ]
+
+  file { $odl_dirs:
+    ensure => directory,
+    mode   => '0755',
+    owner  => 'odl',
+    group  => 'odl',
+  }
+
   if ('odl-netvirt-openstack' in $opendaylight::features or 'odl-netvirt-sfc' in $opendaylight::features) {
     # Configure SNAT
-    $odl_datastore = [
-      '/opt/opendaylight/etc/opendaylight',
-      '/opt/opendaylight/etc/opendaylight/datastore',
-      '/opt/opendaylight/etc/opendaylight/datastore/initial',
-      '/opt/opendaylight/etc/opendaylight/datastore/initial/config',
-    ]
 
-    file { $odl_datastore:
-      ensure => directory,
-      mode   => '0755',
-      owner  => 'odl',
-      group  => 'odl',
-    }
-    -> file { 'netvirt-natservice-config.xml':
+    file { 'netvirt-natservice-config.xml':
       ensure  => file,
       path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-natservice-config.xml',
       owner   => 'odl',
@@ -189,5 +192,15 @@ class opendaylight::config {
   odl_user { $::opendaylight::username:
     password => $::opendaylight::password,
     before   => Service['opendaylight'],
+  }
+
+  # Configure websocket address
+  file { '10-rest-connector.xml':
+    ensure  => file,
+    path    => '/opt/opendaylight/etc/opendaylight/karaf/10-rest-connector.xml',
+    owner   => 'odl',
+    group   => 'odl',
+    content => template('opendaylight/10-rest-connector.xml.erb'),
+    require => File['/opt/opendaylight/etc/opendaylight/karaf'],
   }
 }
