@@ -228,7 +228,7 @@ end
 
 def rpm_install_tests(options = {})
   # Extract params
-  rpm_repo = options.fetch(:rpm_repo, 'opendaylight-6-testing')
+  rpm_repo = options.fetch(:rpm_repo, 'opendaylight-7-testing')
   java_opts = options.fetch(:java_opts, '-Djava.net.preferIPv4Stack=true')
 
   # Default to CentOS 7 Yum repo URL
@@ -270,7 +270,7 @@ end
 
 def deb_install_tests(options = {})
   # Extract params
-  deb_repo = options.fetch(:deb_repo, 'ppa:odl-team/carbon')
+  deb_repo = options.fetch(:deb_repo, 'ppa:odl-team/nitrogen')
 
   # Confirm the presence of Deb-related resources
   it { should contain_apt__ppa(deb_repo) }
@@ -292,7 +292,7 @@ end
 def unsupported_os_tests(options = {})
   # Extract params
   expected_msg = options.fetch(:expected_msg)
-  rpm_repo = options.fetch(:rpm_repo, 'opendaylight-6-testing')
+  rpm_repo = options.fetch(:rpm_repo, 'opendaylight-7-testing')
 
   # Confirm that classes fail on unsupported OSs
   it { expect { should contain_class('opendaylight') }.to raise_error(Puppet::Error, /#{expected_msg}/) }

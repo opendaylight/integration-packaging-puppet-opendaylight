@@ -5,7 +5,7 @@ describe 'opendaylight::repos' do
     context "with defaults" do
       it { should contain_class('opendaylight::repos') }
       it { should contain_class('apt') }
-      it { should contain_apt__ppa('ppa:odl-team/carbon') }
+      it { should contain_apt__ppa('ppa:odl-team/nitrogen') }
     end
 
     context "with custom deb_repo" do
@@ -20,8 +20,8 @@ describe 'opendaylight::repos' do
     context "with defaults" do
       it { should contain_class('opendaylight::repos') }
       it {
-        should contain_yumrepo('opendaylight-6-testing').with(
-          :baseurl  => 'http://cbs.centos.org/repos/nfv7-opendaylight-6-testing/$basearch/os/',
+        should contain_yumrepo('opendaylight-7-testing').with(
+          :baseurl  => 'http://cbs.centos.org/repos/nfv7-opendaylight-7-testing/$basearch/os/',
           :enabled  => 1,
           :gpgcheck => 0,
         )

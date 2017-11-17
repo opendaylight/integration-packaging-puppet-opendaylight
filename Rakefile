@@ -24,30 +24,30 @@ end
 
 # CentOS VMs
 
-desc "Beaker tests against CentOS 7 VM with latest Carbon testing RPM"
+desc "Beaker tests against CentOS 7 VM with latest Nitrogen testing RPM"
 task :cent_6test_vm do
   sh "RS_SET=centos-7 RPM_REPO='opendaylight-7-testing' bundle exec rake beaker"
 end
 
 # CentOS Containers
 
-desc "Beaker tests against CentOS 7 container with latest Carbon testing RPM"
+desc "Beaker tests against CentOS 7 container with latest Nitrogen testing RPM"
 task :cent_6test_dock do
   sh "RS_SET=centos-7-docker RPM_REPO='opendaylight-7-testing' bundle exec rake beaker"
 end
 
 # Ubuntu VMs
 
-desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
+desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
 task :ubuntu_6test_vm do
-  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/carbon' bundle exec rake beaker"
+  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
 end
 
 # Ubuntu Containers
 
-desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
+desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
 task :ubuntu_6test_dock do
-  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/carbon' bundle exec rake beaker"
+  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
 end
 
 # Multi-test helpers
