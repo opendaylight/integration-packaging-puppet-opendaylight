@@ -128,13 +128,13 @@ To run Beaker tests against CentOS 7 in a VM using the latest OpenDaylight
 Carbon RPM, use:
 
 ```
-$ bundle exec rake cent_6test_vm
+$ bundle exec rake cent_8test_cbs_vm
 ```
 
 To do the same tests in a CentOS container:
 
 ```
-$ bundle exec rake cent_6test_dock
+$ bundle exec rake cent_8test_cbs_dock
 ```
 
 To run VM or container-based tests for all OSs:
@@ -149,7 +149,7 @@ inspection or a quicker follow-up test run, use the `BEAKER_destroy`
 environment variable.
 
 ```
-$ BEAKER_destroy=no bundle exec rake cent_6test_vm
+$ BEAKER_destroy=no bundle exec rake cent_8test_cbs_vm
 ```
 
 You can then connect to the VM by navigating to the directory that contains
