@@ -27,4 +27,10 @@ class opendaylight::params {
   $log_max_size = '10GB'
   $log_max_rollover = 2
   $snat_mechanism = 'controller'
+  $enable_tls = false
+  $tls_keystore_password = undef
+  $tls_key_file = undef
+  $tls_cert_file = undef
+  $tls_ca_cert_file = undef
+  $tls_trusted_certs = []
 }

@@ -65,6 +65,8 @@ def install_odl(options = {})
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
   snat_mechanism = options.fetch(:snat_mechanism, 'controller')
+  enable_tls = options.fetch(:enable_tls, false)
+  tls_keystore_password = options.fetch(:tls_keystore_password, 'dummypass')
 
   # Build script for consumption by Puppet apply
   it 'should work idempotently with no errors' do
@@ -86,6 +88,8 @@ def install_odl(options = {})
       log_max_size => '#{log_max_size}',
       log_max_rollover => #{log_max_rollover},
       snat_mechanism => #{snat_mechanism},
+      enable_tls => #{enable_tls},
+      tls_keystore_password => #{tls_keystore_password},
     }
     EOS
 
@@ -433,5 +437,55 @@ def websocket_address_validations(options = {})
     it { should be_owned_by 'odl' }
     it { should be_grouped_into 'odl' }
     its(:content) { should match /<websocket-address>#{odl_bind_ip}<\/websocket-address>/ }
+  end
+end
+
+def tls_validations(options = {})
+  # NB: This param default should match the one used by the opendaylight
+  #   class, which is defined in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+  tls_keystore_password = options.fetch(:tls_keystore_password)
+  odl_rest_port = options.fetch(:odl_rest_port, 8080)
+
+  describe file('/opt/opendaylight/etc/org.ops4j.pax.web.cfg') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /org.osgi.service.http.port.secure = #{odl_rest_port}/ }
+    its(:content) { should match /org.ops4j.pax.web.ssl.keystore = configuration\/ssl\/ctl.jks/ }
+    its(:content) { should match /org.ops4j.pax.web.ssl.password = #{tls_keystore_password}/ }
+    its(:content) { should match /org.ops4j.pax.web.ssl.keypassword = #{tls_keystore_password}/ }
+    its(:content) { should match /org.osgi.service.http.secure.enabled = true/ }
+  end
+
+  describe file('/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /use-ssl = true/ }
+  end
+
+  describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/default-openflow-connection-config.xml') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /<keystore-password>#{tls_keystore_password}<\/keystore-password>/ }
+    its(:content) { should match /<truststore-password>#{tls_keystore_password}<\/truststore-password>/ }
+    its(:content) { should match /<transport-protocol>TLS<\/transport-protocol>/ }
+  end
+
+  describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/aaa-cert-config.xml') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /<store-password>#{tls_keystore_password}<\/store-password>/ }
+    its(:content) { should match /<use-mdsal>false<\/use-mdsal>/ }
+  end
+
+  describe file('/opt/opendaylight/etc/jetty.xml') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /<Property name="jetty.secure.port" default="#{odl_rest_port}" \/>/ }
   end
 end

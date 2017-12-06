@@ -23,6 +23,7 @@ def generic_tests()
   it { should contain_class('opendaylight::params') }
   it { should contain_class('opendaylight::install') }
   it { should contain_class('opendaylight::config') }
+  it { should contain_class('opendaylight::post_config') }
   it { should contain_class('opendaylight::service') }
 
   # Confirm relationships between classes
@@ -31,6 +32,8 @@ def generic_tests()
   it { should contain_class('opendaylight::config').that_notifies('Class[opendaylight::service]') }
   it { should contain_class('opendaylight::service').that_subscribes_to('Class[opendaylight::config]') }
   it { should contain_class('opendaylight::service').that_comes_before('Class[opendaylight]') }
+  it { should contain_class('opendaylight::post_config').that_requires('Class[opendaylight::service]') }
+  it { should contain_class('opendaylight::post_config').that_comes_before('Class[opendaylight]') }
   it { should contain_class('opendaylight').that_requires('Class[opendaylight::service]') }
 
   # Confirm presence of generic resources
@@ -129,9 +132,11 @@ def odl_rest_port_tests(options = {})
   if not odl_bind_ip.eql? '0.0.0.0'
     it {
       should contain_augeas('ODL REST IP')
-      should contain_file_line('org.ops4j.pax.web.cfg').with(
-        'path'  => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
-        'line'  => "org.ops4j.pax.web.listening.addresses = #{odl_bind_ip}",
+      should contain_file_line('set pax bind IP').with(
+        'ensure'  => 'present',
+        'path'    => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'    => "org.ops4j.pax.web.listening.addresses = #{odl_bind_ip}",
+        'require' => 'File[org.ops4j.pax.web.cfg]'
       )
     }
   else
@@ -411,4 +416,95 @@ def odl_websocket_address_tests(options = {})
       'content'     =>  /<websocket-address>#{odl_bind_ip}<\/websocket-address>/
     )
   }
+end
+
+def odl_tls_tests(options = {})
+  enable_tls = options.fetch(:enable_tls, false)
+  tls_keystore_password = options.fetch(:tls_keystore_password, nil)
+  tls_trusted_certs = options.fetch(:tls_trusted_certs, [])
+  tls_keystore_password = options.fetch(:tls_keystore_password, nil)
+  tls_key_file = options.fetch(:tls_key_file, nil)
+  tls_cert_file = options.fetch(:tls_cert_file, nil)
+  tls_ca_cert_file = options.fetch(:tls_ca_cert_file, nil)
+  odl_rest_port = options.fetch(:odl_rest_port, 8080)
+
+  if enable_tls
+    if tls_keystore_password.nil?
+      it { expect { should contain_class('opendaylight::config') }.to raise_error(Puppet::PreformattedError) }
+      return
+    end
+
+    if tls_key_file or tls_cert_file
+      if tls_key_file and tls_cert_file
+        it {
+          should contain_odl_keystore('controller')
+        }
+      else
+        it { expect { should contain_class('opendaylight::config') }.to raise_error(Puppet::PreformattedError) }
+      end
+    end
+    it {
+      should contain_augeas('Remove HTTP ODL REST Port')
+      should contain_augeas('ODL SSL REST Port')
+      should contain_file_line('set pax TLS port').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'   => "org.osgi.service.http.port.secure = #{odl_rest_port}",
+        'match'  => '^#?org.osgi.service.http.port.secure.*$',
+      )
+      should contain_file_line('set pax TLS keystore location').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'   => 'org.ops4j.pax.web.ssl.keystore = configuration/ssl/ctl.jks',
+        'match'  => '^#?org.ops4j.pax.web.ssl.keystore.*$',
+      )
+      should contain_file_line('set pax TLS keystore integrity password').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'   => "org.ops4j.pax.web.ssl.password = #{tls_keystore_password}",
+        'match'  => '^#?org.ops4j.pax.web.ssl.password.*$',
+      )
+      should contain_file_line('set pax TLS keystore password').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'   => "org.ops4j.pax.web.ssl.keypassword = #{tls_keystore_password}",
+        'match'  => '^#?org.ops4j.pax.web.ssl.keypassword.*$',
+      )
+      should contain_file('aaa-cert-config.xml').with(
+        'ensure'  => 'file',
+        'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/aaa-cert-config.xml',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+      )
+      should contain_file('org.opendaylight.ovsdb.library.cfg').with(
+        'ensure' => 'file',
+        'path'   => '/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg',
+        'owner'  => 'odl',
+        'group'  => 'odl',
+        'source' => 'puppet:///modules/opendaylight/org.opendaylight.ovsdb.library.cfg'
+      )
+      should contain_file('/opt/opendaylight/configuration/ssl').with(
+        'ensure' => 'directory',
+        'path'   => '/opt/opendaylight/configuration/ssl',
+        'owner'  => 'odl',
+        'group'  => 'odl',
+        'mode'   => '0755'
+      )
+      should contain_file_line('enable pax TLS').with(
+        'ensure' => 'present',
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'   => 'org.osgi.service.http.secure.enabled = true',
+        'match'  => '^#?org.osgi.service.http.secure.enabled.*$',
+      )
+      should contain_file('org.ops4j.pax.web.cfg').with(
+        'ensure' => 'file',
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'owner'  => 'odl',
+        'group'  => 'odl',
+      )
+      should contain_file('default-openflow-connection-config.xml').with(
+        'ensure'  => 'file',
+        'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/default-openflow-connection-config.xml',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+        'content' =>  /<transport-protocol>TLS<\/transport-protocol>/
+      )
+    }
+  end
 end

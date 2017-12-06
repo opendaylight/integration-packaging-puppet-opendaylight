@@ -41,32 +41,55 @@
 #   Maxium number of OpenDaylight log rollovers to keep.
 # [*snat_mechanism*]
 #   Sets the mechanism to be used for SNAT (conntrack, controller)
-#
+# [*enable_tls*]
+#   (Boolean) Enables TLS for REST and OpenFlow/OVSDB with OpenDaylight.
+#   Defaults to false
+# [*tls_keystore_password*]
+#   TLS keystore password.  Required when enabling TLS.
+# [*tls_trusted_certs*]
+#   An array of cert files to be added to OpenDaylight's trusted keystore.
+#   Optional.  Defaults to None.
+# [*tls_key_file*]
+#   Full path to a private key file to be used for OpenDaylight.
+#   Optional.  Defaults to undef.  Requires setting tls_cert_file.
+# [*tls_cert_file*]
+#   Full path to a public certificate file to be used for OpenDaylight.
+#   Optional.  Defaults to undef.  Requires setting tls_key_file.
+# [*tls_ca_cert_file*]
+#   Full path to a public CA authority certificate file which signed
+#   OpenDaylight's certificate.  Not needed if ODL certificate is self-signed.
+#   Optional.  Defaults to undef.
 # === Deprecated Parameters
 #
 # [*ha_node_index*]
 #   Index of ha_node_ips for this node.
 #
 class opendaylight (
-  $default_features    = $::opendaylight::params::default_features,
-  $extra_features      = $::opendaylight::params::extra_features,
-  $odl_rest_port       = $::opendaylight::params::odl_rest_port,
-  $odl_bind_ip         = $::opendaylight::params::odl_bind_ip,
-  $rpm_repo            = $::opendaylight::params::rpm_repo,
-  $deb_repo            = $::opendaylight::params::deb_repo,
-  $log_levels          = $::opendaylight::params::log_levels,
-  $enable_ha           = $::opendaylight::params::enable_ha,
-  $ha_node_ips         = $::opendaylight::params::ha_node_ips,
-  $ha_node_index       = $::opendaylight::params::ha_node_index,
-  $ha_db_modules       = $::opendaylight::params::ha_db_modules,
-  $vpp_routing_node    = $::opendaylight::params::vpp_routing_node,
-  $java_opts           = $::opendaylight::params::java_opts,
-  $manage_repositories = $::opendaylight::params::manage_repositories,
-  $username            = $::opendaylight::params::username,
-  $password            = $::opendaylight::params::password,
-  $log_max_size        = $::opendaylight::params::log_max_size,
-  $log_max_rollover    = $::opendaylight::params::log_max_rollover,
-  $snat_mechanism      = $::opendaylight::params::snat_mechanism
+  $default_features      = $::opendaylight::params::default_features,
+  $extra_features        = $::opendaylight::params::extra_features,
+  $odl_rest_port         = $::opendaylight::params::odl_rest_port,
+  $odl_bind_ip           = $::opendaylight::params::odl_bind_ip,
+  $rpm_repo              = $::opendaylight::params::rpm_repo,
+  $deb_repo              = $::opendaylight::params::deb_repo,
+  $log_levels            = $::opendaylight::params::log_levels,
+  $enable_ha             = $::opendaylight::params::enable_ha,
+  $ha_node_ips           = $::opendaylight::params::ha_node_ips,
+  $ha_node_index         = $::opendaylight::params::ha_node_index,
+  $ha_db_modules         = $::opendaylight::params::ha_db_modules,
+  $vpp_routing_node      = $::opendaylight::params::vpp_routing_node,
+  $java_opts             = $::opendaylight::params::java_opts,
+  $manage_repositories   = $::opendaylight::params::manage_repositories,
+  $username              = $::opendaylight::params::username,
+  $password              = $::opendaylight::params::password,
+  $log_max_size          = $::opendaylight::params::log_max_size,
+  $log_max_rollover      = $::opendaylight::params::log_max_rollover,
+  $snat_mechanism        = $::opendaylight::params::snat_mechanism,
+  $enable_tls            = $::opendaylight::params::enable_tls,
+  $tls_keystore_password = $::opendaylight::params::tls_keystore_password,
+  $tls_trusted_certs     = $::opendaylight::params::tls_trusted_certs,
+  $tls_key_file          = $::opendaylight::params::tls_key_file,
+  $tls_cert_file         = $::opendaylight::params::tls_cert_file,
+  $tls_ca_cert_file      = $::opendaylight::params::tls_ca_cert_file
 ) inherits ::opendaylight::params {
 
   # Validate OS family
@@ -113,5 +136,6 @@ class opendaylight (
   class { '::opendaylight::install': }
   -> class { '::opendaylight::config': }
   ~> class { '::opendaylight::service': }
+  -> class { '::opendaylight::post_config': }
   -> Class['::opendaylight']
 }

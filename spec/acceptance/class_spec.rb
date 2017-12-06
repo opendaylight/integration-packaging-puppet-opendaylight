@@ -239,4 +239,13 @@ describe 'opendaylight class' do
       websocket_address_validations(odl_bind_ip: '127.0.0.1')
     end
   end
+
+  describe 'testing enabling TLS' do
+    context 'with self-signed key/cert creation' do
+      install_odl(enable_tls: true, tls_keystore_password: '123456')
+
+      # Call specialized helper fn for TLS config validations
+      tls_validations(enable_tls: true, tls_keystore_password: '123456')
+    end
+  end
 end

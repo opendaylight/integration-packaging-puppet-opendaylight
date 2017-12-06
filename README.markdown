@@ -178,6 +178,30 @@ class { 'opendaylight':
 Websocket address can be configured to the IP of ODL rather than default 0.0.0.0. This IP will
 be defined by `odl_bind_ip`.
 
+### Enabling TLS with OpenDaylight
+
+It is possible to enable TLS encrypted communication for OpenDaylight Northbound REST
+along with Southbound OVSDB/OpenFlow communication with Open vSwitch. To enable
+TLS, use the `enable_tls` flag. This option will create two keystores in OpenDaylight
+which are stored in '/opt/opendaylight/configuration/ssl'. The first keystore
+is the controller keystore, which will hold the private key and ODL certificate,
+along with the Certificate Authority (CA) certificate if provided. The second
+keystore is the trust keystore, which will hold the trusted OVS switch certificates.
+
+In order to enable TLS, it is required to provide the `tls_keystore_password`
+parameter. This represents the password to use for the controller and truststore
+keystores. With only providing these parameters, ODL will generate the
+controller keystore with a random private key and self-signed certficate.
+
+Additionally the `tls_key_file` and `tls_cert_file` parameters may be provided.
+These represent ODL's private key file and certificate file to be used when building
+the controller keystore. Optionally the `tls_ca_cert_file` may be provided which
+will chain the CA certificate to the keystore for client validation.
+
+`tls_trusted_certs` may be provided as an array of trusted certificates to be
+added to the trusted keystore. This allows OpenDaylight to identify trusted
+clients which may connect to ODL Southbound and Northbound.
+
 ## Reference
 
 ### Classes

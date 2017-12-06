@@ -735,7 +735,7 @@ describe 'opendaylight' do
 
   # SNAT Mechanism tests
   describe 'SNAT mechanism tests' do
-    # Non-OS-type tests assume CentO
+    # Non-OS-type tests assume CentOS 7
     #   See issue #43 for reasoning:
     #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
     osfamily = 'RedHat'
@@ -785,7 +785,7 @@ describe 'opendaylight' do
 
   # SFC tests
   describe 'SFC tests' do
-    # Non-OS-type tests assume CentO
+    # Non-OS-type tests assume CentOS 7
     #   See issue #43 for reasoning:
     #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
     osfamily = 'RedHat'
@@ -909,7 +909,7 @@ describe 'opendaylight' do
 
   # websocket address tests
   describe 'ODL websocket address tests' do
-    # Non-OS-type tests assume CentO
+    # Non-OS-type tests assume CentOS 7
     #   See issue #43 for reasoning:
     #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
     osfamily = 'RedHat'
@@ -951,6 +951,51 @@ describe 'opendaylight' do
       # Run test that specialize in checking websocket address
       # Note that this function is defined in spec_helper
       odl_websocket_address_tests(odl_bind_ip: '127.0.0.1')
+    end
+  end
+
+  # TLS tests
+  describe 'ODL TLS tests' do
+    # Non-OS-type tests assume CentOS 7
+    #   See issue #43 for reasoning:
+    #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
+    osfamily = 'RedHat'
+    operatingsystem = 'CentOS'
+    operatingsystemmajrelease = '7'
+    context 'enabling TLS without required keystore password (negative test)' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+       :enable_tls => :true
+       }}
+
+      # Run test that specialize in checking TLS
+      # Note that this function is defined in spec_helper
+      odl_tls_tests(enable_tls:true)
+    end
+    context 'enabling TLS with required params' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+       :enable_tls => true,
+       :tls_keystore_password => '123456',
+       }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test that specialize in checking TLS
+      # Note that this function is defined in spec_helper
+      odl_tls_tests(enable_tls:true, tls_keystore_password:'123456')
     end
   end
 end
