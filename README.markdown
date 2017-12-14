@@ -105,7 +105,7 @@ particular, note the $basearch variable, which should be left form the
 package manager (yum, dnf) to populate.
 
 For additional information about ODL RPM repos, see the [Integration/Packaging
-RPM repositories documentation][3].
+RPM repositories documentation][2].
 
 This is only read for Red Hat-family operating systems.
 
@@ -122,7 +122,7 @@ class { 'opendaylight':
 
 The naming convention is same as the naming convention of Launchpad PPA's,
 which is where ODL .debs are hosted. The `ppa:odl-team/carbon` example above
-would install OpenDaylight Carbon from the [boron launchpad repo][4].
+would install OpenDaylight Carbon from the [Boron launchpad repo][3].
 
 This is only read for Debian-family operating systems.
 
@@ -389,21 +389,19 @@ Valid options: A password string.
 
 We welcome contributions and work to make them easy!
 
-See [CONTRIBUTING.markdown][5] for details about how to contribute to the
+See [CONTRIBUTING.markdown][4] for details about how to contribute to the
 OpenDaylight Puppet module.
 
 ## Release Notes
 
-See the [CHANGELOG][6] for information about releases.
+See the [CHANGELOG][5] for information about releases.
 
 [1]: http://www.opendaylight.org/ "OpenDaylight homepage"
 
-[2]: http://cbs.centos.org/repos/nfv7-opendaylight-61-release/x86_64/os/Packages/ "OpenDaylight Carbon SR1 CentOS CBS repo"
+[2]: http://docs.opendaylight.org/en/latest/submodules/integration/packaging/docs/rpms.html#repositories "ODL RPM repo docs"
 
-[3]: http://docs.opendaylight.org/en/latest/submodules/integration/packaging/docs/rpms.html#repositories "ODL RPM repo docs"
+[3]: https://launchpad.net/~odl-team/+archive/ubuntu/carbon "ODL Carbon Deb repo"
 
-[4]: https://launchpad.net/~odl-team/+archive/ubuntu/carbon "ODL Carbon Deb repo"
+[4]: https://git.opendaylight.org/gerrit/gitweb?p=integration/packaging/puppet-opendaylight.git;a=blob;f=CONTRIBUTING.markdown "Contributing docs"
 
-[5]: https://git.opendaylight.org/gerrit/gitweb?p=integration/packaging/puppet-opendaylight.git;a=blob;f=CONTRIBUTING.markdown "Contributing docs"
-
-[6]: https://git.opendaylight.org/gerrit/gitweb?p=integration/packaging/puppet-opendaylight.git;a=blob;f=CHANGELOG "Chagelog"
+[5]: https://git.opendaylight.org/gerrit/gitweb?p=integration/packaging/puppet-opendaylight.git;a=blob;f=CHANGELOG "Chagelog"
