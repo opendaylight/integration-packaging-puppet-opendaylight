@@ -22,18 +22,6 @@ task :metadata_lint do
   sh "metadata-json-lint metadata.json"
 end
 
-# CentOS CBS VM
-desc "Beaker tests against CentOS 7 VM with latest Oxygen testing RPM from CentOS CBS repo"
-task :cent_8test_cbs_vm do
-  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/' bundle exec rake beaker"
-end
-
-# CentOS CBS Container
-desc "Beaker tests against CentOS 7 container with latest Oxygen testing RPM from CentOS CBS repo"
-task :cent_8test_cbs_dock do
-  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/' bundle exec rake beaker"
-end
-
 # CentOS Nexus VM
 desc "Beaker tests against CentOS 7 VM with latest Oxygen testing RPM from ODL Nexus repo"
 task :cent_8test_nexus_vm do
@@ -44,6 +32,18 @@ end
 desc "Beaker tests against CentOS 7 container with latest Oxygen testing RPM from ODL Nexus repo"
 task :cent_8test_nexus_dock do
   sh "RS_SET=centos-7-docker RPM_REPO='https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel' bundle exec rake beaker"
+end
+
+# CentOS CBS VM
+desc "Beaker tests against CentOS 7 VM with latest Oxygen testing RPM from CentOS CBS repo"
+task :cent_8test_cbs_vm do
+  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/' bundle exec rake beaker"
+end
+
+# CentOS CBS Container
+desc "Beaker tests against CentOS 7 container with latest Oxygen testing RPM from CentOS CBS repo"
+task :cent_8test_cbs_dock do
+  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/' bundle exec rake beaker"
 end
 
 # Ubuntu VMs
@@ -71,21 +71,21 @@ task :test => [
 desc "Quick and important tests"
 task :sanity=> [
   :test,
-  :cent_8test_cbs_dock,
+  :cent_8test_nexus_dock,
 ]
 
-# TODO: Add cent_8test_nexus_vm when INTPAK-10 is fixed
 desc "All tests, use VMs for Beaker tests"
 task :acceptance_vm => [
   :test,
   :ubuntu_6test_vm,
   :cent_8test_cbs_vm,
+  :cent_8test_nexus_vm,
 ]
 
-# TODO: Add cent_8test_nexus_dock when INTPAK-10 is fixed
 desc "All tests, use containers for Beaker tests"
 task :acceptance_dock => [
   :test,
   :ubuntu_6test_dock,
   :cent_8test_cbs_dock,
+  :cent_8test_nexus_dock,
 ]

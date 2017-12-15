@@ -21,7 +21,7 @@ describe 'opendaylight::repos' do
       it { should contain_class('opendaylight::repos') }
       it {
         should contain_yumrepo('opendaylight').with(
-          :baseurl  => 'http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/',
+          :baseurl  => 'https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel',
           :enabled  => 1,
           :gpgcheck => 0,
         )
