@@ -59,25 +59,45 @@ def generic_tests()
 end
 
 # Shared tests that specialize in testing log file size and rollover
-def log_file_settings(options = {})
+def log_settings(options = {})
   # Extraxt params. The dafault value should be same as in opendaylight::params
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
+  log_mechanism = options.fetch(:log_mechanism, 'file')
 
-  it {
-    should contain_file_line('logmaxsize').with(
-      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      'line'   => "log4j.appender.out.maxFileSize=#{log_max_size}",
-      'match'  => '^log4j.appender.out.maxFileSize.*$',
-    )
-  }
-  it {
-    should contain_file_line('logmaxrollover').with(
-      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      'line'   => "log4j.appender.out.maxBackupIndex=#{log_max_rollover}",
-      'match'  => '^log4j.appender.out.maxBackupIndex.*$',
-    )
-  }
+  if log_mechanism == 'console'
+    it {
+      should contain_file_line('rootlogger').with(
+        'path'  => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'  => 'log4j.rootLogger=INFO, stdout, osgi:*',
+        'match' => '^log4j.rootLogger.*$',
+      )
+    }
+    it {
+      should contain_file_line('logappender').with(
+        'path'               => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'               => 'log4j.appender.stdout.direct=true',
+        'after'              => 'log4j.appender.stdout=org.apache.log4j.ConsoleAppender',
+        'match'              => '^log4j.appender.stdout.direct.*$',
+        'append_on_no_match' => true
+      )
+    }
+  else
+    it {
+      should contain_file_line('logmaxsize').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'   => "log4j.appender.out.maxFileSize=#{log_max_size}",
+        'match'  => '^log4j.appender.out.maxFileSize.*$',
+      )
+    }
+    it {
+      should contain_file_line('logmaxrollover').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'   => "log4j.appender.out.maxBackupIndex=#{log_max_rollover}",
+        'match'  => '^log4j.appender.out.maxBackupIndex.*$',
+      )
+    }
+  end
 end
 
 # Shared tests that specialize in testing Karaf feature installs

@@ -306,6 +306,16 @@ Default: `2`
 
 Valid options: An integer greater than 0.
 
+##### `log_mechanism`
+
+Logging mechanism for karaf logs. They are logged either to a file or console.
+When `log_mechanism` is `file`, log files are configured as per `log_max_size`
+and `log_max_rollover`.
+
+Default: `file`
+
+Valid options: `file`, `console`.
+
 ##### `enable_ha`
 
 Enable or disable ODL High Availablity.

@@ -50,7 +50,7 @@ describe 'opendaylight' do
             # Run tests that specialize in checking log file settings
             # NB: Only testing defaults here, specialized log file settings tests elsewhere
             # Note that this function is defined in spec_helper
-            log_file_settings
+            log_settings
           end
         end
 
@@ -114,7 +114,7 @@ describe 'opendaylight' do
             # Run tests that specialize in checking log file settings
             # NB: Only testing defaults here, specialized log file settings tests elsewhere
             # Note that this function is defined in spec_helper
-            log_file_settings
+            log_settings
           end
         end
 
@@ -188,7 +188,7 @@ describe 'opendaylight' do
             # Run tests that specialize in checking log file settings
             # NB: Only testing defaults here, specialized log file settings tests elsewhere
             # Note that this function is defined in spec_helper
-            log_file_settings
+            log_settings
           end
         end
 
@@ -445,15 +445,16 @@ describe 'opendaylight' do
     end
   end
 
-  # All custom log file size and rollover tests
-  describe 'log file size and rollover' do
+  describe 'log mechanism settings' do
     # Non-OS-type tests assume CentOS 7
     #   See issue #43 for reasoning:
     #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
     osfamily = 'RedHat'
     operatingsystem = 'CentOS'
     operatingsystemmajrelease = '7'
-    context 'using default size and rollover' do
+
+    # All custom log file size and rollover tests
+    context 'log to file using default size and rollover' do
       let(:facts) {{
         :osfamily => osfamily,
         :operatingsystem => operatingsystem,
@@ -466,11 +467,11 @@ describe 'opendaylight' do
       # Note that this function is defined in spec_helper
       generic_tests
 
-      # Run test specific to log file settings
-      log_file_settings
+      # Run test specific to log settings
+      log_settings
     end
 
-    context 'customizing size' do
+    context 'log to file customizing size' do
       let(:facts) {{
         :osfamily => osfamily,
         :operatingsystem => operatingsystem,
@@ -485,11 +486,11 @@ describe 'opendaylight' do
       # Note that this function is defined in spec_helper
       generic_tests
 
-      # Run test specific to log file settings
-      log_file_settings(log_max_size: '1GB')
+      # Run test specific to log settings
+      log_settings(log_max_size: '1GB')
     end
 
-    context 'customizing rollover' do
+    context 'log to file customizing rollover' do
       let(:facts) {{
         :osfamily => osfamily,
         :operatingsystem => operatingsystem,
@@ -504,11 +505,11 @@ describe 'opendaylight' do
       # Note that this function is defined in spec_helper
       generic_tests
 
-      # Run test specific to log file settings
-      log_file_settings(log_max_rollover: 3)
+      # Run test specific to log settings
+      log_settings(log_max_rollover: 3)
     end
 
-    context 'customizing size and rollover' do
+    context 'log to file customizing size and rollover' do
       let(:facts) {{
         :osfamily => osfamily,
         :operatingsystem => operatingsystem,
@@ -524,9 +525,28 @@ describe 'opendaylight' do
       # Note that this function is defined in spec_helper
       generic_tests
 
-      # Run test specific to log file settings
-      log_file_settings(log_max_size: '1GB',
+      # Run test specific to log settings
+      log_settings(log_max_size: '1GB',
                         log_max_rollover: 3)
+    end
+
+    context 'log to console' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :log_mechanism => 'console',
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      log_settings(log_mechanism: 'console')
     end
   end
 

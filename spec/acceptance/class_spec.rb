@@ -74,39 +74,47 @@ describe 'opendaylight class' do
     end
   end
 
-  describe 'log file size and rollover' do
-    context 'using default size and rollover' do
+  describe 'logging mechanism' do
+    context 'log to file using default size and rollover' do
       # Call specialized helper fn to install OpenDaylight
       install_odl
 
-      # Call specialized helper fn for log file settings validations
-      log_file_settings_validations
+      # Call specialized helper fn for log settings validations
+      log_settings_validations
     end
 
-    context 'customising size' do
+    context 'log to file customising size' do
       # Call specialized helper fn to install OpenDaylight
       install_odl(log_max_size: '1GB')
 
-      # Call specialized helper fn for log file settings validations
-      log_file_settings_validations(log_max_size: '1GB')
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(log_max_size: '1GB')
     end
 
-    context 'customising rollover' do
+    context 'log to file customising rollover' do
       # Call specialized helper fn to install OpenDaylight
       install_odl(log_max_rollover: 3)
 
-      # Call specialized helper fn for log file settings validations
-      log_file_settings_validations(log_max_rollover: 3)
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(log_max_rollover: 3)
     end
 
-    context 'customising size and rollover' do
+    context 'log to file customising size and rollover' do
       # Call specialized helper fn to install OpenDaylight
       install_odl(log_max_size: '1GB',
                   log_max_rollover: 3)
 
-      # Call specialized helper fn for log file settings validations
-      log_file_settings_validations(log_max_size: '1GB',
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(log_max_size: '1GB',
                                     log_max_rollover: 3)
+    end
+
+    context 'log to console' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(log_mechanism: 'console')
+
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(log_mechanism: 'console')
     end
   end
 

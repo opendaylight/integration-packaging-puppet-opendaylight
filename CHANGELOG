@@ -50,3 +50,5 @@
 - Only support stateful security mode. Remove all related configs
 2017-11-17 Release 5.1.0
 - Configure websocket address
+2017-01-03 Release 6.1.0
+- Add param to log karaf logs to either file or console

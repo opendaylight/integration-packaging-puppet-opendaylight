@@ -84,6 +84,23 @@ class opendaylight::config {
     }
   }
 
+  # set logging mechanism
+  if $opendaylight::log_mechanism == 'console' {
+    file_line {'rootlogger':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => 'log4j.rootLogger=INFO, stdout, osgi:*',
+      match  => '^log4j.rootLogger.*$'
+    }
+    file_line { 'logappender':
+      ensure             => present,
+      path               => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line               => 'log4j.appender.stdout.direct=true',
+      after              => 'log4j.appender.stdout=org.apache.log4j.ConsoleAppender',
+      match              => '^log4j.appender.stdout.direct.*$',
+      append_on_no_match => true
+    }
+  }
   # Set maximum ODL log file size
   file_line { 'logmaxsize':
     ensure => present,

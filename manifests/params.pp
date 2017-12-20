@@ -27,4 +27,5 @@ class opendaylight::params {
   $log_max_size = '10GB'
   $log_max_rollover = 2
   $snat_mechanism = 'controller'
+  $log_mechanism = 'file'
 }
