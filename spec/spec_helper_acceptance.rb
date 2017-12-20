@@ -67,6 +67,7 @@ def install_odl(options = {})
   snat_mechanism = options.fetch(:snat_mechanism, 'controller')
   enable_tls = options.fetch(:enable_tls, false)
   tls_keystore_password = options.fetch(:tls_keystore_password, 'dummypass')
+  log_mechanism = options.fetch(:log_mechanism, 'file')
 
   # Build script for consumption by Puppet apply
   it 'should work idempotently with no errors' do
@@ -90,6 +91,7 @@ def install_odl(options = {})
       snat_mechanism => #{snat_mechanism},
       enable_tls => #{enable_tls},
       tls_keystore_password => #{tls_keystore_password},
+      log_mechanism => #{log_mechanism},
     }
     EOS
 
@@ -209,17 +211,28 @@ def generic_validations()
 end
 
 # Shared function for validations related to log file settings
-def log_file_settings_validations(options = {})
+def log_settings_validations(options = {})
   # Should contain log level config file with correct file size and rollover values
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
+  log_mechanism = options.fetch(:log_mechanism, 'file')
 
-  describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
-    it { should be_file }
-    it { should be_owned_by 'odl' }
-    it { should be_grouped_into 'odl' }
-    its(:content) { should match /^log4j.appender.out.maxFileSize=#{log_max_size}/ }
-    its(:content) { should match /^log4j.appender.out.maxBackupIndex=#{log_max_rollover}/ }
+  if log_mechanism == 'console'
+    describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /log4j.rootLogger=INFO, stdout, osgi:*/ }
+      its(:content) { should match /log4j.appender.stdout.direct=true/ }
+    end
+  else
+    describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /^log4j.appender.out.maxFileSize=#{log_max_size}/ }
+      its(:content) { should match /^log4j.appender.out.maxBackupIndex=#{log_max_rollover}/ }
+    end
   end
 end
 

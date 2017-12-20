@@ -54,3 +54,5 @@
 - Configure websocket address
 2017-01-02 Release 6.2.0
 - Adds SSL/TLS support
+2017-01-03 Release 6.3.0
+- Add param to log karaf logs to either file or console

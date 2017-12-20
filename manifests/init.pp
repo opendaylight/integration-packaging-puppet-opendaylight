@@ -59,6 +59,9 @@
 #   Full path to a public CA authority certificate file which signed
 #   OpenDaylight's certificate.  Not needed if ODL certificate is self-signed.
 #   Optional.  Defaults to undef.
+# [*log_mechanism*]
+#   Sets logging mechanism for karaf logs
+#
 # === Deprecated Parameters
 #
 # [*ha_node_index*]
@@ -89,7 +92,8 @@ class opendaylight (
   $tls_trusted_certs     = $::opendaylight::params::tls_trusted_certs,
   $tls_key_file          = $::opendaylight::params::tls_key_file,
   $tls_cert_file         = $::opendaylight::params::tls_cert_file,
-  $tls_ca_cert_file      = $::opendaylight::params::tls_ca_cert_file
+  $tls_ca_cert_file      = $::opendaylight::params::tls_ca_cert_file,
+  $log_mechanism         = $::opendaylight::params::log_mechanism,
 ) inherits ::opendaylight::params {
 
   # Validate OS family
