@@ -445,11 +445,17 @@ def websocket_address_validations(options = {})
   # TODO: Remove this possible source of bugs^^
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
 
-  describe file('/opt/opendaylight/etc/opendaylight/karaf/10-rest-connector.xml') do
-    it { should be_file }
-    it { should be_owned_by 'odl' }
-    it { should be_grouped_into 'odl' }
-    its(:content) { should match /<websocket-address>#{odl_bind_ip}<\/websocket-address>/ }
+  if not odl_bind_ip.eql? '0.0.0.0'
+    describe file('/opt/opendaylight/etc/org.opendaylight.restconf.cfg') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /^websocket-address=#{odl_bind_ip}/ }
+    end
+  else
+    describe file('/opt/opendaylight/etc/org.opendaylight.restconf.cfg') do
+      it { should be_file }
+    end
   end
 end
 
