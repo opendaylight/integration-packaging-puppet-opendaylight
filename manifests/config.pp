@@ -59,6 +59,20 @@ class opendaylight::config {
       path   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
       line   => "org.ops4j.pax.web.listening.addresses = ${opendaylight::odl_bind_ip}"
     }
+
+    # Configure websocket address
+    file { '/opt/opendaylight/etc/org.opendaylight.restconf.cfg':
+      ensure => file,
+      path   => '/opt/opendaylight/etc/org.opendaylight.restconf.cfg',
+      owner  => 'odl',
+      group  => 'odl',
+    }
+    -> file_line { 'websocket-address':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.opendaylight.restconf.cfg',
+      line   => "websocket-address=${::opendaylight::odl_bind_ip}",
+      match  => '^websocket-address=.*$',
+    }
   }
 
   # Set any custom log levels
@@ -192,15 +206,5 @@ class opendaylight::config {
   odl_user { $::opendaylight::username:
     password => $::opendaylight::password,
     before   => Service['opendaylight'],
-  }
-
-  # Configure websocket address
-  file { '10-rest-connector.xml':
-    ensure  => file,
-    path    => '/opt/opendaylight/etc/opendaylight/karaf/10-rest-connector.xml',
-    owner   => 'odl',
-    group   => 'odl',
-    content => template('opendaylight/10-rest-connector.xml.erb'),
-    require => File['/opt/opendaylight/etc/opendaylight/karaf'],
   }
 }

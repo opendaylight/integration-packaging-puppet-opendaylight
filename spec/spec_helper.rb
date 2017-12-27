@@ -402,13 +402,26 @@ def odl_websocket_address_tests(options = {})
   # Confirm properties of ODL REST port config file
   # NB: These hashes don't work with Ruby 1.8.7, but we
   #   don't support 1.8.7 so that's okay. See issue #36.
-  it {
-    should contain_file('10-rest-connector.xml').with(
-      'ensure'      => 'file',
-      'path'        => '/opt/opendaylight/etc/opendaylight/karaf/10-rest-connector.xml',
-      'owner'   => 'odl',
-      'group'   => 'odl',
-      'content'     =>  /<websocket-address>#{odl_bind_ip}<\/websocket-address>/
-    )
-  }
+
+  if not odl_bind_ip.eql? '0.0.0.0'
+    it {
+      should contain_file('/opt/opendaylight/etc/org.opendaylight.restconf.cfg').with(
+        'ensure'      => 'file',
+        'path'        => '/opt/opendaylight/etc/org.opendaylight.restconf.cfg',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+      )
+    }
+    it {
+        should contain_file_line('websocket-address').with(
+          'path'    => '/opt/opendaylight/etc/org.opendaylight.restconf.cfg',
+          'line'    => "websocket-address=#{odl_bind_ip}",
+          'match'   => '^websocket-address=.*$',
+      )
+    }
+  else
+    it {
+      should_not contain_file_line('websocket-address')
+    }
+  end
 end
