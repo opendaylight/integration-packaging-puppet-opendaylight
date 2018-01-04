@@ -724,8 +724,8 @@ describe 'opendaylight' do
         deb_install_tests
       end
 
-      context 'installing Carbon Deb' do
-        deb_repo = 'ppa:odl-team/carbon'
+      context 'installing Nitrogen Deb' do
+        deb_repo = 'ppa:odl-team/nitrogen'
         let(:facts) {{
           :osfamily => osfamily,
           :operatingsystem => operatingsystem,

@@ -15,8 +15,8 @@
 # [*rpm_repo*]
 #   Repo URL to install ODL RPM from, in .repo baseurl format.
 # [*deb_repo*]
-#   OpenDaylight Launchpad PPA repo to install .deb from (ppa:odl-team/boron,
-#   ppa:odl-team/carbon, ...).
+#   OpenDaylight Launchpad PPA repo to install .deb from (ppa:odl-team/carbon,
+#   ppa:odl-team/nitrogen, ...).
 # [*log_levels*]
 #   Custom OpenDaylight logger verbosity configuration (TRACE, DEBUG, INFO, WARN, ERROR).
 # [*enable_ha*]

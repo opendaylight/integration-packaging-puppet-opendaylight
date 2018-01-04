@@ -47,15 +47,15 @@ task :cent_8test_cbs_dock do
 end
 
 # Ubuntu VMs
-desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
+desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
 task :ubuntu_6test_vm do
-  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/carbon' bundle exec rake beaker"
+  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
 end
 
 # Ubuntu Containers
-desc "Beaker tests against Ubuntu 16.04 Container with Boron release Deb"
+desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
 task :ubuntu_6test_dock do
-  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/carbon' bundle exec rake beaker"
+  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
 end
 
 # Multi-test helpers
