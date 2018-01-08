@@ -398,9 +398,13 @@ def username_password_validations(options = {})
     it { should be_file }
   end
 
-  #describe command("sleep 300 && curl -o /dev/null --fail --silent --head -u #{odl_username}:#{odl_password} #{odl_check_url}") do
-  #  its(:exit_status) { should eq 0 }
-  #end
+  describe command("loop_count=0; until [[ \$loop_count -ge 300 ]]; do curl -o /dev/null --fail --silent --head -u #{odl_username}:#{odl_password} #{odl_check_url} && break; loop_count=\$[\$loop_count+1]; sleep 1; done; echo \"Waited \$loop_count seconds for ODL to become active\"") do
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command("curl -o /dev/null --fail --silent --head -u #{odl_username}:#{odl_password} #{odl_check_url}") do
+    its(:exit_status) { should eq 0 }
+  end
 end
 
 # Shared function for validations related to the SNAT config file
