@@ -14,9 +14,6 @@ Puppet::Type.newtype(:odl_keystore) do
         if !value.is_a?(String)
           raise ArgumentError, "CA cert file path must be a string"
         end
-        unless File.file?(value)
-          raise ArgumentError, "CA cert file not found: #{value}"
-        end
       end
     end
   end
@@ -39,13 +36,10 @@ Puppet::Type.newtype(:odl_keystore) do
   end
 
   newproperty(:cert_file) do
-    desc "Certificate filepath"
+    desc "Certificate file path"
     validate do |value|
       if !value.is_a?(String)
         raise ArgumentError, "Certificate file path must be a string"
-      end
-      unless File.file?(value)
-        raise ArgumentError, "Certificate file not found: #{value}"
       end
     end
   end
@@ -55,9 +49,6 @@ Puppet::Type.newtype(:odl_keystore) do
     validate do |value|
       if !value.is_a?(String)
         raise ArgumentError, "Key file path must be a string"
-      end
-      unless File.file?(value)
-        raise ArgumentError, "Key file not found: #{value}"
       end
     end
   end

@@ -18,12 +18,23 @@ Puppet::Type.type(:odl_keystore).provide(:jks) do
       FileUtils.chown('odl', 'odl', keystore_dir)
     end
     # create p12 keystore
+    unless File.file?(@resource[:key_file])
+      raise Puppet::Error, "Key file not found: #{@resource[:key_file]}"
+    end
     key = OpenSSL::PKey::RSA.new File.read(@resource[:key_file])
+    unless File.file?(@resource[:cert_file])
+      raise Puppet::Error, "Certificate file not found: #{@resource[:cert_file]}"
+    end
     raw_cert = File.read(@resource[:cert_file])
     certificate = OpenSSL::X509::Certificate.new(raw_cert)
     if @resource[:ca_file]
+      unless File.file?(@resource[:ca_file])
+        raise Puppet::Error, "CA cert file not found: #{@resource[:ca_file]}"
+      end
+      raw_ca = File.read(@resource[:ca_file])
+      ca_cert = OpenSSL::X509::Certificate.new(raw_ca)
       p12_ks = OpenSSL::PKCS12.create(@resource[:password], @resource[:name], \
-                                      key, certificate, [@resource[:ca_file]])
+                                      key, certificate, [ca_cert])
     else
       p12_ks = OpenSSL::PKCS12.create(@resource[:password], @resource[:name], \
                                       key, certificate)
