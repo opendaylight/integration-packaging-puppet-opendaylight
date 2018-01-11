@@ -78,8 +78,7 @@ def log_settings(options = {})
         'path'               => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
         'line'               => 'log4j.appender.stdout.direct=true',
         'after'              => 'log4j.appender.stdout=org.apache.log4j.ConsoleAppender',
-        'match'              => '^log4j.appender.stdout.direct.*$',
-        'append_on_no_match' => true
+        'match'              => '^log4j.appender.stdout.direct.*$'
       )
     }
   else
