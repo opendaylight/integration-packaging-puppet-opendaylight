@@ -205,28 +205,28 @@ class opendaylight::config {
       match  => '^log4j.rootLogger.*$'
     }
     file_line { 'logappender':
-      ensure             => present,
-      path               => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      line               => 'log4j.appender.stdout.direct=true',
-      after              => 'log4j.appender.stdout=org.apache.log4j.ConsoleAppender',
-      match              => '^log4j.appender.stdout.direct.*$',
-      append_on_no_match => true
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => 'log4j.appender.stdout.direct=true',
+      after  => 'log4j.appender.stdout=org.apache.log4j.ConsoleAppender',
+      match  => '^log4j.appender.stdout.direct.*$'
     }
-  }
-  # Set maximum ODL log file size
-  file_line { 'logmaxsize':
-    ensure => present,
-    path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-    line   => "log4j.appender.out.maxFileSize=${::opendaylight::log_max_size}",
-    match  => '^log4j.appender.out.maxFileSize.*$'
-  }
+  } else {
+    # Set maximum ODL log file size
+    file_line { 'logmaxsize':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => "log4j.appender.out.maxFileSize=${::opendaylight::log_max_size}",
+      match  => '^log4j.appender.out.maxFileSize.*$'
+    }
 
-  # Set maximum number of ODL log file rollovers to preserve
-  file_line { 'logmaxrollover':
-    ensure => present,
-    path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-    line   => "log4j.appender.out.maxBackupIndex=${::opendaylight::log_max_rollover}",
-    match  => '^log4j.appender.out.maxBackupIndex.*$'
+    # Set maximum number of ODL log file rollovers to preserve
+    file_line { 'logmaxrollover':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => "log4j.appender.out.maxBackupIndex=${::opendaylight::log_max_rollover}",
+      match  => '^log4j.appender.out.maxBackupIndex.*$'
+    }
   }
 
   # Configure ODL HA if enabled
