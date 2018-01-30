@@ -60,3 +60,5 @@
 - Bump default package for Debian from Carbon to Nitrogen
 2017-01-30 Release 6.3.2
 - Update Jetty configuration
+2017-01-31 Release 7.0.0
+- Update default REST API port to 8181

@@ -133,7 +133,7 @@ calls, use the `odl_rest_port` param.
 
 ```puppet
 class { 'opendaylight':
-  odl_rest_port => '8080',
+  odl_rest_port => '8181',
 }
 ```
 
@@ -247,7 +247,7 @@ Valid options: A list of Karaf feature names as strings.
 
 Specifies the port for the ODL northbound REST interface to listen on.
 
-Default: `'8080'`
+Default: `'8181'`
 
 Valid options: A valid port number as a string or integer.
 

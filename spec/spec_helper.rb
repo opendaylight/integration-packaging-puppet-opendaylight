@@ -139,7 +139,7 @@ def odl_rest_port_tests(options = {})
   # Extract params
   # NB: This default value should be the same as one in opendaylight::params
   # TODO: Remove this possible source of bugs^^
-  odl_rest_port = options.fetch(:odl_rest_port, 8080)
+  odl_rest_port = options.fetch(:odl_rest_port, 8181)
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
   # Confirm properties of ODL REST port config file
   # NB: These hashes don't work with Ruby 1.8.7, but we
@@ -458,7 +458,7 @@ def odl_tls_tests(options = {})
   tls_key_file = options.fetch(:tls_key_file, nil)
   tls_cert_file = options.fetch(:tls_cert_file, nil)
   tls_ca_cert_file = options.fetch(:tls_ca_cert_file, nil)
-  odl_rest_port = options.fetch(:odl_rest_port, 8080)
+  odl_rest_port = options.fetch(:odl_rest_port, 8181)
 
   if enable_tls
     if tls_keystore_password.nil?

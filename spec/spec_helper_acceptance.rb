@@ -53,7 +53,7 @@ def install_odl(options = {})
   # Extract params if given, defaulting to odl class defaults if not
   extra_features = options.fetch(:extra_features, ['odl-restconf'])
   default_features = options.fetch(:default_features, ['standard', 'wrap', 'ssh'])
-  odl_rest_port = options.fetch(:odl_rest_port, 8080)
+  odl_rest_port = options.fetch(:odl_rest_port, 8181)
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
   log_levels = options.fetch(:log_levels, {})
   enable_ha = options.fetch(:enable_ha, false)
@@ -260,7 +260,7 @@ def port_config_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
   # TODO: Remove this possible source of bugs^^
-  odl_rest_port = options.fetch(:odl_rest_port, 8080)
+  odl_rest_port = options.fetch(:odl_rest_port, 8181)
 
   describe file('/opt/opendaylight/etc/jetty.xml') do
     it { should be_file }
@@ -392,7 +392,7 @@ def username_password_validations(options = {})
   # TODO: Remove this possible source of bugs^^
   odl_username = options.fetch(:username, 'admin')
   odl_password = options.fetch(:password, 'admin')
-  odl_check_url = 'http://127.0.0.1:8080/restconf'
+  odl_check_url = 'http://127.0.0.1:8181/restconf'
 
   describe file('/opt/opendaylight/data/idmlight.db.mv.db') do
     it { should be_file }
@@ -468,7 +468,7 @@ def tls_validations(options = {})
   #   class, which is defined in opendaylight::params
   # TODO: Remove this possible source of bugs^^
   tls_keystore_password = options.fetch(:tls_keystore_password)
-  odl_rest_port = options.fetch(:odl_rest_port, 8080)
+  odl_rest_port = options.fetch(:odl_rest_port, 8181)
 
   describe file('/opt/opendaylight/etc/org.ops4j.pax.web.cfg') do
     it { should be_file }
