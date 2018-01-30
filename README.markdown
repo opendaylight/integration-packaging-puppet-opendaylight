@@ -279,10 +279,12 @@ The above example would add the following logging configuration to
 
 ```
 # Log level config added by puppet-opendaylight
-log4j.logger.org.opendaylight.ovsdb = TRACE
+log4j2.logger.org_opendaylight_ovsdb.level = TRACE
+log4j2.logger.org_opendaylight_ovsdb.name = org.opendaylight.ovsdb
 
 # Log level config added by puppet-opendaylight
-log4j.logger.org.opendaylight.ovsdb.lib = INFO
+log4j2.logger.org_opendaylight_ovsdb_lib.level = INFO
+log4j2.logger.org_opendaylight_ovsdb_lib.name = org.opendaylight.ovsdb.lib
 ```
 
 To view loggers and their verbosity levels, use `log:list` at the ODL Karaf shell.

@@ -70,35 +70,34 @@ def log_settings(options = {})
 
   if log_mechanism == 'console'
     it {
-      should contain_file_line('rootlogger').with(
+      should contain_file_line('consoleappender').with(
         'path'  => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-        'line'  => 'log4j.rootLogger=INFO, stdout, osgi:*',
-        'match' => '^log4j.rootLogger.*$',
-      )
-    }
-    it {
-      should contain_file_line('logappender').with(
-        'path'               => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-        'line'               => 'log4j.appender.stdout.direct=true',
-        'after'              => 'log4j.appender.stdout=org.apache.log4j.ConsoleAppender',
-        'match'              => '^log4j.appender.stdout.direct.*$'
+        'line'  => 'karaf.log.console=INFO',
+        'after' => 'log4j2.rootLogger.appenderRef.Console.filter.threshold.type = ThresholdFilter',
+        'match' => '^karaf.log.console.*$'
       )
     }
   else
-    it {
-      should contain_file_line('logmaxsize').with(
-        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-        'line'   => "log4j.appender.out.maxFileSize=#{log_max_size}",
-        'match'  => '^log4j.appender.out.maxFileSize.*$',
-      )
-    }
-    it {
-      should contain_file_line('logmaxrollover').with(
-        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-        'line'   => "log4j.appender.out.maxBackupIndex=#{log_max_rollover}",
-        'match'  => '^log4j.appender.out.maxBackupIndex.*$',
-      )
-    }
+  it {
+    should contain_file_line('logmaxsize').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j2.appender.rolling.policies.size.size = #{log_max_size}",
+      'match'  => '^log4j2.appender.rolling.policies.size.size.*$',
+    )
+  }
+  it {
+    should contain_file_line('rolloverstrategy').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => 'log4j2.appender.rolling.strategy.type = DefaultRolloverStrategy'
+    )
+  }
+  it {
+    should contain_file_line('logmaxrollover').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j2.appender.rolling.strategy.max = #{log_max_rollover}",
+      'match'  => '^log4j2.appender.rolling.strategy.max.*$',
+    )
+  }
   end
 end
 
@@ -174,16 +173,27 @@ def log_level_tests(options = {})
   if log_levels.empty?
     # Should contain log level config file
     it {
-      should_not contain_file_line('logger-org.opendaylight.ovsdb')
+      should_not contain_file_line('logger-org.opendaylight.ovsdb-level')
+    }
+    it {
+      should_not contain_file_line('logger-org.opendaylight.ovsdb-name')
     }
   else
     # Verify each custom log level config entry
     log_levels.each_pair do |logger, level|
+      underscored_version = "#{logger}".gsub('.', '_')
       it {
-        should contain_file_line("logger-#{logger}").with(
+        should contain_file_line("logger-#{logger}-level").with(
           'ensure' => 'present',
           'path' => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-          'line' => "log4j.logger.#{logger}=#{level}",
+          'line' => "log4j2.logger.#{underscored_version}.level = #{level}",
+          'match'  => "log4j2.logger.#{underscored_version}.level = .*$"
+        )
+        should contain_file_line("logger-#{logger}-name").with(
+          'ensure' => 'present',
+          'path' => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+          'line' => "log4j2.logger.#{underscored_version}.name = #{logger}",
+          'match'  => "log4j2.logger.#{underscored_version}.name = .*$"
         )
       }
     end

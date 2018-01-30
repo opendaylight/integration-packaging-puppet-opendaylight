@@ -189,43 +189,51 @@ class opendaylight::config {
 
   # Set any custom log levels
   $opendaylight::log_levels.each |$log_name, $logging_level| {
-    file_line {"logger-${log_name}":
+    $underscored_version = regsubst($log_name, '\.', '_', 'G')
+    file_line {"logger-${log_name}-level":
       ensure => present,
       path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      line   => "log4j.logger.${log_name}=${logging_level}"
+      line   => "log4j2.logger.${underscored_version}.level = ${logging_level}",
+      match  => "log4j2.logger.${underscored_version}.level = .*$"
+    }
+    file_line {"logger-${log_name}-name":
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => "log4j2.logger.${underscored_version}.name = ${log_name}",
+      match  => "log4j2.logger.${underscored_version}.name = .*$"
     }
   }
 
   # set logging mechanism
   if $opendaylight::log_mechanism == 'console' {
-    file_line {'rootlogger':
+    file_line { 'consoleappender':
       ensure => present,
       path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      line   => 'log4j.rootLogger=INFO, stdout, osgi:*',
-      match  => '^log4j.rootLogger.*$'
-    }
-    file_line { 'logappender':
-      ensure => present,
-      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      line   => 'log4j.appender.stdout.direct=true',
-      after  => 'log4j.appender.stdout=org.apache.log4j.ConsoleAppender',
-      match  => '^log4j.appender.stdout.direct.*$'
+      line   => 'karaf.log.console=INFO',
+      after  => 'log4j2.rootLogger.appenderRef.Console.filter.threshold.type = ThresholdFilter',
+      match  => '^karaf.log.console.*$'
     }
   } else {
     # Set maximum ODL log file size
     file_line { 'logmaxsize':
       ensure => present,
       path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      line   => "log4j.appender.out.maxFileSize=${::opendaylight::log_max_size}",
-      match  => '^log4j.appender.out.maxFileSize.*$'
+      line   => "log4j2.appender.rolling.policies.size.size = ${::opendaylight::log_max_size}",
+      match  => '^log4j2.appender.rolling.policies.size.size.*$'
+    }
+
+    file_line { 'rolloverstrategy':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => 'log4j2.appender.rolling.strategy.type = DefaultRolloverStrategy'
     }
 
     # Set maximum number of ODL log file rollovers to preserve
-    file_line { 'logmaxrollover':
+    -> file_line { 'logmaxrollover':
       ensure => present,
       path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      line   => "log4j.appender.out.maxBackupIndex=${::opendaylight::log_max_rollover}",
-      match  => '^log4j.appender.out.maxBackupIndex.*$'
+      line   => "log4j2.appender.rolling.strategy.max = ${::opendaylight::log_max_rollover}",
+      match  => '^log4j2.appender.rolling.strategy.max.*$'
     }
   }
 
