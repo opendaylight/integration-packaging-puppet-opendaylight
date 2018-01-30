@@ -1,6 +1,6 @@
 {
     "name": "opendaylight-opendaylight",
-    "version": "6.3.1",
+    "version": "6.3.2",
     "author": "Daniel Farrell",
     "summary": "Puppet module that installs and configures the OpenDaylight SDN controller",
     "license": "BSD-2-Clause",

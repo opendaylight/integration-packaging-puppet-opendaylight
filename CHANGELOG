@@ -58,3 +58,5 @@
 - Add param to log karaf logs to either file or console
 2017-01-04 Release 6.3.1
 - Bump default package for Debian from Carbon to Nitrogen
+2017-01-30 Release 6.3.2
+- Update Jetty configuration

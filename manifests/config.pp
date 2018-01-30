@@ -57,14 +57,14 @@ class opendaylight::config {
       incl    => '/opt/opendaylight/etc/jetty.xml',
       context => '/files/opt/opendaylight/etc/jetty.xml/Configure',
       lens    => 'Xml.lns',
-      changes => ["rm Call[2]/Arg/New/Set[#attribute[name='port']]"]
+      changes => ["rm Call[1]/Arg/New/Set[#attribute[name='port']]"]
     }
 
     augeas {'ODL SSL REST Port':
       incl    => '/opt/opendaylight/etc/jetty.xml',
       context => '/files/opt/opendaylight/etc/jetty.xml/Configure',
       lens    => 'Xml.lns',
-      changes => ["set New[2]/Set[#attribute[name='securePort']]/Property/#attribute/default ${opendaylight::odl_rest_port}"]
+      changes => ["set New[1]/Set[#attribute[name='securePort']]/Property/#attribute/default ${opendaylight::odl_rest_port}"]
     }
 
     file_line { 'set pax TLS port':
@@ -132,7 +132,7 @@ class opendaylight::config {
       context => '/files/opt/opendaylight/etc/jetty.xml/Configure',
       lens    => 'Xml.lns',
       changes => [
-        "set Call[2]/Arg/New/Set[#attribute[name='port']]/Property/#attribute/default
+        "set Call[1]/Arg/New/Set[#attribute[name='port']]/Property/#attribute/default
           ${opendaylight::odl_rest_port}"]
     }
   }
@@ -161,8 +161,8 @@ class opendaylight::config {
       context => '/files/opt/opendaylight/etc/jetty.xml/Configure',
       lens    => 'Xml.lns',
       changes => [
-        "set Call[1]/Arg/New/Set[#attribute[name='host']]/Property/#attribute/default ${opendaylight::odl_bind_ip}",
-        "set Call[2]/Arg/New/Set[#attribute[name='host']]/Property/#attribute/default ${opendaylight::odl_bind_ip}"]
+        "set Call[1]/Arg/New/Set[#attribute[name='host']]/Property/#attribute/default ${opendaylight::odl_bind_ip}"
+      ]
     }
 
     file_line { 'set pax bind IP':
