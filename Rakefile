@@ -47,16 +47,16 @@ task :cent_8test_cbs_dock do
 end
 
 # Ubuntu VMs
-desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
-task :ubuntu_6test_vm do
-  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
-end
+#desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
+#task :ubuntu_6test_vm do
+#  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
+#end
 
 # Ubuntu Containers
-desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
-task :ubuntu_6test_dock do
-  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
-end
+#desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
+#task :ubuntu_6test_dock do
+#  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
+#end
 
 # Multi-test helpers
 
@@ -77,7 +77,6 @@ task :sanity=> [
 desc "All tests, use VMs for Beaker tests"
 task :acceptance_vm => [
   :test,
-  :ubuntu_6test_vm,
   :cent_8test_cbs_vm,
   :cent_8test_nexus_vm,
 ]
@@ -85,7 +84,6 @@ task :acceptance_vm => [
 desc "All tests, use containers for Beaker tests"
 task :acceptance_dock => [
   :test,
-  :ubuntu_6test_dock,
   :cent_8test_cbs_dock,
   :cent_8test_nexus_dock,
 ]
