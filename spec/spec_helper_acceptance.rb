@@ -222,16 +222,16 @@ def log_settings_validations(options = {})
       it { should be_file }
       it { should be_owned_by 'odl' }
       it { should be_grouped_into 'odl' }
-      its(:content) { should match /log4j.rootLogger=INFO, stdout, osgi:*/ }
-      its(:content) { should match /log4j.appender.stdout.direct=true/ }
+      its(:content) { should match /^karaf.log.console=INFO/ }
     end
   else
     describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
       it { should be_file }
       it { should be_owned_by 'odl' }
       it { should be_grouped_into 'odl' }
-      its(:content) { should match /^log4j.appender.out.maxFileSize=#{log_max_size}/ }
-      its(:content) { should match /^log4j.appender.out.maxBackupIndex=#{log_max_rollover}/ }
+      its(:content) { should match /^log4j2.appender.rolling.policies.size.size = #{log_max_size}/ }
+      its(:content) { should match /^log4j2.appender.rolling.strategy.type = DefaultRolloverStrategy/ }
+      its(:content) { should match /^log4j2.appender.rolling.strategy.max = #{log_max_rollover}/ }
     end
   end
 end
@@ -293,11 +293,13 @@ def log_level_validations(options = {})
     end
     # Verify each custom log level config entry
     log_levels.each_pair do |logger, level|
+      underscored_version = "#{logger}".gsub('.', '_')
       describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
         it { should be_file }
         it { should be_owned_by 'odl' }
         it { should be_grouped_into 'odl' }
-        its(:content) { should match /^log4j.logger.#{logger}=#{level}/ }
+        its(:content) { should match /^log4j2.logger.#{underscored_version}.level = #{level}/ }
+        its(:content) { should match /^log4j2.logger.#{underscored_version}.name = #{logger}/ }
       end
     end
   end

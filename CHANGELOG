@@ -52,13 +52,15 @@
 - Allow full customization of ODL RPM repo
 2017-11-17 Release 6.1.0
 - Configure websocket address
-2017-01-02 Release 6.2.0
+2018-01-02 Release 6.2.0
 - Adds SSL/TLS support
-2017-01-03 Release 6.3.0
+2018-01-03 Release 6.3.0
 - Add param to log karaf logs to either file or console
-2017-01-04 Release 6.3.1
+2018-01-04 Release 6.3.1
 - Bump default package for Debian from Carbon to Nitrogen
-2017-01-30 Release 6.3.2
+2018-01-30 Release 6.3.2
 - Update Jetty configuration
-2017-01-31 Release 7.0.0
+2018-01-31 Release 7.0.0
 - Update default REST API port to 8181
+2018-01-30 Release 8.0.0
+- Move to using log4j2
