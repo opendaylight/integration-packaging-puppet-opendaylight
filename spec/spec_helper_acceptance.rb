@@ -268,6 +268,13 @@ def port_config_validations(options = {})
     it { should be_grouped_into 'odl' }
     its(:content) { should match /Property name="jetty.port" default="#{odl_rest_port}"/ }
   end
+
+  describe file('/opt/opendaylight/etc/org.ops4j.pax.web.cfg') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /org.osgi.service.http.port = #{odl_rest_port}/ }
+  end
 end
 
 # Shared function for validations related to custom logging verbosity

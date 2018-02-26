@@ -187,6 +187,13 @@ class opendaylight::config {
     }
   }
 
+  file_line { 'set pax bind port':
+    ensure  => present,
+    path    => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+    line    => "org.osgi.service.http.port = ${opendaylight::odl_rest_port}",
+    require => File['org.ops4j.pax.web.cfg']
+  }
+
   # Set any custom log levels
   $opendaylight::log_levels.each |$log_name, $logging_level| {
     $underscored_version = regsubst($log_name, '\.', '_', 'G')

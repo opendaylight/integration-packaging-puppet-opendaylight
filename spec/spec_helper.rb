@@ -162,6 +162,15 @@ def odl_rest_port_tests(options = {})
       should_not contain_augeas('ODL REST IP')
     }
   end
+
+  it {
+    should contain_file_line('set pax bind port').with(
+        'ensure'  => 'present',
+        'path'    => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'    => "org.osgi.service.http.port = #{odl_rest_port}",
+        'require' => 'File[org.ops4j.pax.web.cfg]'
+    )
+  }
 end
 
 def log_level_tests(options = {})
