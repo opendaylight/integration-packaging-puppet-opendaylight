@@ -108,7 +108,9 @@ end
 
 # Shared function that handles generic validations
 # These should be common for all odl class param combos
-def generic_validations()
+def generic_validations(options = {})
+  java_opts = options.fetch(:java_opts, '-Djava.net.preferIPv4Stack=true')
+
   # Verify ODL's directory
   describe file('/opt/opendaylight/') do
     it { should be_directory }
@@ -157,6 +159,14 @@ def generic_validations()
     it { should be_file }
     it { should be_owned_by 'odl' }
     it { should be_grouped_into 'odl' }
+  end
+
+  # Should contain karaf file with Java options set
+  describe file('/opt/opendaylight/bin/karaf') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /^JAVA_OPTS=#{java_opts}$/ }
   end
 
   # Should contain ODL NB port config file

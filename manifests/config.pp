@@ -19,6 +19,15 @@ class opendaylight::config {
     match => '^featuresBoot=.*$',
   }
 
+  # Modify karaf to include Java options
+  file_line {'Karaf Java Options':
+    ensure => present,
+    path   => '/opt/opendaylight/bin/karaf',
+    line   => "JAVA_OPTS=${opendaylight::java_opts}",
+    match  => '^JAVA_OPTS=.*$',
+    after  => '^PROGNAME=.*$'
+  }
+
   file { 'org.ops4j.pax.web.cfg':
     ensure => file,
     path   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',

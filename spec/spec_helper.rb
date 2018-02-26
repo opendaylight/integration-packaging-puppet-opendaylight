@@ -13,7 +13,9 @@ RSpec::Puppet::Coverage.filters.push(*custom_filters)
 #
 
 # Tests that are common to all possible configurations
-def generic_tests()
+def generic_tests(options = {})
+  java_opts = options.fetch(:java_opts, '-Djava.net.preferIPv4Stack=true')
+
   # Confirm that module compiles
   it { should compile }
   it { should compile.with_all_deps }
@@ -59,6 +61,17 @@ def generic_tests()
       'group'   => 'odl',
     )
   }
+
+  it {
+    should contain_file_line('Karaf Java Options').with(
+      'ensure' => 'present',
+      'path'   => '/opt/opendaylight/bin/karaf',
+      'line'   => "JAVA_OPTS=#{java_opts}",
+      'match'  => '^JAVA_OPTS=.*$',
+      'after'  => '^PROGNAME=.*$'
+    )
+  }
+
 end
 
 # Shared tests that specialize in testing log file size and rollover
@@ -272,7 +285,7 @@ end
 def rpm_install_tests(options = {})
   # Extract params
   rpm_repo = options.fetch(:rpm_repo, 'https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel')
-  java_opts = options.fetch(:java_opts, '-Djava.net.preferIPv4Stack=true')
+
 
   # Default to CentOS 7 Yum repo URL
 
@@ -298,15 +311,6 @@ def rpm_install_tests(options = {})
   it {
     should contain_package('opendaylight').with(
       'ensure'   => 'present',
-    )
-  }
-
-  it {
-    should contain_file_line('java_options_systemd').with(
-      'ensure' => 'present',
-      'path' => '/usr/lib/systemd/system/opendaylight.service',
-      'line' => "Environment=_JAVA_OPTIONS=\'#{java_opts}\'",
-      'after' => 'ExecStart=/opt/opendaylight/bin/start',
     )
   }
 end

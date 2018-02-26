@@ -15,20 +15,4 @@ class opendaylight::install {
     ensure  => present,
   }
 
-  if $::osfamily == 'RedHat' {
-    # Configure the systemd file with Java options
-    file_line { 'java_options_systemd':
-      ensure  => present,
-      path    => '/usr/lib/systemd/system/opendaylight.service',
-      line    => "Environment=_JAVA_OPTIONS=\'${::opendaylight::java_opts}\'",
-      match   => '^Environment.*',
-      after   => 'ExecStart=/opt/opendaylight/bin/start',
-      require => Package['opendaylight'],
-    }
-    ~> exec {'reload_systemd_units':
-      command     => 'systemctl daemon-reload',
-      path        => '/bin',
-      refreshonly => true,
-    }
-  }
 }

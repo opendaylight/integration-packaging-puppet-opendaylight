@@ -66,3 +66,5 @@
 - Move to using log4j2
 2018-02-26 Release 8.0.1
 - Fix ODL listening on default port when alternate port specified
+2018-03-05 Release 8.1.0
+- Configure Java Options via karaf instead of Systemd
