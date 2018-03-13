@@ -417,6 +417,15 @@ Default: `'admin'`
 
 Valid options: A password string.
 
+### `inherit_dscp_marking`
+
+Specifies whether DSCP marking is enabled for packets egressing out of OVS through
+VXLAN/GRE tunnels.
+
+Default: `false`
+
+Valid options: `true`, `false`
+
 ## Limitations
 
 - Tested on CentOS 7 and Ubuntu 16.04.

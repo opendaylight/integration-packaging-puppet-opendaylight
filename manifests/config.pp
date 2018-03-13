@@ -323,16 +323,14 @@ class opendaylight::config {
     }
   }
 
-  # SFC Config
-  if ('odl-netvirt-sfc' in $opendaylight::features) {
-    file { 'genius-itm-config.xml':
+  # Config file for SFC and DSCP features
+  file { 'genius-itm-config.xml':
       ensure  => file,
       path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml',
       owner   => 'odl',
       group   => 'odl',
-      source  => 'puppet:///modules/opendaylight/genius-itm-config.xml',
+      content => template('opendaylight/genius-itm-config.xml.erb'),
       require => File['/opt/opendaylight/etc/opendaylight/datastore/initial/config'],
-    }
   }
 
   #configure VPP routing node

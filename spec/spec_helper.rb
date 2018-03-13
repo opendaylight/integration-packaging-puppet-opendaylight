@@ -375,7 +375,15 @@ def snat_mechanism_tests(snat_mechanism='controller')
 end
 
 # Shared tests that specialize in testing SFC Config
-def sfc_tests()
+def sfc_tests(options = {})
+  extra_features = options.fetch(:extra_features, [])
+
+  if extra_features.include? 'odl-netvirt-sfc'
+    sfc_enabled = true
+  else
+    sfc_enabled = false
+  end
+
   it { should contain_file('/opt/opendaylight/etc/opendaylight') }
   it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore')}
   it { should contain_file('/opt/opendaylight/etc/opendaylight/datastore/initial')}
@@ -387,9 +395,36 @@ def sfc_tests()
       'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml',
       'owner'   => 'odl',
       'group'   => 'odl',
-      'source'  => 'puppet:///modules/opendaylight/genius-itm-config.xml'
+      'content' => /<gpe-extension-enabled>#{sfc_enabled}<\/gpe-extension-enabled>/
       )
     }
+end
+
+# Shared tests that specialize in testing DSCP marking config
+def dscp_tests(options = {})
+  inherit_dscp_marking = options.fetch(:inherit_dscp_marking, false)
+
+  if inherit_dscp_marking
+    it {
+      should contain_file('genius-itm-config.xml').with(
+        'ensure'  => 'file',
+        'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+        'content' => /<default-tunnel-tos>inherit<\/default-tunnel-tos>/
+      )
+    }
+  else
+    it {
+      should contain_file('genius-itm-config.xml').with(
+        'ensure'  => 'file',
+        'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+        'content' => /<default-tunnel-tos>0<\/default-tunnel-tos>/
+      )
+    }
+  end
 end
 
 # Shared tests that specialize in testing VPP routing node config

@@ -74,3 +74,5 @@
 - Disable MD-SAL Trust Store
 2018-05-22 Release 8.1.3
 - Remove ELAN manager config for SFC
+2018-05-23 Release 8.2.0
+- Configure tos option to support QoS DSCP marking

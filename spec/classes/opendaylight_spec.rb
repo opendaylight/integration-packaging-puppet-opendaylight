@@ -811,6 +811,24 @@ describe 'opendaylight' do
     osfamily = 'RedHat'
     operatingsystem = 'CentOS'
     operatingsystemmajrelease = '7'
+    context 'not using odl-netvirt-sfc feature' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{ }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test that specialize in checking security groups
+      # Note that this function is defined in spec_helper
+      sfc_tests
+    end
+
     context 'using odl-netvirt-sfc feature' do
       let(:facts) {{
         :osfamily => osfamily,
@@ -828,7 +846,54 @@ describe 'opendaylight' do
 
       # Run test that specialize in checking security groups
       # Note that this function is defined in spec_helper
-      sfc_tests
+      sfc_tests(extra_features: ['odl-netvirt-sfc'])
+    end
+  end
+
+  # DSCP marking tests
+  describe 'DSCP marking tests' do
+    # Non-OS-type tests assume CentOS 7
+    #   See issue #43 for reasoning:
+    #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
+    osfamily = 'RedHat'
+    operatingsystem = 'CentOS'
+    operatingsystemmajrelease = '7'
+    context 'use default value' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{ }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test that specialize in checking security groups
+      # Note that this function is defined in spec_helper
+      dscp_tests
+    end
+
+    context 'inherit DSCP values' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :inherit_dscp_marking => :true,
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test that specialize in checking security groups
+      # Note that this function is defined in spec_helper
+      dscp_tests(inherit_dscp_marking: true)
     end
   end
 
