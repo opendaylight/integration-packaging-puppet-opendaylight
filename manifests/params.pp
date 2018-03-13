@@ -34,4 +34,5 @@ class opendaylight::params {
   $tls_ca_cert_file = undef
   $tls_trusted_certs = []
   $log_mechanism = 'file'
+  $inherit_dscp_marking = false
 }

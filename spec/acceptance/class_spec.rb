@@ -221,12 +221,38 @@ describe 'opendaylight class' do
   end
 
   describe 'testing configuring SFC' do
+    context 'not using SFC feature' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl
+
+      # Call specialized helper fn for SFC config validations
+      sfc_validations
+    end
+
     context 'using SFC feature' do
       # Call specialized helper fn to install OpenDaylight
       install_odl(extra_features: ['odl-netvirt-sfc'])
 
       # Call specialized helper fn for SFC config validations
-      sfc_validations
+      sfc_validations(extra_features: ['odl-netvirt-sfc'])
+    end
+  end
+
+  describe 'testing configuring tos value for DSCP marking' do
+    context 'not enabling DSCP marking' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl
+
+      # Call specialized helper fn for SFC config validations
+      dscp_validations
+    end
+
+    context 'enabling DSCP marking' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(inherit_dscp_marking: true)
+
+      # Call specialized helper fn for SFC config validations
+      dscp_validations(inherit_dscp_marking: true)
     end
   end
 

@@ -1,3 +1,0 @@
-<itm-config xmlns="urn:opendaylight:genius:itm:config">
-    <gpe-extension-enabled>true</gpe-extension-enabled>
-</itm-config>

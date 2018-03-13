@@ -68,6 +68,7 @@ def install_odl(options = {})
   enable_tls = options.fetch(:enable_tls, false)
   tls_keystore_password = options.fetch(:tls_keystore_password, 'dummypass')
   log_mechanism = options.fetch(:log_mechanism, 'file')
+  inherit_dscp_marking = options.fetch(:inherit_dscp_marking, false)
 
   # Build script for consumption by Puppet apply
   it 'should work idempotently with no errors' do
@@ -92,6 +93,7 @@ def install_odl(options = {})
       enable_tls => #{enable_tls},
       tls_keystore_password => #{tls_keystore_password},
       log_mechanism => #{log_mechanism},
+      inherit_dscp_marking => #{inherit_dscp_marking},
     }
     EOS
 
@@ -442,16 +444,41 @@ def snat_mechanism_validations(options = {})
 end
 
 # Shared function for validations related to SFC
-def sfc_validations()
+def sfc_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
   # TODO: Remove this possible source of bugs^^
+
+  extra_features = options.fetch(:extra_features, [])
+  if extra_features.include? 'odl-netvirt-sfc'
+    sfc_enabled = true
+  else
+    sfc_enabled = false
+  end
 
   describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml') do
     it { should be_file }
     it { should be_owned_by 'odl' }
     it { should be_grouped_into 'odl' }
-    its(:content) { should match /<gpe-extension-enabled>true<\/gpe-extension-enabled>/ }
+    its(:content) { should match /<gpe-extension-enabled>#{sfc_enabled}<\/gpe-extension-enabled>/ }
+  end
+end
+
+# Shared function for validations related to tos value for DSCP marking
+def dscp_validations(options = {})
+  # NB: This param default should match the one used by the opendaylight
+  #   class, which is defined in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+
+  inherit_dscp_marking = options.fetch(:inherit_dscp_marking, false)
+
+  if inherit_dscp_marking
+    describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /<default-tunnel-tos>inherit<\/default-tunnel-tos>/ }
+    end
   end
 end
 

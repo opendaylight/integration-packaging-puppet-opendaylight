@@ -1,0 +1,18 @@
+<itm-config xmlns="urn:opendaylight:genius:itm:config">
+    <def-tz-enabled>true</def-tz-enabled>
+    <def-tz-tunnel-type>vxlan</def-tz-tunnel-type>
+    <tunnel-aggregation>
+        <tunnel-type>vxlan</tunnel-type>
+        <enabled>false</enabled>
+    </tunnel-aggregation>
+    <%- if scope.lookupvar('opendaylight::inherit_dscp_marking') -%>
+    <default-tunnel-tos>inherit</default-tunnel-tos>
+    <%- else -%>
+    <default-tunnel-tos>0</default-tunnel-tos>
+    <%- end -%>
+    <%- if scope.lookupvar('opendaylight::features').include?('odl-netvirt-sfc') -%>
+    <gpe-extension-enabled>true</gpe-extension-enabled>
+    <%- else -%>
+    <gpe-extension-enabled>false</gpe-extension-enabled>
+    <%- end -%>
+</itm-config>

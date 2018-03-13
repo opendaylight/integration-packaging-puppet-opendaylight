@@ -61,6 +61,9 @@
 #   Optional.  Defaults to undef.
 # [*log_mechanism*]
 #   Sets logging mechanism for karaf logs
+# [*inherit_dscp_marking]
+#   Sets tos option to enable QoS DSCP marking
+#   Defaults to false
 #
 # === Deprecated Parameters
 #
@@ -94,6 +97,7 @@ class opendaylight (
   $tls_cert_file         = $::opendaylight::params::tls_cert_file,
   $tls_ca_cert_file      = $::opendaylight::params::tls_ca_cert_file,
   $log_mechanism         = $::opendaylight::params::log_mechanism,
+  $inherit_dscp_marking  = $::opendaylight::params::inherit_dscp_marking,
 ) inherits ::opendaylight::params {
 
   # Validate OS family
