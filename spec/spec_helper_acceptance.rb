@@ -498,6 +498,7 @@ def tls_validations(options = {})
     its(:content) { should match /org.ops4j.pax.web.ssl.password = #{tls_keystore_password}/ }
     its(:content) { should match /org.ops4j.pax.web.ssl.keypassword = #{tls_keystore_password}/ }
     its(:content) { should match /org.osgi.service.http.secure.enabled = true/ }
+    its(:content) { should match /org.osgi.service.http.enabled = false/ }
   end
 
   describe file('/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg') do

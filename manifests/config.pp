@@ -92,6 +92,14 @@ class opendaylight::config {
       require => File['org.ops4j.pax.web.cfg']
     }
 
+    file_line { 'disable pax HTTP':
+      ensure  => present,
+      path    => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+      line    => 'org.osgi.service.http.enabled = false',
+      match   => '^#?org.osgi.service.http.enabled.*$',
+      require => File['org.ops4j.pax.web.cfg']
+    }
+
     file {'aaa-cert-config.xml':
       ensure  => file,
       path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/aaa-cert-config.xml',
@@ -144,6 +152,14 @@ class opendaylight::config {
         "set Call[1]/Arg/New/Set[#attribute[name='port']]/Property/#attribute/default
           ${opendaylight::odl_rest_port}"]
     }
+
+    file_line { 'set pax bind port':
+      ensure  => present,
+      path    => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+      line    => "org.osgi.service.http.port = ${opendaylight::odl_rest_port}",
+      match   => '^#?org.osgi.service.http.port\s.*$',
+      require => File['org.ops4j.pax.web.cfg']
+    }
   }
   # Configure OpenFlow plugin to use TCP/TLS
   file { 'default-openflow-connection-config.xml':
@@ -194,13 +210,6 @@ class opendaylight::config {
       line   => "websocket-address=${::opendaylight::odl_bind_ip}",
       match  => '^websocket-address=.*$',
     }
-  }
-
-  file_line { 'set pax bind port':
-    ensure  => present,
-    path    => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
-    line    => "org.osgi.service.http.port = ${opendaylight::odl_rest_port}",
-    require => File['org.ops4j.pax.web.cfg']
   }
 
   # Set any custom log levels
