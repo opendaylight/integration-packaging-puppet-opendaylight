@@ -181,6 +181,7 @@ def odl_rest_port_tests(options = {})
         'ensure'  => 'present',
         'path'    => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
         'line'    => "org.osgi.service.http.port = #{odl_rest_port}",
+        'match'   => '^#?org.osgi.service.http.port\s.*$',
         'require' => 'File[org.ops4j.pax.web.cfg]'
     )
   }
@@ -546,6 +547,12 @@ def odl_tls_tests(options = {})
         'path'   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
         'line'   => 'org.osgi.service.http.secure.enabled = true',
         'match'  => '^#?org.osgi.service.http.secure.enabled.*$',
+      )
+      should contain_file_line('disable pax HTTP').with(
+        'ensure' => 'present',
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
+        'line'   => 'org.osgi.service.http.enabled = false',
+        'match'  => '^#?org.osgi.service.http.enabled.*$',
       )
       should contain_file('org.ops4j.pax.web.cfg').with(
         'ensure' => 'file',
