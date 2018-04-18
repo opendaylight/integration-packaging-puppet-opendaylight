@@ -3,17 +3,9 @@ require 'puppet/provider/odl_keystore/jks'
 require 'spec_helper'
 require 'fileutils'
 
-File.any_instance.stubs(:file?).returns(true)
-
 provider_class = Puppet::Type.type(:odl_keystore).provider(:jks)
 
 describe 'Puppet::Type.type(:odl_keystore).provider(:jks)' do
-
-  before(:all) do
-    FileUtils.stubs(:mkdir_p).returns(true)
-    FileUtils.stubs(:chown)
-    FileUtils.stubs(:rm)
-  end
 
   let :odl_attrs do
     {
