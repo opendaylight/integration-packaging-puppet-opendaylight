@@ -184,7 +184,7 @@ describe 'opendaylight class' do
       install_odl({:odl_bind_ip => bind_ip, :extra_features => ['odl-restconf']})
 
       # Call specialized helper fn for username/password validations
-      username_password_validations
+      #username_password_validations
     end
     end
   end
