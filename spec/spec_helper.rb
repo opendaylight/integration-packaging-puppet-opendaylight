@@ -285,7 +285,7 @@ end
 
 def rpm_install_tests(options = {})
   # Extract params
-  rpm_repo = options.fetch(:rpm_repo, 'https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel')
+  rpm_repo = options.fetch(:rpm_repo, 'https://nexus.opendaylight.org/content/repositories/opendaylight-fluorine-epel-7-$basearch-devel')
 
 
   # Default to CentOS 7 Yum repo URL
@@ -340,7 +340,7 @@ end
 def unsupported_os_tests(options = {})
   # Extract params
   expected_msg = options.fetch(:expected_msg)
-  rpm_repo = options.fetch(:rpm_repo, 'https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel')
+  rpm_repo = options.fetch(:rpm_repo, 'https://nexus.opendaylight.org/content/repositories/opendaylight-fluorine-epel-7-$basearch-devel')
 
   # Confirm that classes fail on unsupported OSs
   it { expect { should contain_class('opendaylight') }.to raise_error(Puppet::Error, /#{expected_msg}/) }

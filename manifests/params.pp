@@ -12,7 +12,7 @@ class opendaylight::params {
   $extra_features = []
   $odl_rest_port = '8181'
   $odl_bind_ip = '0.0.0.0'
-  $rpm_repo = 'https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel'
+  $rpm_repo = 'https://nexus.opendaylight.org/content/repositories/opendaylight-fluorine-epel-7-$basearch-devel'
   $deb_repo = 'ppa:odl-team/nitrogen'
   $log_levels = {}
   $enable_ha = false
