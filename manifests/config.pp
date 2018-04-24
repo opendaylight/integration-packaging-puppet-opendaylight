@@ -23,8 +23,8 @@ class opendaylight::config {
   file_line {'Karaf Java Options':
     ensure => present,
     path   => '/opt/opendaylight/bin/karaf',
-    line   => "JAVA_OPTS=${opendaylight::java_opts}",
-    match  => '^JAVA_OPTS=.*$',
+    line   => "EXTRA_JAVA_OPTS=${opendaylight::java_opts}",
+    match  => '^EXTRA_JAVA_OPTS=.*$',
     after  => '^PROGNAME=.*$'
   }
 

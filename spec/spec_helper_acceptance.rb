@@ -166,7 +166,7 @@ def generic_validations(options = {})
     it { should be_file }
     it { should be_owned_by 'odl' }
     it { should be_grouped_into 'odl' }
-    its(:content) { should match /^JAVA_OPTS=#{java_opts}$/ }
+    its(:content) { should match /^EXTRA_JAVA_OPTS=#{java_opts}$/ }
   end
 
   # Should contain ODL NB port config file

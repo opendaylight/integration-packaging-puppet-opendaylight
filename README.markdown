@@ -394,7 +394,8 @@ Valid options: A valid host name to a VPP node handling routing.
 
 ##### `java_opts`
 
-Specifies the Java options to run ODL with as a string.
+Specifies the Java options to run ODL with as a string. Note, these options
+are in addition to the default Java options set by the karaf/ODL boot scripts.
 
 Default: `'-Djava.net.preferIPv4Stack=true'`
 
