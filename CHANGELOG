@@ -68,3 +68,5 @@
 - Fix ODL listening on default port when alternate port specified
 2018-03-05 Release 8.1.0
 - Configure Java Options via karaf instead of Systemd
+2018-04-24 Release 8.1.1
+- Fix Java Options to also include ODL/Karaf default options
