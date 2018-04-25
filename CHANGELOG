@@ -70,3 +70,5 @@
 - Configure Java Options via karaf instead of Systemd
 2018-04-24 Release 8.1.1
 - Fix Java Options to also include ODL/Karaf default options
+2018-04-25 Release 8.1.2
+- Disable MD-SAL Trust Store
