@@ -447,13 +447,6 @@ def sfc_validations()
   #   class, which is defined in opendaylight::params
   # TODO: Remove this possible source of bugs^^
 
-  describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-elanmanager-config.xml') do
-    it { should be_file }
-    it { should be_owned_by 'odl' }
-    it { should be_grouped_into 'odl' }
-    its(:content) { should match /<use-of-tunnels>true<\/use-of-tunnels>/ }
-  end
-
   describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml') do
     it { should be_file }
     it { should be_owned_by 'odl' }

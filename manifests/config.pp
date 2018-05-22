@@ -325,15 +325,6 @@ class opendaylight::config {
 
   # SFC Config
   if ('odl-netvirt-sfc' in $opendaylight::features) {
-    file { 'netvirt-elanmanager-config.xml':
-      ensure  => file,
-      path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-elanmanager-config.xml',
-      owner   => 'odl',
-      group   => 'odl',
-      source  => 'puppet:///modules/opendaylight/netvirt-elanmanager-config.xml',
-      require => File['/opt/opendaylight/etc/opendaylight/datastore/initial/config'],
-    }
-
     file { 'genius-itm-config.xml':
       ensure  => file,
       path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/genius-itm-config.xml',
