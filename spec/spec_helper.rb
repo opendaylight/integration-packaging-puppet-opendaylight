@@ -90,27 +90,36 @@ def log_settings(options = {})
         'match' => '^karaf.log.console.*$'
       )
     }
+    it {
+      should contain_file_line('direct').with(
+        'path'  => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'  => 'log4j2.appender.console.direct = true',
+        'after' => 'karaf.log.console=INFO',
+        'match' => '^log4j2.appender.console.direct.*$'
+      )
+    }
   else
-  it {
-    should contain_file_line('logmaxsize').with(
-      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      'line'   => "log4j2.appender.rolling.policies.size.size = #{log_max_size}",
-      'match'  => '^log4j2.appender.rolling.policies.size.size.*$',
-    )
-  }
-  it {
-    should contain_file_line('rolloverstrategy').with(
-      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      'line'   => 'log4j2.appender.rolling.strategy.type = DefaultRolloverStrategy'
-    )
-  }
-  it {
-    should contain_file_line('logmaxrollover').with(
-      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
-      'line'   => "log4j2.appender.rolling.strategy.max = #{log_max_rollover}",
-      'match'  => '^log4j2.appender.rolling.strategy.max.*$',
-    )
-  }
+
+    it {
+      should contain_file_line('logmaxsize').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'   => "log4j2.appender.rolling.policies.size.size = #{log_max_size}",
+        'match'  => '^log4j2.appender.rolling.policies.size.size.*$',
+      )
+    }
+    it {
+      should contain_file_line('rolloverstrategy').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'   => 'log4j2.appender.rolling.strategy.type = DefaultRolloverStrategy'
+      )
+    }
+    it {
+      should contain_file_line('logmaxrollover').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'   => "log4j2.appender.rolling.strategy.max = #{log_max_rollover}",
+        'match'  => '^log4j2.appender.rolling.strategy.max.*$',
+      )
+    }
   end
 end
 

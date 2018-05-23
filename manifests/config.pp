@@ -238,7 +238,15 @@ class opendaylight::config {
       after  => 'log4j2.rootLogger.appenderRef.Console.filter.threshold.type = ThresholdFilter',
       match  => '^karaf.log.console.*$'
     }
+    file_line { 'direct':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => 'log4j2.appender.console.direct = true',
+      after  => 'karaf.log.console=INFO',
+      match  => '^log4j2.appender.console.direct.*$'
+    }
   } else {
+
     # Set maximum ODL log file size
     file_line { 'logmaxsize':
       ensure => present,
