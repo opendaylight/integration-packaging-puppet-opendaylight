@@ -22,41 +22,29 @@ task :metadata_lint do
   sh "metadata-json-lint metadata.json"
 end
 
-# CentOS Nexus VM
-desc "Beaker tests against CentOS 7 VM with latest Oxygen testing RPM from ODL Nexus repo"
-task :cent_8test_nexus_vm do
+# CentOS latest VM
+desc "Beaker tests against CentOS 7 VM with latest Oxygen RPM from ODL Nexus CD repo"
+task :cent_devel_vm do
   sh "RS_SET=centos-7 RPM_REPO='https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel' bundle exec rake beaker"
 end
 
-# CentOS Nexus Container
-desc "Beaker tests against CentOS 7 container with latest Oxygen testing RPM from ODL Nexus repo"
-task :cent_8test_nexus_dock do
+# CentOS latest container
+desc "Beaker tests against CentOS 7 container with latest Oxygen RPM from ODL Nexus CD repo"
+task :cent_devel_dock do
   sh "RS_SET=centos-7-docker RPM_REPO='https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel' bundle exec rake beaker"
 end
 
-# CentOS CBS VM
-desc "Beaker tests against CentOS 7 VM with latest Oxygen testing RPM from CentOS CBS repo"
-task :cent_8test_cbs_vm do
-  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/' bundle exec rake beaker"
+# CentOS latest release/SR VM
+desc "Beaker tests against CentOS 7 VM with latest Oxygen release/SR RPM from CentOS CBS repo"
+task :cent_rel_vm do
+  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-release/$basearch/os/' bundle exec rake beaker"
 end
 
-# CentOS CBS Container
-desc "Beaker tests against CentOS 7 container with latest Oxygen testing RPM from CentOS CBS repo"
-task :cent_8test_cbs_dock do
-  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-testing/$basearch/os/' bundle exec rake beaker"
+# CentOS latest release/SR container
+desc "Beaker tests against CentOS 7 container with latest Oxygen release/SR RPM from CentOS CBS repo"
+task :cent_rel_dock do
+  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-8-release/$basearch/os/' bundle exec rake beaker"
 end
-
-# Ubuntu VMs
-#desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
-#task :ubuntu_6test_vm do
-#  sh "RS_SET=ubuntu-16 DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
-#end
-
-# Ubuntu Containers
-#desc "Beaker tests against Ubuntu 16.04 Container with Nitrogen release Deb"
-#task :ubuntu_6test_dock do
-#  sh "RS_SET=ubuntu-16-docker DEB_REPO='ppa:odl-team/nitrogen' bundle exec rake beaker"
-#end
 
 # Multi-test helpers
 
@@ -71,19 +59,19 @@ task :test => [
 desc "Quick and important tests"
 task :sanity=> [
   :test,
-  :cent_8test_nexus_dock,
+  :cent_devel_dock,
 ]
 
 desc "All tests, use VMs for Beaker tests"
 task :acceptance_vm => [
   :test,
-  :cent_8test_cbs_vm,
-  :cent_8test_nexus_vm,
+  :cent_devel_vm,
+  :cent_rel_vm,
 ]
 
 desc "All tests, use containers for Beaker tests"
 task :acceptance_dock => [
   :test,
-  :cent_8test_cbs_dock,
-  :cent_8test_nexus_dock,
+  :cent_devel_dock,
+  :cent_rel_dock,
 ]
