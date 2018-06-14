@@ -116,13 +116,13 @@ OpenDaylight is installed from.
 
 ```puppet
 class { 'opendaylight':
-  deb_repo => 'ppa:odl-team/nitrogen',
+  deb_repo => 'ppa:odl-team/oxygen',
 }
 ```
 
 The naming convention is same as the naming convention of Launchpad PPA's,
-which is where ODL .debs are hosted. The `ppa:odl-team/nitrogen` example above
-would install OpenDaylight Nitrogen from the [Nitrogen launchpad repo][3].
+which is where ODL .debs are hosted. The `ppa:odl-team/oxygen` example above
+would install OpenDaylight Oxygen from the [Oxygen launchpad repo][3].
 
 This is only read for Debian-family operating systems.
 
@@ -258,7 +258,7 @@ Repo URL to install ODL RPM from, in .repo baseurl format.
 ##### `deb_repo`
 
 OpenDaylight Launchpad PPA repo to install .deb from (ppa:odl-team/boron,
-ppa:odl-team/nitrogen, ...).
+ppa:odl-team/oxygen, ...).
 
 ##### `log_levels`
 
@@ -446,7 +446,7 @@ See the [CHANGELOG][5] for information about releases.
 
 [2]: http://docs.opendaylight.org/en/latest/submodules/integration/packaging/docs/rpms.html#repositories "ODL RPM repo docs"
 
-[3]: https://launchpad.net/~odl-team/+archive/ubuntu/nitrogen "ODL Nitrogen Deb repo"
+[3]: https://launchpad.net/~odl-team/+archive/ubuntu/oxygen "ODL Oxygen Deb repo"
 
 [4]: https://git.opendaylight.org/gerrit/gitweb?p=integration/packaging/puppet-opendaylight.git;a=blob;f=CONTRIBUTING.markdown "Contributing docs"
 

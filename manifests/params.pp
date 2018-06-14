@@ -13,7 +13,7 @@ class opendaylight::params {
   $odl_rest_port = '8181'
   $odl_bind_ip = '0.0.0.0'
   $rpm_repo = 'https://nexus.opendaylight.org/content/repositories/opendaylight-oxygen-epel-7-$basearch-devel'
-  $deb_repo = 'ppa:odl-team/nitrogen'
+  $deb_repo = 'ppa:odl-team/oxygen'
   $log_levels = {}
   $enable_ha = false
   $ha_node_ips = []
