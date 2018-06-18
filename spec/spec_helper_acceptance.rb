@@ -235,6 +235,7 @@ def log_settings_validations(options = {})
       it { should be_owned_by 'odl' }
       it { should be_grouped_into 'odl' }
       its(:content) { should match /^karaf.log.console=INFO/ }
+      its(:content) { should match /^log4j2.appender.console.direct = true/ }
     end
   else
     describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
