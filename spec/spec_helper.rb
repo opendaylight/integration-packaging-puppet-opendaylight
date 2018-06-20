@@ -327,7 +327,7 @@ end
 
 def deb_install_tests(options = {})
   # Extract params
-  deb_repo = options.fetch(:deb_repo, 'ppa:odl-team/nitrogen')
+  deb_repo = options.fetch(:deb_repo, 'ppa:odl-team/oxygen')
 
   # Confirm the presence of Deb-related resources
   it { should contain_apt__ppa(deb_repo) }
