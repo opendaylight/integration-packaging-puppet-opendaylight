@@ -17,34 +17,34 @@ PuppetLint.configuration.ignore_paths = exclude_paths
 PuppetSyntax.exclude_paths = exclude_paths
 
 # Linting
-
 task :metadata_lint do
   sh "metadata-json-lint metadata.json"
 end
 
-# CentOS Nexus VM
-desc "Beaker tests against CentOS 7 VM with latest Fluorine testing RPM from ODL Nexus repo"
-task :cent_9test_nexus_vm do
+# CentOS latest VM
+desc "Beaker tests against CentOS 7 VM with latest Fluorine RPM from ODL Nexus CD repo"
+task :cent_devel_vm do
   sh "RS_SET=centos-7 RPM_REPO='https://nexus.opendaylight.org/content/repositories/opendaylight-fluorine-epel-7-$basearch-devel' bundle exec rake beaker"
 end
 
-# CentOS Nexus Container
-desc "Beaker tests against CentOS 7 container with latest Fluorine testing RPM from ODL Nexus repo"
-task :cent_9test_nexus_dock do
+# CentOS latest container
+desc "Beaker tests against CentOS 7 container with latest Fluorine RPM from ODL Nexus CD repo"
+task :cent_devel_dock do
   sh "RS_SET=centos-7-docker RPM_REPO='https://nexus.opendaylight.org/content/repositories/opendaylight-fluorine-epel-7-$basearch-devel' bundle exec rake beaker"
 end
 
-# CentOS CBS VM
-desc "Beaker tests against CentOS 7 VM with latest Fluorine testing RPM from CentOS CBS repo"
-task :cent_9test_cbs_vm do
-  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-9-testing/$basearch/os/' bundle exec rake beaker"
-end
+# CentOS latest release/SR VM
+#desc "Beaker tests against CentOS 7 VM with latest Fluorine release/SR RPM from CentOS CBS repo"
+#task :cent_rel_vm do
+#  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-9-release/$basearch/os/' bundle exec rake beaker"
+#end
 
-# CentOS CBS Container
-desc "Beaker tests against CentOS 7 container with latest Fluorine testing RPM from CentOS CBS repo"
-task :cent_9test_cbs_dock do
-  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-9-testing/$basearch/os/' bundle exec rake beaker"
-end
+# CentOS latest release/SR container
+# Uncomment once there's a Fluorine release
+#desc "Beaker tests against CentOS 7 container with latest Fluorine release/SR RPM from CentOS CBS repo"
+#task :cent_rel_dock do
+#  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-9-release/$basearch/os/' bundle exec rake beaker"
+#end
 
 # Multi-test helpers
 
@@ -59,19 +59,21 @@ task :test => [
 desc "Quick and important tests"
 task :sanity=> [
   :test,
-  :cent_9test_nexus_dock,
+  :cent_devel_dock,
 ]
 
 desc "All tests, use VMs for Beaker tests"
 task :acceptance_vm => [
   :test,
-  :cent_9test_cbs_vm,
-  :cent_9test_nexus_vm,
+  :cent_devel_vm,
+# Uncomment once there's a Fluorine release
+#  :cent_rel_vm,
 ]
 
 desc "All tests, use containers for Beaker tests"
 task :acceptance_dock => [
   :test,
-  :cent_9test_cbs_dock,
-  :cent_9test_nexus_dock,
+  :cent_devel_dock,
+# Uncomment once there's a Fluorine release
+#  :cent_rel_dock,
 ]
