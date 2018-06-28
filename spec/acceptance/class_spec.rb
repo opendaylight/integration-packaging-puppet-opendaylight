@@ -136,6 +136,13 @@ describe 'opendaylight class' do
     end
   end
 
+  describe 'testing binding ODL to an IP' do
+    install_odl(odl_bind_ip: '127.0.0.1')
+    context 'using specific IP for ODL' do
+      odl_bind_ip_validation(odl_bind_ip: '127.0.0.1')
+    end
+  end
+
   describe 'testing custom logging verbosity' do
     context 'using default log levels' do
       # Call specialized helper fn to install OpenDaylight

@@ -325,8 +325,8 @@ describe 'opendaylight' do
     end
   end
 
-  # All ODL REST port tests
-  describe 'REST port tests' do
+  # All ODL IP/REST port tests
+  describe 'IP and REST port tests' do
     # Non-OS-type tests assume CentOS 7
     #   See issue #43 for reasoning:
     #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159

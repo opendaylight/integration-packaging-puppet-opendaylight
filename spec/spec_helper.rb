@@ -178,6 +178,12 @@ def odl_rest_port_tests(options = {})
         'line'    => "org.ops4j.pax.web.listening.addresses = #{odl_bind_ip}",
         'require' => 'File[org.ops4j.pax.web.cfg]'
       )
+      should contain_file_line('set karaf IP').with(
+        'ensure' => 'present',
+        'path'   => '/opt/opendaylight/etc/org.apache.karaf.shell.cfg',
+        'line'   => "sshHost = #{odl_bind_ip}",
+        'match'  => '^sshHost\s*=.*$',
+      )
     }
   else
     it {
