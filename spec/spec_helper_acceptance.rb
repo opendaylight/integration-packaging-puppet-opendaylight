@@ -290,6 +290,27 @@ def port_config_validations(options = {})
   end
 end
 
+# Shared function for validations related to the ODL bind IP
+def odl_bind_ip_validation(options = {})
+  # NB: This param default should match the one used by the opendaylight
+  #   class, which is defined in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+  odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
+
+  if odl_bind_ip != '0.0.0.0'
+    describe file('/opt/opendaylight/etc/org.apache.karaf.shell.cfg') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /sshHost = #{odl_bind_ip}/ }
+    end
+
+    describe command("loop_count=0; until [[ \$loop_count -ge 30 ]]; do netstat -punta | grep 8101 | grep #{odl_bind_ip} && break; loop_count=\$[\$loop_count+1]; sleep 1; done; echo \"Waited \$loop_count seconds to detect ODL karaf bound to IP\"") do
+      its(:exit_status) { should eq 0 }
+    end
+  end
+end
+
 # Shared function for validations related to custom logging verbosity
 def log_level_validations(options = {})
   # NB: This param default should match the one used by the opendaylight

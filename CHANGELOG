@@ -78,3 +78,5 @@
 - Configure tos option to support QoS DSCP marking
 2018-06-13 Release 8.2.1
 - Bump default package for Debian from Nitrogen to Oxygen
+2018-06-28 Release 8.2.2
+- Bind karaf shell to ODL bind IP

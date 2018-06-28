@@ -190,6 +190,14 @@ class opendaylight::config {
       ]
     }
 
+    # Configure karaf bind IP
+    file_line { 'set karaf IP':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.apache.karaf.shell.cfg',
+      line   => "sshHost = ${opendaylight::odl_bind_ip}",
+      match  => '^sshHost\s*=.*$',
+    }
+
     file_line { 'set pax bind IP':
       ensure  => present,
       path    => '/opt/opendaylight/etc/org.ops4j.pax.web.cfg',
