@@ -289,4 +289,23 @@ describe 'opendaylight class' do
       tls_validations(enable_tls: true, tls_keystore_password: '123456')
     end
   end
+
+  describe 'testing stats polling enablement' do
+    context 'with polling enabled' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(stats_polling_enabled: true)
+
+      # Call specialized helper fn for polling enablement validations
+      stats_polling_validations(stats_polling_enabled: true)
+    end
+
+    context 'with polling disabled' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl
+
+      # Call specialized helper fn for polling enablement validations
+      stats_polling_validations
+    end
+
+  end
 end

@@ -69,6 +69,7 @@ def install_odl(options = {})
   tls_keystore_password = options.fetch(:tls_keystore_password, 'dummypass')
   log_mechanism = options.fetch(:log_mechanism, 'file')
   inherit_dscp_marking = options.fetch(:inherit_dscp_marking, false)
+  stats_polling_enabled = options.fetch(:stats_polling_enabled, false)
 
   # Build script for consumption by Puppet apply
   it 'should work idempotently with no errors' do
@@ -94,6 +95,7 @@ def install_odl(options = {})
       tls_keystore_password => #{tls_keystore_password},
       log_mechanism => #{log_mechanism},
       inherit_dscp_marking => #{inherit_dscp_marking},
+      stats_polling_enabled => #{stats_polling_enabled},
     }
     EOS
 
@@ -572,5 +574,20 @@ def tls_validations(options = {})
     it { should be_owned_by 'odl' }
     it { should be_grouped_into 'odl' }
     its(:content) { should match /<Property name="jetty.secure.port" default="#{odl_rest_port}" \/>/ }
+  end
+end
+
+# Shared function for validations related to OVS statistics polling
+def stats_polling_validations(options = {})
+  # NB: This param default should match the one used by the opendaylight
+  #   class, which is defined in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+
+  stats_polling_enabled = options.fetch(:stats_polling_enabled, false)
+  describe file('/opt/opendaylight/etc/org.opendaylight.openflowplugin.cfg') do
+    it { should be_file }
+    it { should be_owned_by 'odl' }
+    it { should be_grouped_into 'odl' }
+    its(:content) { should match /is-statistics-polling-on=#{stats_polling_enabled}/ }
   end
 end

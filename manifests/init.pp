@@ -61,10 +61,12 @@
 #   Optional.  Defaults to undef.
 # [*log_mechanism*]
 #   Sets logging mechanism for karaf logs
-# [*inherit_dscp_marking]
+# [*inherit_dscp_marking*]
 #   Sets tos option to enable QoS DSCP marking
 #   Defaults to false
-#
+# [*stats_polling_enabled*]
+#   Enables statistics polling of OpenFlow entities like table, groups.
+#   Defaults to false
 # === Deprecated Parameters
 #
 # [*ha_node_index*]
@@ -98,6 +100,7 @@ class opendaylight (
   $tls_ca_cert_file      = $::opendaylight::params::tls_ca_cert_file,
   $log_mechanism         = $::opendaylight::params::log_mechanism,
   $inherit_dscp_marking  = $::opendaylight::params::inherit_dscp_marking,
+  $stats_polling_enabled = $::opendaylight::params::stats_polling_enabled,
 ) inherits ::opendaylight::params {
 
   # Validate OS family

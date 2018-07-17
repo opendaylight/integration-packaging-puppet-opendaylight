@@ -613,3 +613,27 @@ def odl_tls_tests(options = {})
     }
   end
 end
+
+def stats_polling_enablement_tests(options = {})
+  # Extract params
+  # NB: This default value should be the same as one in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+  stats_polling_enabled = options.fetch(:stats_polling_enabled, false)
+  # Confirm properties of ODL REST port config file
+  # NB: These hashes don't work with Ruby 1.8.7, but we
+  #   don't support 1.8.7 so that's okay. See issue #36.
+  it {
+    should contain_file('openflowplugin.cfg').with(
+      'ensure' => 'file',
+      'path'   => '/opt/opendaylight/etc/org.opendaylight.openflowplugin.cfg',
+      'owner'  => 'odl',
+      'group'  => 'odl',
+    )
+    should contain_file_line('stats-polling').with(
+      'ensure' => 'present',
+      'path'   => '/opt/opendaylight/etc/org.opendaylight.openflowplugin.cfg',
+      'line'   => "is-statistics-polling-on=#{stats_polling_enabled}",
+      'match'  => '^is-statistics-polling-on=.*$',
+    )
+  }
+end

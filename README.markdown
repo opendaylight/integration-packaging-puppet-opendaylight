@@ -426,6 +426,14 @@ Default: `false`
 
 Valid options: `true`, `false`
 
+### `stats_polling_enabled`
+
+Enables statistics polling of OpenFlow entities like table, groups.
+
+Default: `false`
+
+Valid options: `true`, `false`
+
 ## Limitations
 
 - Tested on CentOS 7 and Ubuntu 16.04.

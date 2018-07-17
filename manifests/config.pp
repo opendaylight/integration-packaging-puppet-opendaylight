@@ -369,4 +369,19 @@ class opendaylight::config {
     password => $::opendaylight::password,
     before   => Service['opendaylight'],
   }
+
+  # Configure OpenFlow entities' statistics polling
+  file { 'openflowplugin.cfg':
+    ensure => file,
+    path   => '/opt/opendaylight/etc/org.opendaylight.openflowplugin.cfg',
+    # Set user:group owners
+    owner  => 'odl',
+    group  => 'odl',
+  }
+  file_line { 'stats-polling':
+    ensure => present,
+    path   => '/opt/opendaylight/etc/org.opendaylight.openflowplugin.cfg',
+    line   => "is-statistics-polling-on=${::opendaylight::stats_polling_enabled}",
+    match  => '^is-statistics-polling-on=.*$',
+  }
 }
