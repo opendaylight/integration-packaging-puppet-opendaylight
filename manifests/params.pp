@@ -35,4 +35,5 @@ class opendaylight::params {
   $tls_trusted_certs = []
   $log_mechanism = 'file'
   $inherit_dscp_marking = false
+  $stats_polling_enabled = false
 }

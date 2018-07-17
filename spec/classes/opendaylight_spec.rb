@@ -1083,4 +1083,51 @@ describe 'opendaylight' do
       odl_tls_tests(enable_tls:true, tls_keystore_password:'123456')
     end
   end
+
+  describe 'polling enablement settings' do
+    # Non-OS-type tests assume CentOS 7
+    #   See issue #43 for reasoning:
+    #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
+    osfamily = 'RedHat'
+    operatingsystem = 'CentOS'
+    operatingsystemmajrelease = '7'
+
+    # Default statistics polling off
+    context 'do not poll ovs statistics' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{ }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      stats_polling_enablement_tests
+    end
+
+    # Default statistics polling on
+    context 'poll ovs statistics' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+       :stats_polling_enabled => true,
+       }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      stats_polling_enablement_tests(stats_polling_enabled:true)
+    end
+  end
 end

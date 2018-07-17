@@ -80,3 +80,5 @@
 - Bump default package for Debian from Nitrogen to Oxygen
 2018-06-28 Release 8.2.2
 - Bind karaf shell to ODL bind IP
+2018-07-16 Release 8.3.0
+- Disable regular polling of OF statistics
