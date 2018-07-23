@@ -80,3 +80,5 @@
 - Bind karaf shell to ODL bind IP
 2018-07-16 Release 8.3.0
 - Disable regular polling of OF statistics
+2018-07-23 Release 8.4.0
+- Enable IPv6 deployment

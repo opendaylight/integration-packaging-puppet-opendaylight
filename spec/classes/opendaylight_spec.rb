@@ -1130,4 +1130,45 @@ describe 'opendaylight' do
       stats_polling_enablement_tests(stats_polling_enabled:true)
     end
   end
+
+  describe 'Different IPv support tests' do
+    # Non-OS-type tests assume CentOS 7
+    #   See issue #43 for reasoning:
+    #   https://github.com/dfarrell07/puppet-opendaylight/issues/43#issue-57343159
+    osfamily = 'RedHat'
+    operatingsystem = 'CentOS'
+    operatingsystemmajrelease = '7'
+
+    context 'IPv6 deployment' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :odl_bind_ip => '::1'
+        }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests(odl_bind_ip:'::1')
+    end
+
+    context 'IPv4 deployment' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :odl_bind_ip => '127.0.0.1'
+        }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests(odl_bind_ip:'127.0.0.1')
+    end
+  end
 end
