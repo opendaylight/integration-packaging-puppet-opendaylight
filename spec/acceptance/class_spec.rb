@@ -306,6 +306,23 @@ describe 'opendaylight class' do
       # Call specialized helper fn for polling enablement validations
       stats_polling_validations
     end
+  end
 
+  describe 'testing different IPv deployments' do
+    context 'IPv6 support tests' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(odl_bind_ip: '::1')
+
+      # Call specialized helper fn for polling enablement validations
+      generic_validations(odl_bind_ip: '::1')
+    end
+
+    context 'IPv4 support test' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(odl_bind_ip: '127.0.0.1')
+
+      # Call specialized helper fn for polling enablement validations
+      generic_validations(odl_bind_ip: '127.0.0.1')
+    end
   end
 end

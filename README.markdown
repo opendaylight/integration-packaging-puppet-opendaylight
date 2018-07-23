@@ -395,9 +395,10 @@ Valid options: A valid host name to a VPP node handling routing.
 ##### `java_opts`
 
 Specifies the Java options to run ODL with as a string. Note, these options
-are in addition to the default Java options set by the karaf/ODL boot scripts.
+are in addition to the default Java options set by the karaf/ODL boot scripts
+and IP version based flag set by 'opendaylight' class.
 
-Default: `'-Djava.net.preferIPv4Stack=true'`
+Default: `''`
 
 Valid options: A string of valid Java options.
 

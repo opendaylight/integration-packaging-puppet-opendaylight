@@ -30,7 +30,7 @@
 # [*vpp_routing_node*]
 #   Sets routing node for VPP deployments. Defaults to ''.
 # [*java_opts*]
-#   Sets Java options for ODL in a string format. Defaults to '-Djava.net.preferIPv4Stack=true'.
+#   Sets Java options for ODL in a string format. Defaults to ''.
 # [*manage_repositories*]
 #   (Boolean) Should this module manage the apt or yum repositories for the
 #   package installation.
@@ -67,6 +67,7 @@
 # [*stats_polling_enabled*]
 #   Enables statistics polling of OpenFlow entities like table, groups.
 #   Defaults to false
+#
 # === Deprecated Parameters
 #
 # [*ha_node_index*]
@@ -83,9 +84,9 @@ class opendaylight (
   $enable_ha             = $::opendaylight::params::enable_ha,
   $ha_node_ips           = $::opendaylight::params::ha_node_ips,
   $ha_node_index         = $::opendaylight::params::ha_node_index,
+  $java_opts             = $::opendaylight::params::java_opts,
   $ha_db_modules         = $::opendaylight::params::ha_db_modules,
   $vpp_routing_node      = $::opendaylight::params::vpp_routing_node,
-  $java_opts             = $::opendaylight::params::java_opts,
   $manage_repositories   = $::opendaylight::params::manage_repositories,
   $username              = $::opendaylight::params::username,
   $password              = $::opendaylight::params::password,
@@ -143,6 +144,15 @@ class opendaylight (
   }
   # Build full list of features to install
   $features = union($default_features, $extra_features)
+
+  if $opendaylight::odl_bind_ip =~ Stdlib::Compat::Ipv6 {
+    $enable_ipv6 = true
+    $java_options = join(union(['-Djava.net.preferIPv6Addresses=true'], any2array($opendaylight::java_opts)), ' ')
+  }
+  else {
+    $enable_ipv6 = false
+    $java_options = join(union(['-Djava.net.preferIPv4Stack=true'], any2array($opendaylight::java_opts)), ' ')
+  }
 
   class { '::opendaylight::install': }
   -> class { '::opendaylight::config': }

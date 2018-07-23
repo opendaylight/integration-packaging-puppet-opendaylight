@@ -4,11 +4,19 @@ odl-cluster-data {
     remote {
       artery {
         enabled = off
+        <%- if scope.lookupvar('opendaylight::enable_ipv6') -%>
+        canonical.hostname = "[<%= scope.lookupvar('opendaylight::odl_bind_ip') %>]"
+        <%- else -%>
         canonical.hostname = "<%= scope.lookupvar('opendaylight::odl_bind_ip') %>"
+        <% end -%>
         canonical.port = 2550
       }
       netty.tcp {
+        <%- if scope.lookupvar('opendaylight::enable_ipv6') -%>
+        hostname = "[<%= scope.lookupvar('opendaylight::odl_bind_ip') %>]"
+        <%- else -%>
         hostname = "<%= scope.lookupvar('opendaylight::odl_bind_ip') %>"
+        <% end -%>
         port = 2550
       }
     }
@@ -17,7 +25,11 @@ odl-cluster-data {
       # Remove ".tcp" when using artery.
       seed-nodes = [
         <% scope.lookupvar('opendaylight::ha_node_ips').each do |ha_ip| -%>
+        <%- if scope.lookupvar('opendaylight::enable_ipv6') -%>
+        "akka.tcp://opendaylight-cluster-data@[<%= ha_ip %>]:2550",
+        <%- else -%>
         "akka.tcp://opendaylight-cluster-data@<%= ha_ip %>:2550",
+        <% end -%>
         <% end -%>
         ]
 

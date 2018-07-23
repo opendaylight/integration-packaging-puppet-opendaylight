@@ -20,7 +20,7 @@ class opendaylight::params {
   $ha_node_index = 0
   $ha_db_modules = { 'default' => false }
   $vpp_routing_node = ''
-  $java_opts = '-Djava.net.preferIPv4Stack=true'
+  $java_opts = ''
   $manage_repositories = true
   $username = 'admin'
   $password = 'admin'

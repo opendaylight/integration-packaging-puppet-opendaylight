@@ -14,7 +14,8 @@ RSpec::Puppet::Coverage.filters.push(*custom_filters)
 
 # Tests that are common to all possible configurations
 def generic_tests(options = {})
-  java_opts = options.fetch(:java_opts, '-Djava.net.preferIPv4Stack=true')
+  java_opts = options.fetch(:java_opts, '')
+  odl_bind_ip = options.fetch(:odl_bind_ip, '127.0.0.1')
 
   # Confirm that module compiles
   it { should compile }
@@ -63,10 +64,16 @@ def generic_tests(options = {})
   }
 
   it {
+    if odl_bind_ip =~ /.*:.*/
+        java_options = '-Djava.net.preferIPv6Addresses=true'
+    else
+        java_options = '-Djava.net.preferIPv4Stack=true'
+    end
+
     should contain_file_line('Karaf Java Options').with(
       'ensure' => 'present',
       'path'   => '/opt/opendaylight/bin/karaf',
-      'line'   => "EXTRA_JAVA_OPTS=#{java_opts}",
+      'line'   => "EXTRA_JAVA_OPTS=#{java_options}",
       'match'  => '^EXTRA_JAVA_OPTS=.*$',
       'after'  => '^PROGNAME=.*$'
     )
