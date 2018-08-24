@@ -86,6 +86,7 @@ def log_settings(options = {})
   # Extraxt params. The dafault value should be same as in opendaylight::params
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
+  log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
   log_mechanism = options.fetch(:log_mechanism, 'file')
 
   if log_mechanism == 'console'
@@ -125,6 +126,13 @@ def log_settings(options = {})
         'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
         'line'   => "log4j2.appender.rolling.strategy.max = #{log_max_rollover}",
         'match'  => '^log4j2.appender.rolling.strategy.max.*$',
+      )
+    }
+    it {
+      should contain_file_line('logrolloverfileindex').with(
+        'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+        'line'   => "log4j2.appender.rolling.strategy.fileIndex = #{log_rollover_fileindex}",
+        'match'  => '^log4j2.appender.rolling.strategy.fileIndex.*$',
       )
     }
   end

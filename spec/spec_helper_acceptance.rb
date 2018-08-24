@@ -69,6 +69,7 @@ def install_odl(options = {})
   password = options.fetch(:password, 'admin')
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
+  log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
   snat_mechanism = options.fetch(:snat_mechanism, 'controller')
   enable_tls = options.fetch(:enable_tls, false)
   tls_keystore_password = options.fetch(:tls_keystore_password, 'dummypass')
@@ -95,6 +96,7 @@ def install_odl(options = {})
       password => #{password},
       log_max_size => '#{log_max_size}',
       log_max_rollover => #{log_max_rollover},
+      log_rollover_fileindex => #{log_rollover_fileindex},
       snat_mechanism => #{snat_mechanism},
       enable_tls => #{enable_tls},
       tls_keystore_password => #{tls_keystore_password},
@@ -240,6 +242,7 @@ def log_settings_validations(options = {})
   # Should contain log level config file with correct file size and rollover values
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
+  log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
   log_mechanism = options.fetch(:log_mechanism, 'file')
 
   if log_mechanism == 'console'
@@ -258,6 +261,7 @@ def log_settings_validations(options = {})
       its(:content) { should match /^log4j2.appender.rolling.policies.size.size = #{log_max_size}/ }
       its(:content) { should match /^log4j2.appender.rolling.strategy.type = DefaultRolloverStrategy/ }
       its(:content) { should match /^log4j2.appender.rolling.strategy.max = #{log_max_rollover}/ }
+      its(:content) { should match /^log4j2.appender.rolling.strategy.fileIndex = #{log_rollover_fileindex}/ }
     end
   end
 end

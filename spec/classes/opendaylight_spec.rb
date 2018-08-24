@@ -519,6 +519,7 @@ describe 'opendaylight' do
       let(:params) {{
         :log_max_size => '1GB',
         :log_max_rollover => 3,
+        :log_rollover_fileindex => 'min'
       }}
 
       # Run shared tests applicable to all supported OSs
@@ -527,7 +528,8 @@ describe 'opendaylight' do
 
       # Run test specific to log settings
       log_settings(log_max_size: '1GB',
-                        log_max_rollover: 3)
+                   log_max_rollover: 3,
+                   log_rollover_fileindex: 'min')
     end
 
     context 'log to console' do
