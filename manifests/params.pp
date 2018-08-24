@@ -26,6 +26,7 @@ class opendaylight::params {
   $password = 'admin'
   $log_max_size = '10GB'
   $log_max_rollover = 2
+  $log_rollover_fileindex = 'min'
   $snat_mechanism = 'controller'
   $enable_tls = false
   $tls_keystore_password = undef

@@ -276,6 +276,14 @@ class opendaylight::config {
       line   => "log4j2.appender.rolling.strategy.max = ${::opendaylight::log_max_rollover}",
       match  => '^log4j2.appender.rolling.strategy.max.*$'
     }
+
+    # Set file index to min for rollover strategy
+    -> file_line { 'logrolloverfileindex':
+      ensure => present,
+      path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      line   => "log4j2.appender.rolling.strategy.fileIndex = ${::opendaylight::log_rollover_fileindex}",
+      match  => '^log4j2.appender.rolling.strategy.fileIndex.*$'
+    }
   }
 
   # Configure ODL HA if enabled

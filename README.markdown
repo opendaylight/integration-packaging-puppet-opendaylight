@@ -323,6 +323,24 @@ Default: `2`
 
 Valid options: An integer greater than 0.
 
+##### `log_rollover_fileindex`
+
+String that controls file index to use when log rollovers are initiated.
+
+If set to 'max', files with a higher index will be newer than files with
+a smaller index.
+
+If set to 'min', file with a lower index will be newer than files with a
+higher index.
+
+If set to 'nomax', the min and max values will be ignored, and file
+numbering will increment by 1 and each rollover will have an
+incrementally higher value with no maximum number of files.
+
+Default: `min`
+
+Valid options: 'min', 'max', 'nomax'
+
 ##### `log_mechanism`
 
 Logging mechanism for karaf logs. They are logged either to a file or console.

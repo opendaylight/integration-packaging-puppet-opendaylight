@@ -39,6 +39,11 @@
 #   Maxium size of OpenDaylight's log file.
 # [*log_max_rollover*]
 #   Maxium number of OpenDaylight log rollovers to keep.
+# [*log_rollover_fileindex*]
+#   File index to use for OpenDaylight log rollovers
+#   Defaults to 'min'.
+#   Other possible values: 'max', 'nomax'
+#   see https://logging.apache.org/log4j/2.x/manual/appenders.html#FileAppender for more info
 # [*snat_mechanism*]
 #   Sets the mechanism to be used for SNAT (conntrack, controller)
 # [*enable_tls*]
@@ -74,34 +79,35 @@
 #   Index of ha_node_ips for this node.
 #
 class opendaylight (
-  $default_features      = $::opendaylight::params::default_features,
-  $extra_features        = $::opendaylight::params::extra_features,
-  $odl_rest_port         = $::opendaylight::params::odl_rest_port,
-  $odl_bind_ip           = $::opendaylight::params::odl_bind_ip,
-  $rpm_repo              = $::opendaylight::params::rpm_repo,
-  $deb_repo              = $::opendaylight::params::deb_repo,
-  $log_levels            = $::opendaylight::params::log_levels,
-  $enable_ha             = $::opendaylight::params::enable_ha,
-  $ha_node_ips           = $::opendaylight::params::ha_node_ips,
-  $ha_node_index         = $::opendaylight::params::ha_node_index,
-  $java_opts             = $::opendaylight::params::java_opts,
-  $ha_db_modules         = $::opendaylight::params::ha_db_modules,
-  $vpp_routing_node      = $::opendaylight::params::vpp_routing_node,
-  $manage_repositories   = $::opendaylight::params::manage_repositories,
-  $username              = $::opendaylight::params::username,
-  $password              = $::opendaylight::params::password,
-  $log_max_size          = $::opendaylight::params::log_max_size,
-  $log_max_rollover      = $::opendaylight::params::log_max_rollover,
-  $snat_mechanism        = $::opendaylight::params::snat_mechanism,
-  $enable_tls            = $::opendaylight::params::enable_tls,
-  $tls_keystore_password = $::opendaylight::params::tls_keystore_password,
-  $tls_trusted_certs     = $::opendaylight::params::tls_trusted_certs,
-  $tls_key_file          = $::opendaylight::params::tls_key_file,
-  $tls_cert_file         = $::opendaylight::params::tls_cert_file,
-  $tls_ca_cert_file      = $::opendaylight::params::tls_ca_cert_file,
-  $log_mechanism         = $::opendaylight::params::log_mechanism,
-  $inherit_dscp_marking  = $::opendaylight::params::inherit_dscp_marking,
-  $stats_polling_enabled = $::opendaylight::params::stats_polling_enabled,
+  $default_features       = $::opendaylight::params::default_features,
+  $extra_features         = $::opendaylight::params::extra_features,
+  $odl_rest_port          = $::opendaylight::params::odl_rest_port,
+  $odl_bind_ip            = $::opendaylight::params::odl_bind_ip,
+  $rpm_repo               = $::opendaylight::params::rpm_repo,
+  $deb_repo               = $::opendaylight::params::deb_repo,
+  $log_levels             = $::opendaylight::params::log_levels,
+  $enable_ha              = $::opendaylight::params::enable_ha,
+  $ha_node_ips            = $::opendaylight::params::ha_node_ips,
+  $ha_node_index          = $::opendaylight::params::ha_node_index,
+  $java_opts              = $::opendaylight::params::java_opts,
+  $ha_db_modules          = $::opendaylight::params::ha_db_modules,
+  $vpp_routing_node       = $::opendaylight::params::vpp_routing_node,
+  $manage_repositories    = $::opendaylight::params::manage_repositories,
+  $username               = $::opendaylight::params::username,
+  $password               = $::opendaylight::params::password,
+  $log_max_size           = $::opendaylight::params::log_max_size,
+  $log_max_rollover       = $::opendaylight::params::log_max_rollover,
+  $log_rollover_fileindex = $::opendaylight::params::log_rollover_fileindex,
+  $snat_mechanism         = $::opendaylight::params::snat_mechanism,
+  $enable_tls             = $::opendaylight::params::enable_tls,
+  $tls_keystore_password  = $::opendaylight::params::tls_keystore_password,
+  $tls_trusted_certs      = $::opendaylight::params::tls_trusted_certs,
+  $tls_key_file           = $::opendaylight::params::tls_key_file,
+  $tls_cert_file          = $::opendaylight::params::tls_cert_file,
+  $tls_ca_cert_file       = $::opendaylight::params::tls_ca_cert_file,
+  $log_mechanism          = $::opendaylight::params::log_mechanism,
+  $inherit_dscp_marking   = $::opendaylight::params::inherit_dscp_marking,
+  $stats_polling_enabled  = $::opendaylight::params::stats_polling_enabled,
 ) inherits ::opendaylight::params {
 
   # Validate OS family

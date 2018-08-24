@@ -84,3 +84,5 @@
 - Disable regular polling of OF statistics
 2018-07-23 Release 8.4.0
 - Enable IPv6 deployment
+2018-09-18 Release 8.4.1
+- Fix opendaylight karaf log file rotation
