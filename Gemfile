@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 
 gem "beaker"
+gem "beaker-puppet"
+gem "beaker-docker"
 gem "beaker-rspec"
 gem "guard-rake"
 gem "metadata-json-lint"
