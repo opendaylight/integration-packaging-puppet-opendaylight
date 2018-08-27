@@ -1,11 +1,16 @@
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
+require 'beaker-puppet'
+
+include Beaker::DSL::InstallUtils::FOSSUtils
+include Beaker::DSL::InstallUtils::ModuleUtils
+include Beaker::DSL::Helpers::PuppetHelpers
 
 # Install Puppet on all Beaker hosts
 unless ENV['BEAKER_provision'] == 'no'
   hosts.each do |host|
     # Install Puppet
-    install_puppet_agent_on(host, puppet_collection: "pc1")
+    install_puppet_agent_on(host, {:puppet_collection => "pc1"})
   end
 end
 
