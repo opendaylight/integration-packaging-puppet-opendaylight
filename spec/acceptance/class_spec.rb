@@ -327,4 +327,14 @@ describe 'opendaylight class' do
       generic_validations(odl_bind_ip: '127.0.0.1')
     end
   end
+
+  describe 'testing configuring inactivity probe' do
+    context 'with specifying inactivity probe timer' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(inactivity_probe: 99999)
+
+      # Call specialized helper fn for probe validations
+      inactivity_probe_validations(inactivity_probe: 99999)
+    end
+  end
 end

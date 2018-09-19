@@ -16,6 +16,7 @@ RSpec::Puppet::Coverage.filters.push(*custom_filters)
 def generic_tests(options = {})
   java_opts = options.fetch(:java_opts, '')
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
+  inactivity_probe = options.fetch(:inactivity_probe, :undef)
 
   # Confirm that module compiles
   it { should compile }
@@ -98,6 +99,18 @@ def generic_tests(options = {})
       'content' =>  /<address>#{odl_bind_ip}<\/address>/
     )
   }
+
+  unless inactivity_probe == :undef
+    it {
+      should contain_file('Configure inactivity probe timer').with(
+        'ensure'  => 'file',
+        'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-elanmanager-config.xml',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+        'content' =>  /<controller-inactivity-probe>#{inactivity_probe}<\/controller-inactivity-probe>/
+      )
+    }
+  end
 
 end
 

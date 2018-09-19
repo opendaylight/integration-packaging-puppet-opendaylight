@@ -37,4 +37,5 @@ class opendaylight::params {
   $log_mechanism = 'file'
   $inherit_dscp_marking = false
   $stats_polling_enabled = false
+  $inactivity_probe = undef
 }

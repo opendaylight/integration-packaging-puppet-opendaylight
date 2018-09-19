@@ -88,3 +88,5 @@
 - Fix opendaylight karaf log file rotation
 2018-09-27 Release 8.4.2
 - Bind OVSDB and OpenFlow addresses to specific IP
+2018-10-03 Release 8.4.3
+- Adds configuration for OVSDB inactivity probe timer
