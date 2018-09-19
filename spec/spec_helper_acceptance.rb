@@ -76,6 +76,7 @@ def install_odl(options = {})
   log_mechanism = options.fetch(:log_mechanism, 'file')
   inherit_dscp_marking = options.fetch(:inherit_dscp_marking, false)
   stats_polling_enabled = options.fetch(:stats_polling_enabled, false)
+  inactivity_probe = options.fetch(:inactivity_probe, :undef)
 
   # Build script for consumption by Puppet apply
   it 'should work idempotently with no errors' do
@@ -103,6 +104,7 @@ def install_odl(options = {})
       log_mechanism => #{log_mechanism},
       inherit_dscp_marking => #{inherit_dscp_marking},
       stats_polling_enabled => #{stats_polling_enabled},
+      inactivity_probe => #{inactivity_probe},
     }
     EOS
 
@@ -626,5 +628,22 @@ def stats_polling_validations(options = {})
     it { should be_owned_by 'odl' }
     it { should be_grouped_into 'odl' }
     its(:content) { should match /is-statistics-polling-on=#{stats_polling_enabled}/ }
+  end
+end
+
+# Shared function for validations related to inactivity probe
+def inactivity_probe_validations(options = {})
+  # NB: This param default should match the one used by the opendaylight
+  #   class, which is defined in opendaylight::params
+  # TODO: Remove this possible source of bugs^^
+
+  inactivity_probe = options.fetch(:inactivity_probe, :undef)
+  unless inactivity_probe == :undef
+    describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-elanmanager-config.xml') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /<controller-inactivity-probe>#{inactivity_probe}/ }
+    end
   end
 end

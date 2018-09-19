@@ -550,6 +550,22 @@ describe 'opendaylight' do
       # Run test specific to log settings
       log_settings(log_mechanism: 'console')
     end
+
+    context 'setting inactivity probe' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :inactivity_probe => 99999,
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+    end
   end
 
   # All OVSDB HA enable/disable tests
