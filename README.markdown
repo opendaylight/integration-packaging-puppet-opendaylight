@@ -453,6 +453,14 @@ Default: `false`
 
 Valid options: `true`, `false`
 
+### `inactivity_probe`
+
+Configures inactivity probe timer when specified.
+
+Default: `undef`
+
+Valid options: An integer or string in milliseconds.
+
 ## Limitations
 
 - Tested on CentOS 7 and Ubuntu 16.04.

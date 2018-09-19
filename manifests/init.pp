@@ -72,6 +72,9 @@
 # [*stats_polling_enabled*]
 #   Enables statistics polling of OpenFlow entities like table, groups.
 #   Defaults to false
+# [*inactivity_probe*]
+#   Time in millseconds before an inactivity probe is sent via OVSDB
+#   to OVS. Defaults to undef.
 #
 # === Deprecated Parameters
 #
@@ -108,6 +111,7 @@ class opendaylight (
   $log_mechanism          = $::opendaylight::params::log_mechanism,
   $inherit_dscp_marking   = $::opendaylight::params::inherit_dscp_marking,
   $stats_polling_enabled  = $::opendaylight::params::stats_polling_enabled,
+  $inactivity_probe       = $::opendaylight::params::inactivity_probe,
 ) inherits ::opendaylight::params {
 
   # Validate OS family

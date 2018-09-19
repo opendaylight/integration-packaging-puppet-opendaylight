@@ -221,6 +221,17 @@ class opendaylight::config {
     }
   }
 
+  # Configure inactivity probe
+  if $opendaylight::inactivity_probe {
+    file {'netvirt-elanmanager-config.xml':
+      ensure  => file,
+      path    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-elanmanager-config.xml',
+      owner   => 'odl',
+      group   => 'odl',
+      content => template('opendaylight/netvirt-elanmanager-config.xml.erb')
+    }
+  }
+
   # Set any custom log levels
   $opendaylight::log_levels.each |$log_name, $logging_level| {
     $underscored_version = regsubst($log_name, '\.', '_', 'G')
