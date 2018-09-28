@@ -84,3 +84,5 @@
 - Enable IPv6 deployment
 2018-09-18 Release 8.4.1
 - Fix opendaylight karaf log file rotation
+2018-09-27 Release 8.4.2
+- Bind OVSDB and OpenFlow addresses to specific IP

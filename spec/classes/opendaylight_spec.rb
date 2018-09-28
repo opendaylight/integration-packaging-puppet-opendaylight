@@ -365,7 +365,7 @@ describe 'opendaylight' do
 
       # Run shared tests applicable to all supported OSs
       # Note that this function is defined in spec_helper
-      generic_tests
+      generic_tests(odl_bind_ip: '127.0.0.1')
 
       # Run test that specialize in checking ODL REST port config
       # Note that this function is defined in spec_helper
@@ -1033,7 +1033,7 @@ describe 'opendaylight' do
 
       # Run shared tests applicable to all supported OSs
       # Note that this function is defined in spec_helper
-      generic_tests
+      generic_tests(odl_bind_ip: '127.0.0.1')
 
       # Run test that specialize in checking websocket address
       # Note that this function is defined in spec_helper
