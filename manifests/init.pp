@@ -11,7 +11,7 @@
 # [*odl_rest_port *]
 #   Port for ODL northbound REST interface to listen on.
 # [*odl_bind_ip *]
-#   IP for ODL northbound REST interface to bind to.
+#   IP for ODL northbound REST interface and southbound OVSDB/OpenFlow to bind to.
 # [*rpm_repo*]
 #   Repo URL to install ODL RPM from, in .repo baseurl format.
 # [*deb_repo*]

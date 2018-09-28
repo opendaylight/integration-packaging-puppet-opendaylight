@@ -1,6 +1,7 @@
 <switch-connection-config xmlns="urn:opendaylight:params:xml:ns:yang:openflow:switch:connection:config">
   <instance-name>openflow-switch-connection-provider-default-impl</instance-name>
   <port>6653</port>
+  <address><%= scope.lookupvar('opendaylight::odl_bind_ip') %></address>
   <transport-protocol><%= scope.lookupvar('opendaylight::config::transport_protocol') %></transport-protocol>
   <tls>
      <keystore>configuration/ssl/ctl.jks</keystore>

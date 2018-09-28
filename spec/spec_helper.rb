@@ -15,7 +15,7 @@ RSpec::Puppet::Coverage.filters.push(*custom_filters)
 # Tests that are common to all possible configurations
 def generic_tests(options = {})
   java_opts = options.fetch(:java_opts, '')
-  odl_bind_ip = options.fetch(:odl_bind_ip, '127.0.0.1')
+  odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
 
   # Confirm that module compiles
   it { should compile }
@@ -76,6 +76,26 @@ def generic_tests(options = {})
       'line'   => "EXTRA_JAVA_OPTS=#{java_options}",
       'match'  => '^EXTRA_JAVA_OPTS=.*$',
       'after'  => '^PROGNAME=.*$'
+    )
+  }
+
+  it {
+    should contain_file('org.opendaylight.ovsdb.library.cfg').with(
+      'ensure'  => 'file',
+      'path'    => '/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg',
+      'owner'   => 'odl',
+      'group'   => 'odl',
+      'content' =>  /ovsdb-listener-ip = #{odl_bind_ip}/
+    )
+  }
+
+  it {
+    should contain_file('default-openflow-connection-config.xml').with(
+      'ensure'  => 'file',
+      'path'    => '/opt/opendaylight/etc/opendaylight/datastore/initial/config/default-openflow-connection-config.xml',
+      'owner'   => 'odl',
+      'group'   => 'odl',
+      'content' =>  /<address>#{odl_bind_ip}<\/address>/
     )
   }
 
@@ -587,11 +607,11 @@ def odl_tls_tests(options = {})
         'group'   => 'odl',
       )
       should contain_file('org.opendaylight.ovsdb.library.cfg').with(
-        'ensure' => 'file',
-        'path'   => '/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg',
-        'owner'  => 'odl',
-        'group'  => 'odl',
-        'source' => 'puppet:///modules/opendaylight/org.opendaylight.ovsdb.library.cfg'
+        'ensure'  => 'file',
+        'path'    => '/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg',
+        'owner'   => 'odl',
+        'group'   => 'odl',
+        'content' =>  /use-ssl = true/
       )
       should contain_file('/opt/opendaylight/configuration/ssl').with(
         'ensure' => 'directory',

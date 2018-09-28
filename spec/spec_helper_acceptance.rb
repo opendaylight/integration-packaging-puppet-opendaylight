@@ -322,7 +322,29 @@ def odl_bind_ip_validation(options = {})
       its(:content) { should match /sshHost = #{odl_bind_ip}/ }
     end
 
+    describe file('/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /ovsdb-listener-ip = #{odl_bind_ip}/ }
+    end
+
+    describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/default-openflow-connection-config.xml') do
+      it { should be_file }
+      it { should be_owned_by 'odl' }
+      it { should be_grouped_into 'odl' }
+      its(:content) { should match /<address>#{odl_bind_ip}<\/address>/ }
+    end
+
     describe command("loop_count=0; until [[ \$loop_count -ge 30 ]]; do netstat -punta | grep 8101 | grep #{odl_bind_ip} && break; loop_count=\$[\$loop_count+1]; sleep 1; done; echo \"Waited \$loop_count seconds to detect ODL karaf bound to IP\"") do
+      its(:exit_status) { should eq 0 }
+    end
+
+    describe command("loop_count=0; until [[ \$loop_count -ge 60 ]]; do netstat -punta | grep 6653 | grep #{odl_bind_ip} && break; loop_count=\$[\$loop_count+1]; sleep 1; done; echo \"Waited \$loop_count seconds to detect ODL karaf bound to IP\"") do
+      its(:exit_status) { should eq 0 }
+    end
+
+    describe command("loop_count=0; until [[ \$loop_count -ge 60 ]]; do netstat -punta | grep 6640 | grep #{odl_bind_ip} && break; loop_count=\$[\$loop_count+1]; sleep 1; done; echo \"Waited \$loop_count seconds to detect ODL karaf bound to IP\"") do
       its(:exit_status) { should eq 0 }
     end
   end

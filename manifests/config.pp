@@ -131,15 +131,6 @@ class opendaylight::config {
       require => File['org.ops4j.pax.web.cfg']
     }
 
-    # Enable TLS with OVSDB
-    file { 'org.opendaylight.ovsdb.library.cfg':
-      ensure => file,
-      path   => '/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg',
-      owner  => 'odl',
-      group  => 'odl',
-      source => 'puppet:///modules/opendaylight/org.opendaylight.ovsdb.library.cfg',
-    }
-
     # Configure OpenFlow plugin to use TLS
     $transport_protocol = 'TLS'
   } else {
@@ -161,6 +152,16 @@ class opendaylight::config {
       require => File['org.ops4j.pax.web.cfg']
     }
   }
+
+  # Configure OVSDB
+  file { 'org.opendaylight.ovsdb.library.cfg':
+    ensure  => file,
+    path    => '/opt/opendaylight/etc/org.opendaylight.ovsdb.library.cfg',
+    owner   => 'odl',
+    group   => 'odl',
+    content => template('opendaylight/org.opendaylight.ovsdb.library.cfg.erb'),
+  }
+
   # Configure OpenFlow plugin to use TCP/TLS
   file { 'default-openflow-connection-config.xml':
     ensure  => file,
