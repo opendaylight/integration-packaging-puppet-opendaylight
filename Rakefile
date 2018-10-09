@@ -34,17 +34,16 @@ task :cent_devel_dock do
 end
 
 # CentOS latest release/SR VM
-#desc "Beaker tests against CentOS 7 VM with latest Fluorine release/SR RPM from CentOS CBS repo"
-#task :cent_rel_vm do
-#  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-9-release/$basearch/os/' bundle exec rake beaker"
-#end
+desc "Beaker tests against CentOS 7 VM with latest Fluorine release/SR RPM from CentOS CBS repo"
+task :cent_rel_vm do
+  sh "RS_SET=centos-7 RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-9-release/$basearch/os/' bundle exec rake beaker"
+end
 
 # CentOS latest release/SR container
-# Uncomment once there's a Fluorine release
-#desc "Beaker tests against CentOS 7 container with latest Fluorine release/SR RPM from CentOS CBS repo"
-#task :cent_rel_dock do
-#  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-9-release/$basearch/os/' bundle exec rake beaker"
-#end
+desc "Beaker tests against CentOS 7 container with latest Fluorine release/SR RPM from CentOS CBS repo"
+task :cent_rel_dock do
+  sh "RS_SET=centos-7-docker RPM_REPO='http://cbs.centos.org/repos/nfv7-opendaylight-9-release/$basearch/os/' bundle exec rake beaker"
+end
 
 # Multi-test helpers
 
@@ -66,14 +65,12 @@ desc "All tests, use VMs for Beaker tests"
 task :acceptance_vm => [
   :test,
   :cent_devel_vm,
-# Uncomment once there's a Fluorine release
-#  :cent_rel_vm,
+  :cent_rel_vm,
 ]
 
 desc "All tests, use containers for Beaker tests"
 task :acceptance_dock => [
   :test,
   :cent_devel_dock,
-# Uncomment once there's a Fluorine release
-#  :cent_rel_dock,
+  :cent_rel_dock,
 ]
