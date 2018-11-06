@@ -157,11 +157,11 @@ class opendaylight (
 
   if $opendaylight::odl_bind_ip =~ Stdlib::Compat::Ipv6 {
     $enable_ipv6 = true
-    $java_options = join(union(['-Djava.net.preferIPv6Addresses=true'], any2array($opendaylight::java_opts)), ' ')
+    $java_options = strip(join(union(['-Djava.net.preferIPv6Addresses=true'], any2array($opendaylight::java_opts)), ' '))
   }
   else {
     $enable_ipv6 = false
-    $java_options = join(union(['-Djava.net.preferIPv4Stack=true'], any2array($opendaylight::java_opts)), ' ')
+    $java_options = strip(join(union(['-Djava.net.preferIPv4Stack=true'], any2array($opendaylight::java_opts)), ' '))
   }
 
   class { '::opendaylight::install': }
