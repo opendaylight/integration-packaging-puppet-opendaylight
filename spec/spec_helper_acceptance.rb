@@ -77,6 +77,7 @@ def install_odl(options = {})
   inherit_dscp_marking = options.fetch(:inherit_dscp_marking, false)
   stats_polling_enabled = options.fetch(:stats_polling_enabled, false)
   inactivity_probe = options.fetch(:inactivity_probe, :undef)
+  java_opts = options.fetch(:java_opts, '')
 
   # Build script for consumption by Puppet apply
   it 'should work idempotently with no errors' do
@@ -105,6 +106,7 @@ def install_odl(options = {})
       inherit_dscp_marking => #{inherit_dscp_marking},
       stats_polling_enabled => #{stats_polling_enabled},
       inactivity_probe => #{inactivity_probe},
+      java_opts => '#{java_opts}',
     }
     EOS
 
@@ -122,7 +124,6 @@ end
 # Shared function that handles generic validations
 # These should be common for all odl class param combos
 def generic_validations(options = {})
-  java_opts = options.fetch(:java_opts, [])
   # Verify ODL's directory
   describe file('/opt/opendaylight/') do
     it { should be_directory }
@@ -173,11 +174,12 @@ def generic_validations(options = {})
     it { should be_grouped_into 'odl' }
   end
 
+  java_opts = options.fetch(:java_opts, '')
   odl_bind_ip = options.fetch(:odl_bind_ip, '127.0.0.1')
   if odl_bind_ip == '127.0.0.1'
-    java_options = ['-Djava.net.preferIPv4Stack=true'] + java_opts
+    java_options = ['-Djava.net.preferIPv4Stack=true', java_opts].join(' ').strip
   else
-    java_options = ['-Djava.net.preferIPv6Addresses=true'] + java_opts
+    java_options = ['-Djava.net.preferIPv6Addresses=true', java_opts].join(' ').strip
   end
 
   # Should contain karaf file with Java options set
@@ -185,7 +187,11 @@ def generic_validations(options = {})
     it { should be_file }
     it { should be_owned_by 'odl' }
     it { should be_grouped_into 'odl' }
-    its(:content) { should match /^EXTRA_JAVA_OPTS=#{java_options.join(" ")}/ }
+    its(:content) { should match /^EXTRA_JAVA_OPTS=\"#{java_options}\"/ }
+  end
+
+  describe command do ("ps -ef | grep opendaylight | grep #{java_options}")
+    its(:exit_status) { should eq 0 }
   end
 
   # Should contain ODL NB port config file
