@@ -74,7 +74,7 @@ def generic_tests(options = {})
     should contain_file_line('Karaf Java Options').with(
       'ensure' => 'present',
       'path'   => '/opt/opendaylight/bin/karaf',
-      'line'   => "EXTRA_JAVA_OPTS=#{java_options}",
+      'line'   => "EXTRA_JAVA_OPTS=\"#{java_options}\"",
       'match'  => '^EXTRA_JAVA_OPTS=.*$',
       'after'  => '^PROGNAME=.*$'
     )

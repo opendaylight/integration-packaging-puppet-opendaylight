@@ -328,6 +328,16 @@ describe 'opendaylight class' do
     end
   end
 
+  describe 'testing passing extra java option' do
+    context 'pass java heap size' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(java_opts: '-Xmx8192m')
+
+      # Call specialized helper fn for polling enablement validations
+      generic_validations(java_opts: '-Xmx8192m')
+    end
+  end
+
   describe 'testing configuring inactivity probe' do
     context 'with specifying inactivity probe timer' do
       # Call specialized helper fn to install OpenDaylight
