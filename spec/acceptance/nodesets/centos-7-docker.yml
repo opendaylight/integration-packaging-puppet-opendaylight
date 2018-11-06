@@ -5,6 +5,8 @@ HOSTS:
       - master
     platform: el-7-x86_64
     image: centos:7
+    docker_image_commands:
+      - 'yum install -y net-tools'
     docker_cmd: '["/sbin/init"]'
     hypervisor: docker
 
