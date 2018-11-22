@@ -298,6 +298,13 @@ class opendaylight::config {
     }
   }
 
+  file_line { 'logpattern':
+    ensure => present,
+    path   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+    line   => "log4j2.pattern = ${::opendaylight::log_pattern}",
+    match  => '^log4j2.pattern.*$'
+  }
+
   # Configure ODL HA if enabled
   if $::opendaylight::enable_ha {
     # Configure ODL OSVDB Clustering

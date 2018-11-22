@@ -120,6 +120,7 @@ def log_settings(options = {})
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
   log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
+  log_pattern = options.fetch(:log_pattern, '%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n')
   log_mechanism = options.fetch(:log_mechanism, 'file')
 
   if log_mechanism == 'console'
@@ -169,6 +170,13 @@ def log_settings(options = {})
       )
     }
   end
+  it {
+    should contain_file_line('logpattern').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j2.pattern = #{log_pattern}",
+      'match'  => '^log4j2.pattern.*$',
+    )
+  }
 end
 
 # Shared tests that specialize in testing Karaf feature installs

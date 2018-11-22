@@ -351,6 +351,14 @@ Default: `file`
 
 Valid options: `file`, `console`.
 
+##### `log_pattern`
+
+String that controls the log pattern used for logging.
+
+Default: `%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n`
+
+Valid options: A valid string that is a valid log4j2 pattern.
+
 ##### `enable_ha`
 
 Enable or disable ODL High Availablity.

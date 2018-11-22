@@ -532,6 +532,25 @@ describe 'opendaylight' do
                    log_rollover_fileindex: 'min')
     end
 
+    context 'log to file customizing pattern' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :log_pattern => '%d{ISO8601} | %-5p | %-16t | %m%n',
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      log_settings(log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
+    end
+
     context 'log to console' do
       let(:facts) {{
         :osfamily => osfamily,
@@ -549,6 +568,27 @@ describe 'opendaylight' do
 
       # Run test specific to log settings
       log_settings(log_mechanism: 'console')
+    end
+
+    context 'log to console customizing pattern' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :log_mechanism => 'console',
+        :log_pattern => '%d{ISO8601} | %-5p | %-16t | %m%n',
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      log_settings(log_mechanism: 'console',
+                   log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
     end
 
     context 'setting inactivity probe' do

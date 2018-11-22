@@ -44,6 +44,8 @@
 #   Defaults to 'min'.
 #   Other possible values: 'max', 'nomax'
 #   see https://logging.apache.org/log4j/2.x/manual/appenders.html#FileAppender for more info
+# [*log_pattern*]
+#   Pattern to use for logging
 # [*snat_mechanism*]
 #   Sets the mechanism to be used for SNAT (conntrack, controller)
 # [*enable_tls*]
@@ -101,6 +103,7 @@ class opendaylight (
   $log_max_size           = $::opendaylight::params::log_max_size,
   $log_max_rollover       = $::opendaylight::params::log_max_rollover,
   $log_rollover_fileindex = $::opendaylight::params::log_rollover_fileindex,
+  $log_pattern            = $::opendaylight::params::log_pattern,
   $snat_mechanism         = $::opendaylight::params::snat_mechanism,
   $enable_tls             = $::opendaylight::params::enable_tls,
   $tls_keystore_password  = $::opendaylight::params::tls_keystore_password,

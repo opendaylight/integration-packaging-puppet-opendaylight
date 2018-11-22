@@ -111,12 +111,30 @@ describe 'opendaylight class' do
                                log_rollover_fileIndex: 'min')
     end
 
+    context 'log to file customizing pattern' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
+
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
+    end
+
     context 'log to console' do
       # Call specialized helper fn to install OpenDaylight
       install_odl(log_mechanism: 'console')
 
       # Call specialized helper fn for log settings validations
       log_settings_validations(log_mechanism: 'console')
+    end
+
+    context 'log to console customizing pattern' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(log_mechanism: 'console',
+                  log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
+
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(log_mechanism: 'console',
+                               log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
     end
   end
 
