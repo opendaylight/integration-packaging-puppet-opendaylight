@@ -69,6 +69,7 @@ def install_odl(options = {})
   password = options.fetch(:password, 'admin')
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
+  log_pattern = options.fetch(:log_pattern, '%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n')
   log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
   snat_mechanism = options.fetch(:snat_mechanism, 'controller')
   enable_tls = options.fetch(:enable_tls, false)
@@ -98,6 +99,7 @@ def install_odl(options = {})
       password => #{password},
       log_max_size => '#{log_max_size}',
       log_max_rollover => #{log_max_rollover},
+      log_pattern => '#{log_pattern}',
       log_rollover_fileindex => #{log_rollover_fileindex},
       snat_mechanism => #{snat_mechanism},
       enable_tls => #{enable_tls},
@@ -250,6 +252,7 @@ def log_settings_validations(options = {})
   # Should contain log level config file with correct file size and rollover values
   log_max_size = options.fetch(:log_max_size, '10GB')
   log_max_rollover = options.fetch(:log_max_rollover, 2)
+  log_pattern = options.fetch(:log_pattern, '%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n')
   log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
   log_mechanism = options.fetch(:log_mechanism, 'file')
 
@@ -271,6 +274,9 @@ def log_settings_validations(options = {})
       its(:content) { should match /^log4j2.appender.rolling.strategy.max = #{log_max_rollover}/ }
       its(:content) { should match /^log4j2.appender.rolling.strategy.fileIndex = #{log_rollover_fileindex}/ }
     end
+  end
+  describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
+    its(:content) { should match /^log4j2.pattern = #{log_pattern}/ }
   end
 end
 
