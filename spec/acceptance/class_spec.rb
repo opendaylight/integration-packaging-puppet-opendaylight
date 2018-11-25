@@ -119,6 +119,22 @@ describe 'opendaylight class' do
       log_settings_validations(log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
     end
 
+    context 'log to file enabling the PaxOsgi appender' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(enable_paxosgi_logger: true)
+
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(enable_paxosgi_logger: true)
+    end
+
+    context 'log to file disabling the PaxOsgi appender' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(enable_paxosgi_logger: false)
+
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(enable_paxosgi_logger: false)
+    end
+
     context 'log to console' do
       # Call specialized helper fn to install OpenDaylight
       install_odl(log_mechanism: 'console')
@@ -135,6 +151,26 @@ describe 'opendaylight class' do
       # Call specialized helper fn for log settings validations
       log_settings_validations(log_mechanism: 'console',
                                log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
+    end
+
+    context 'log to console enabling the PaxOsgi appender' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(log_mechanism: 'console',
+                  enable_paxosgi_logger: true)
+
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(log_mechanism: 'console',
+                               enable_paxosgi_logger: true)
+    end
+
+    context 'log to console disabling the PaxOsgi appender' do
+      # Call specialized helper fn to install OpenDaylight
+      install_odl(log_mechanism: 'console',
+                  enable_paxosgi_logger: false)
+
+      # Call specialized helper fn for log settings validations
+      log_settings_validations(log_mechanism: 'console',
+                               enable_paxosgi_logger: false)
     end
   end
 
