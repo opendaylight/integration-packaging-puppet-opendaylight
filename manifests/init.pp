@@ -46,6 +46,11 @@
 #   see https://logging.apache.org/log4j/2.x/manual/appenders.html#FileAppender for more info
 # [*log_pattern*]
 #   Pattern to use for logging
+# [*enable_paxosgi_logger*]
+#   (Boolean) Enables the PaxOsgi appender in the logging capabilities.
+#   Note that enabling this will also require to modify the log pattern to
+#   make use of the added capabilities.
+#   Defaults to false
 # [*snat_mechanism*]
 #   Sets the mechanism to be used for SNAT (conntrack, controller)
 # [*enable_tls*]
@@ -104,6 +109,7 @@ class opendaylight (
   $log_max_rollover       = $::opendaylight::params::log_max_rollover,
   $log_rollover_fileindex = $::opendaylight::params::log_rollover_fileindex,
   $log_pattern            = $::opendaylight::params::log_pattern,
+  $enable_paxosgi_logger  = $::opendaylight::params::enable_paxosgi_logger,
   $snat_mechanism         = $::opendaylight::params::snat_mechanism,
   $enable_tls             = $::opendaylight::params::enable_tls,
   $tls_keystore_password  = $::opendaylight::params::tls_keystore_password,

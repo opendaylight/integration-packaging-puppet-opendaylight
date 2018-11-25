@@ -71,6 +71,7 @@ def install_odl(options = {})
   log_max_rollover = options.fetch(:log_max_rollover, 2)
   log_pattern = options.fetch(:log_pattern, '%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n')
   log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
+  enable_paxosgi_logger = options.fetch(:enable_paxosgi_logger, false)
   snat_mechanism = options.fetch(:snat_mechanism, 'controller')
   enable_tls = options.fetch(:enable_tls, false)
   tls_keystore_password = options.fetch(:tls_keystore_password, 'dummypass')
@@ -101,6 +102,7 @@ def install_odl(options = {})
       log_max_rollover => #{log_max_rollover},
       log_pattern => '#{log_pattern}',
       log_rollover_fileindex => #{log_rollover_fileindex},
+      enable_paxosgi_logger => #{enable_paxosgi_logger},
       snat_mechanism => #{snat_mechanism},
       enable_tls => #{enable_tls},
       tls_keystore_password => #{tls_keystore_password},
@@ -255,6 +257,7 @@ def log_settings_validations(options = {})
   log_pattern = options.fetch(:log_pattern, '%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n')
   log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
   log_mechanism = options.fetch(:log_mechanism, 'file')
+  enable_paxosgi_logger = options.fetch(:enable_paxosgi_logger, false)
 
   if log_mechanism == 'console'
     describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
@@ -277,6 +280,19 @@ def log_settings_validations(options = {})
   end
   describe file('/opt/opendaylight/etc/org.ops4j.pax.logging.cfg') do
     its(:content) { should match /^log4j2.pattern = #{log_pattern}/ }
+    if enable_paxosgi_logger == true
+        its(:content) { should match /^log4j2.rootLogger.appenderRef.PaxOsgi.ref = PaxOsgi/ }
+        its(:content) { should match /^# OSGi appender/ }
+        its(:content) { should match /^log4j2.appender.osgi.type = PaxOsgi/ }
+        its(:content) { should match /^log4j2.appender.osgi.name = PaxOsgi/ }
+        its(:content) { should match /^log4j2.appender.osgi.filter = */ }
+    else
+        its(:content) { should_not match /^log4j2.rootLogger.appenderRef.PaxOsgi.ref = PaxOsgi/ }
+        its(:content) { should_not match /^# OSGi appender/ }
+        its(:content) { should_not match /^log4j2.appender.osgi.type = PaxOsgi/ }
+        its(:content) { should_not match /^log4j2.appender.osgi.name = PaxOsgi/ }
+        its(:content) { should_not match /^log4j2.appender.osgi.filter = */ }
+    end
   end
 end
 

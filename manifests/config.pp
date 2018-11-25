@@ -305,6 +305,52 @@ class opendaylight::config {
     match  => '^log4j2.pattern.*$'
   }
 
+  if $::opendaylight::enable_paxosgi_logger {
+    $pax_log_ensure = present
+  }else{
+    $pax_log_ensure = absent
+  }
+
+  file_line { 'paxosgiappenderref':
+    ensure            => $pax_log_ensure,
+    path              => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+    line              => 'log4j2.rootLogger.appenderRef.PaxOsgi.ref = PaxOsgi',
+    match             => '^log4j2.rootLogger.appenderRef.PaxOsgi.ref = .*$',
+    match_for_absence => true,
+  }
+
+  file_line { 'paxosgisection':
+    ensure            => $pax_log_ensure,
+    path              => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+    line              => '# OSGi appender',
+    match             => '^# OSGi appender$',
+    match_for_absence => true,
+  }
+
+  file_line { 'paxosgitype':
+    ensure            => $pax_log_ensure,
+    path              => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+    line              => 'log4j2.appender.osgi.type = PaxOsgi',
+    match             => '^log4j2.appender.osgi.type = .*$',
+    match_for_absence => true,
+  }
+
+  file_line { 'paxosginame':
+    ensure            => $pax_log_ensure,
+    path              => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+    line              => 'log4j2.appender.osgi.name = PaxOsgi',
+    match             => '^log4j2.appender.osgi.name = .*$',
+    match_for_absence => true,
+  }
+
+  file_line { 'paxosgifilter':
+    ensure            => $pax_log_ensure,
+    path              => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+    line              => 'log4j2.appender.osgi.filter = *',
+    match             => '^log4j2.appender.osgi.filter = .*$',
+    match_for_absence => true,
+  }
+
   # Configure ODL HA if enabled
   if $::opendaylight::enable_ha {
     # Configure ODL OSVDB Clustering
