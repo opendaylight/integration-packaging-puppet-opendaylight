@@ -28,6 +28,7 @@ class opendaylight::params {
   $log_max_rollover = 2
   $log_rollover_fileindex = 'min'
   $log_pattern = '%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n'
+  $enable_paxosgi_logger = false
   $snat_mechanism = 'controller'
   $enable_tls = false
   $tls_keystore_password = undef
