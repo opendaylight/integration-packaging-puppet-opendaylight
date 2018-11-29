@@ -175,7 +175,6 @@ end
 def karaf_feature_tests(options = {})
   # Extract params
   # NB: This default list should be the same as the one in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   default_features = options.fetch(:default_features, ['standard', 'wrap', 'ssh'])
   extra_features = options.fetch(:extra_features, [])
 
@@ -207,7 +206,6 @@ end
 def odl_rest_port_tests(options = {})
   # Extract params
   # NB: This default value should be the same as one in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   odl_rest_port = options.fetch(:odl_rest_port, 8181)
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
   # Confirm properties of ODL REST port config file
@@ -253,7 +251,6 @@ end
 def log_level_tests(options = {})
   # Extract params
   # NB: This default value should be the same as one in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   log_levels = options.fetch(:log_levels, {})
 
   if log_levels.empty?
@@ -494,7 +491,6 @@ end
 def vpp_routing_node_tests(options = {})
   # Extract params
   # NB: This default list should be the same as the one in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   routing_node = options.fetch(:routing_node, '')
 
   if routing_node.empty?
@@ -536,7 +532,6 @@ end
 def odl_websocket_address_tests(options = {})
   # Extract params
   # NB: This default value should be the same as one in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
   # Confirm properties of ODL REST port config file
   # NB: These hashes don't work with Ruby 1.8.7, but we
@@ -665,7 +660,6 @@ end
 def stats_polling_enablement_tests(options = {})
   # Extract params
   # NB: This default value should be the same as one in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   stats_polling_enabled = options.fetch(:stats_polling_enabled, false)
   # Confirm properties of ODL REST port config file
   # NB: These hashes don't work with Ruby 1.8.7, but we
