@@ -54,7 +54,6 @@ def install_odl(options = {})
 
   # NB: These param defaults should match the ones used by the opendaylight
   #   class, which are defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   # Extract params if given, defaulting to odl class defaults if not
   extra_features = options.fetch(:extra_features, ['odl-restconf'])
   default_features = options.fetch(:default_features, ['standard', 'wrap', 'ssh'])
@@ -284,7 +283,6 @@ end
 def karaf_config_validations(options = {})
   # NB: These param defaults should match the ones used by the opendaylight
   #   class, which are defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   extra_features = options.fetch(:extra_features, [])
   default_features = options.fetch(:default_features, ['standard', 'wrap', 'ssh'])
 
@@ -303,7 +301,6 @@ end
 def port_config_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   odl_rest_port = options.fetch(:odl_rest_port, 8181)
 
   describe file('/opt/opendaylight/etc/jetty.xml') do
@@ -325,7 +322,6 @@ end
 def odl_bind_ip_validation(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
 
   if odl_bind_ip != '0.0.0.0'
@@ -368,7 +364,6 @@ end
 def log_level_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   log_levels = options.fetch(:log_levels, {})
 
   if log_levels.empty?
@@ -403,7 +398,6 @@ end
 def enable_ha_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   enable_ha = options.fetch(:enable_ha, false)
   ha_node_ips = options.fetch(:ha_node_ips, [])
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
@@ -485,7 +479,6 @@ end
 def username_password_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   odl_username = options.fetch(:username, 'admin')
   odl_password = options.fetch(:password, 'admin')
   odl_check_url = 'http://127.0.0.1:8181/restconf'
@@ -507,7 +500,6 @@ end
 def snat_mechanism_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   snat_mechanism = options.fetch(:snat_mechanism, 'controller')
 
   describe file('/opt/opendaylight/etc/opendaylight/datastore/initial/config/netvirt-natservice-config.xml') do
@@ -522,7 +514,6 @@ end
 def sfc_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
 
   extra_features = options.fetch(:extra_features, [])
   if extra_features.include? 'odl-netvirt-sfc'
@@ -543,7 +534,6 @@ end
 def dscp_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
 
   inherit_dscp_marking = options.fetch(:inherit_dscp_marking, false)
 
@@ -560,7 +550,6 @@ end
 def websocket_address_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   odl_bind_ip = options.fetch(:odl_bind_ip, '0.0.0.0')
 
   if not odl_bind_ip.eql? '0.0.0.0'
@@ -580,7 +569,6 @@ end
 def tls_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
   tls_keystore_password = options.fetch(:tls_keystore_password)
   odl_rest_port = options.fetch(:odl_rest_port, 8181)
 
@@ -632,7 +620,6 @@ end
 def stats_polling_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
 
   stats_polling_enabled = options.fetch(:stats_polling_enabled, false)
   describe file('/opt/opendaylight/etc/org.opendaylight.openflowplugin.cfg') do
@@ -647,7 +634,6 @@ end
 def inactivity_probe_validations(options = {})
   # NB: This param default should match the one used by the opendaylight
   #   class, which is defined in opendaylight::params
-  # TODO: Remove this possible source of bugs^^
 
   inactivity_probe = options.fetch(:inactivity_probe, :undef)
   unless inactivity_probe == :undef
