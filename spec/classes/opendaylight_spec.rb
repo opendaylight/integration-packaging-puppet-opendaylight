@@ -731,7 +731,7 @@ describe 'opendaylight' do
       end
 
       context 'installing from Nexus repo' do
-        rpm_repo = 'https://nexus.opendaylight.org/content/repositories/opendaylight-fluorine-epel-7-$basearch-devel'
+        rpm_repo = 'https://nexus.opendaylight.org/content/repositories/opendaylight-neon-epel-7-$basearch-devel'
         let(:facts) {{
           :osfamily => osfamily,
           :operatingsystem => operatingsystem,
