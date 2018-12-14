@@ -122,6 +122,7 @@ def log_settings(options = {})
   log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
   log_pattern = options.fetch(:log_pattern, '%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n')
   log_mechanism = options.fetch(:log_mechanism, 'file')
+  enable_paxosgi_logger = options.fetch(:enable_paxosgi_logger, false)
 
   if log_mechanism == 'console'
     it {
@@ -175,6 +176,43 @@ def log_settings(options = {})
       'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
       'line'   => "log4j2.pattern = #{log_pattern}",
       'match'  => '^log4j2.pattern.*$',
+    )
+  }
+  if enable_paxosgi_logger == true
+      presence = 'present'
+  else
+      presence = 'absent'
+  end
+
+  it {
+    should contain_file_line('paxosgiappenderref').with(
+      'ensure' => presence,
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j2.rootLogger.appenderRef.PaxOsgi.ref = PaxOsgi",
+    )
+  }
+  it {
+    should contain_file_line('paxosgisection').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "# OSGi appender",
+    )
+  }
+  it {
+    should contain_file_line('paxosgitype').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j2.appender.osgi.type = PaxOsgi",
+    )
+  }
+  it {
+    should contain_file_line('paxosginame').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j2.appender.osgi.name = PaxOsgi",
+    )
+  }
+  it {
+    should contain_file_line('paxosgifilter').with(
+      'path'   => '/opt/opendaylight/etc/org.ops4j.pax.logging.cfg',
+      'line'   => "log4j2.appender.osgi.filter = *",
     )
   }
 end

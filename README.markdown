@@ -359,6 +359,33 @@ Default: `%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n`
 
 Valid options: A valid string that is a valid log4j2 pattern.
 
+##### `enable_paxosgi_logger`
+
+Boolean that controls whether the PaxOsgi appender is enabled for logging.
+
+Note that enabling this will also require to modify the log pattern to
+make use of the added capabilities. To do so the variable `log_pattern` should
+be overriden to include a pattern that includes the tokens that PaxOsgi adds.
+
+This could be achieving, for example, by setting `log_pattern` to a string
+that includes:
+
+'%X{bundle.id} - %X{bundle.name} - %X{bundle.version}'
+
+Failure to change the `log_pattern` will mean that the PaxOsgi appender will
+be enabled but the added functionality not used on the logging. This has no
+negative effect on the system and it will continue to run, just it will not
+include the added information one could get from PaxOsgi.
+
+A good example would be to set this variable to `true` and set `log_pattern`
+to:
+
+'%d{ISO8601} | %-5p | %-16t | %-32c{1} | %X{bundle.id} - %X{bundle.name} - %X{bundle.version} | %m%n'
+
+Default: `false`
+
+Valid options: The boolean values `true` and `false`.
+
 ##### `enable_ha`
 
 Enable or disable ODL High Availablity.

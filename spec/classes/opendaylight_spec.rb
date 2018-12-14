@@ -551,6 +551,44 @@ describe 'opendaylight' do
       log_settings(log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
     end
 
+    context 'log to file enabling the PaxOsgi appender' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :enable_paxosgi_logger => true,
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      log_settings(enable_paxosgi_logger: true)
+    end
+
+    context 'log to file disabling the PaxOsgi appender' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :enable_paxosgi_logger => false,
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      log_settings(enable_paxosgi_logger: false)
+    end
+
     context 'log to console' do
       let(:facts) {{
         :osfamily => osfamily,
@@ -589,6 +627,48 @@ describe 'opendaylight' do
       # Run test specific to log settings
       log_settings(log_mechanism: 'console',
                    log_pattern: '%d{ISO8601} | %-5p | %-16t | %m%n')
+    end
+
+    context 'log to console enabling the PaxOsgi appender' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :log_mechanism => 'console',
+        :enable_paxosgi_logger => true,
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      log_settings(log_mechanism: 'console',
+                   enable_paxosgi_logger: true)
+    end
+
+    context 'log to console disabling the PaxOsgi appender' do
+      let(:facts) {{
+        :osfamily => osfamily,
+        :operatingsystem => operatingsystem,
+        :operatingsystemmajrelease => operatingsystemmajrelease,
+      }}
+
+      let(:params) {{
+        :log_mechanism => 'console',
+        :enable_paxosgi_logger => false,
+      }}
+
+      # Run shared tests applicable to all supported OSs
+      # Note that this function is defined in spec_helper
+      generic_tests
+
+      # Run test specific to log settings
+      log_settings(log_mechanism: 'console',
+                   enable_paxosgi_logger: false)
     end
 
     context 'setting inactivity probe' do
