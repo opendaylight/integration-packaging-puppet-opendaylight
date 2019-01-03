@@ -479,7 +479,7 @@ describe 'opendaylight' do
       }}
 
       let(:params) {{
-        :log_max_size => '1GB',
+        :log_max_size => '100MB',
       }}
 
       # Run shared tests applicable to all supported OSs
@@ -487,7 +487,7 @@ describe 'opendaylight' do
       generic_tests
 
       # Run test specific to log settings
-      log_settings(log_max_size: '1GB')
+      log_settings(log_max_size: '100MB')
     end
 
     context 'log to file customizing rollover' do
@@ -498,7 +498,7 @@ describe 'opendaylight' do
       }}
 
       let(:params) {{
-        :log_max_rollover => 3,
+        :log_max_rollover => 10,
       }}
 
       # Run shared tests applicable to all supported OSs
@@ -506,7 +506,7 @@ describe 'opendaylight' do
       generic_tests
 
       # Run test specific to log settings
-      log_settings(log_max_rollover: 3)
+      log_settings(log_max_rollover: 10)
     end
 
     context 'log to file customizing size and rollover' do
@@ -517,8 +517,8 @@ describe 'opendaylight' do
       }}
 
       let(:params) {{
-        :log_max_size => '1GB',
-        :log_max_rollover => 3,
+        :log_max_size => '250MB',
+        :log_max_rollover => 8,
         :log_rollover_fileindex => 'min'
       }}
 
@@ -527,8 +527,8 @@ describe 'opendaylight' do
       generic_tests
 
       # Run test specific to log settings
-      log_settings(log_max_size: '1GB',
-                   log_max_rollover: 3,
+      log_settings(log_max_size: '250MB',
+                   log_max_rollover: 8,
                    log_rollover_fileindex: 'min')
     end
 

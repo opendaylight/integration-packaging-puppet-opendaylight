@@ -85,29 +85,29 @@ describe 'opendaylight class' do
 
     context 'log to file customising size' do
       # Call specialized helper fn to install OpenDaylight
-      install_odl(log_max_size: '1GB')
+      install_odl(log_max_size: '100MB')
 
       # Call specialized helper fn for log settings validations
-      log_settings_validations(log_max_size: '1GB')
+      log_settings_validations(log_max_size: '100MB')
     end
 
     context 'log to file customising rollover' do
       # Call specialized helper fn to install OpenDaylight
-      install_odl(log_max_rollover: 3)
+      install_odl(log_max_rollover: 10)
 
       # Call specialized helper fn for log settings validations
-      log_settings_validations(log_max_rollover: 3)
+      log_settings_validations(log_max_rollover: 10)
     end
 
     context 'log to file customising size and rollover' do
       # Call specialized helper fn to install OpenDaylight
-      install_odl(log_max_size: '1GB',
-                  log_max_rollover: 3,
+      install_odl(log_max_size: '250MB',
+                  log_max_rollover: 8,
                   log_rollover_fileIndex: 'min')
 
       # Call specialized helper fn for log settings validations
-      log_settings_validations(log_max_size: '1GB',
-                               log_max_rollover: 3,
+      log_settings_validations(log_max_size: '250MB',
+                               log_max_rollover: 8,
                                log_rollover_fileIndex: 'min')
     end
 

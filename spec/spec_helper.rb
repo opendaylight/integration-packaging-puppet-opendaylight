@@ -117,8 +117,8 @@ end
 # Shared tests that specialize in testing log file size and rollover
 def log_settings(options = {})
   # Extraxt params. The dafault value should be same as in opendaylight::params
-  log_max_size = options.fetch(:log_max_size, '10GB')
-  log_max_rollover = options.fetch(:log_max_rollover, 2)
+  log_max_size = options.fetch(:log_max_size, '500MB')
+  log_max_rollover = options.fetch(:log_max_rollover, 4)
   log_rollover_fileindex = options.fetch(:log_rollover_fileindex, 'min')
   log_pattern = options.fetch(:log_pattern, '%d{ISO8601} | %-5p | %-16t | %-60c{6} | %m%n')
   log_mechanism = options.fetch(:log_mechanism, 'file')

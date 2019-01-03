@@ -307,7 +307,7 @@ Maximum size of OpenDaylight's log file, `/opt/opendaylight/data/log/karaf.log`.
 Once this size is reached, the log will be rolled over, with up to
 `log_max_rollover` log rollovers preserved in total.
 
-Default: `10GB`
+Default: `500MB`
 
 Valid options: A valid size as a string with unit specified.
 
@@ -319,7 +319,7 @@ Note that if this is set to 1, log rollovers will result in loosing newly
 logged data. It's recommended to use values greater than one to prune from
 the end of the log.
 
-Default: `2`
+Default: `4`
 
 Valid options: An integer greater than 0.
 
