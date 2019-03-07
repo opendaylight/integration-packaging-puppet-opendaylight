@@ -6,7 +6,7 @@ gem "beaker-docker"
 gem "beaker-rspec"
 gem "guard-rake"
 gem "metadata-json-lint"
-gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.0'
+gem "puppet", ENV['PUPPET_VERSION'] || '~> 5.0'
 gem "puppet-blacksmith"
 gem "puppetlabs_spec_helper"
 gem "rake"
